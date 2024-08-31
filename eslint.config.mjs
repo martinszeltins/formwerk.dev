@@ -8,6 +8,11 @@ export default tseslint.config(
   ...eslintPluginAstro.configs['flat/recommended'],
   ...tseslint.configs.recommended,
   {
+    rules: {
+      'typescript-eslint/triple-slash-reference': 'off',
+    },
+  },
+  {
     languageOptions: {
       sourceType: 'module',
       globals: {
@@ -20,5 +25,8 @@ export default tseslint.config(
     languageOptions: {
       sourceType: 'commonjs',
     },
+  },
+  {
+    ignores: ['dist/*', '.astro/*'],
   },
 );
