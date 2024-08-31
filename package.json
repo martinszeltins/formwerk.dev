@@ -12,7 +12,8 @@
     "astro": "astro",
     "format": "prettier --write .",
     "prepare": "husky",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "typecheck": "pnpm tsc --noEmit --project ./tsconfig.json --skipLibCheck"
   },
   "dependencies": {
     "@astrojs/check": "^0.9.3",
