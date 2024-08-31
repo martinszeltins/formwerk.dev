@@ -1,0 +1,407 @@
+---
+title: Number Field
+description: A guide in my new Starlight docs site.
+---
+
+import { Tabs, TabItem, Aside } from '@astrojs/starlight/components';
+
+Number fields are a common field in many forms. They include built-in validation to reject non-numerical input. Additionally, the browser may provide stepper arrows to let the user increase and decrease the value with a configurable step amount.
+
+The Number field is usually used for number values rather than numeric values. For example while a credit card number is numeric, you should not use a number field for it. Instead you should use it for values that are meant to be consumed as a number like units, prices and percentages.
+
+The native HTML number input and most other implementations do not offer a good experience. Here are a couple of common issues:
+
+- **Lack of proper internationalization:** Mainly, the lack of support for other numeral systems like the Arabic numerals `(٠١٢٣٤٥٦٧٨٩)` are a pain to work with. Users often have to switch keyboard languages/layout to enter numbers and even then it is not perfect as keyboards don't always have all the necessary characters for decimals and thousands separators. This means the number input is not accessible for the global audience.
+- **No formatting support:** this includes grouping `,` and displaying units and currencies and other simple masking features.
+
+Formwerk tries to address all these issues and more by utilizing the `Intl.NumberFormat` API and providing a solid foundation for building number fields that are accessible and easy to use for users all over the world.
+
+## Features
+
+- Supports using the `input` element as a base with `type="text"` (don't worry, we add the `inputmode` automatically for accessability and mobile keyboards).
+- Labeling and descriptions are automatically linked to input and label elements.
+- Validation and error messages support with native HTML validation or Typed schemas.
+- Formatting and parsing numbers with the `Intl.NumberFormat` API depending on the site locale or the user's preferred language.
+- Support for different numeral systems.
+- Support for `Intl.NumberFormat` units and currencies.
+- Support for the Spinbutton ARIA pattern for increment/decrement buttons.
+- Support for `min`, `max` and `step` attributes.
+- Rejects non-numerical input characters.
+- Support for `v-model` binding.
+
+## Anatomy
+
+// TODO: Add anatomy image
+
+## API
+
+| Name                   | Type                               | Description                                                         |
+| ---------------------- | ---------------------------------- | ------------------------------------------------------------------- |
+| `decrement`            | `() => void`                       | Decreases the number value by the step amount.                      |
+| `decrementButtonProps` | Complex Binding                    | The decrement button element's props.                               |
+| `descriptionProps`     | `AriaDescriptionProps`             | The description element's props.                                    |
+| `displayError`         | `() => string \| undefined`        | A getter to display the error message if touched.                   |
+| `errorMessage`         | `string \| undefined`              | The validation message.                                             |
+| `errorMessageProps`    | `AriaErrorMessageProps`            | The error message element props.                                    |
+| `errors`               | `string[]`                         | The field's error messages.                                         |
+| `fieldValue`           | `number \| undefined`              | The current value of the field.                                     |
+| `increment`            | `() => void`                       | Increases the number value by the step amount.                      |
+| `incrementButtonProps` | Complex Binding                    | The increment button element's props.                               |
+| `inputProps`           | Complex Binding                    | The base element props.                                             |
+| `isDirty`              | `boolean`                          | Whether the field value has changed.                                |
+| `isTouched`            | `boolean`                          | Whether the field is touched.                                       |
+| `isValid`              | `boolean`                          | Whether the field has error messages.                               |
+| `labelProps`           | `AriaLabelProps`                   | The label element props.                                            |
+| `setErrors`            | `(msg: Arrayable<string>) => void` | Sets the error messages for the field and sets the `isValid` state. |
+| `setTouched`           | `(touched: boolean) => void`       | Sets the `isTouched` state.                                         |
+| `setValue`             | `(value: number) => void`          | Sets the field's current value.                                     |
+
+## Building a Number Field Component
+
+You can start by importing the `useNumberField` composable and using it in your number field component.
+
+The `useCheckbox` composable returns binding objects for the elements shown in the anatomy, you will use `v-bind` to bind them to the DOM elements.
+
+```vue
+<script setup lang="ts">
+import { NumberFieldProps, useNumberField } from '@formwerk/core';
+
+const props = defineProps<NumberFieldProps>();
+
+const {
+  inputProps,
+  labelProps,
+  errorMessage,
+  descriptionProps,
+  errorMessageProps,
+  incrementButtonProps,
+  decrementButtonProps,
+  isValid,
+} = useNumberField(props);
+</script>
+
+<template>
+  <div>
+    <label v-bind="labelProps">{{ label }}</label>
+    <div>
+      <button type="button" v-bind="decrementButtonProps">-</button>
+      <input v-bind="inputProps" />
+      <button type="button" v-bind="incrementButtonProps">+</button>
+    </div>
+
+    <div v-if="description" v-bind="descriptionProps">{{ description }}</div>
+
+    <div v-if="!isValid" v-bind="errorMessageProps">
+      {{ errorMessage }}
+    </div>
+  </div>
+</template>
+```
+
+Notice that we imported the `NumberFieldProps` in the previous example. This is recommended to use as your component prop types.
+
+Not only you get type safety for your component out of it but also it handles the reactivity aspects of the props so you don't have to.
+
+## Validation
+
+### HTML Constraints
+
+You can use native HTML validation or Typed schemas to validate the number field. The following properties are supported:
+
+| Name       | Type      | Description                             |
+| ---------- | --------- | --------------------------------------- |
+| `max`      | `number`  | The maximum value for the number field. |
+| `min`      | `number`  | The minimum value for the number field. |
+| `required` | `boolean` | Whether the number field is required.   |
+| `step`     | `number`  | The step amount for the number field.   |
+
+<Aside>
+  Note that `min`, `max` and `step` attributes accept a number or a string, the
+  string however must be parseable as a number. Formwerk takes care of typing
+  strings safely and parsing them so you don't have to bind the values as
+  numbers.
+</Aside>
+
+Here is an example of how to use the `max` and `min` properties to limit the number field value between 0 and 100.
+
+Assuming you have a `NumberField` component like the one shown above, you can use it like this:
+
+```vue
+<script setup lang="ts">
+import NumberField from './NumberField.vue';
+
+const value = ref(50);
+</script>
+
+<template>
+  <NumberField v-model="value" max="100" min="0" step="2" required />
+</template>
+```
+
+### Typed Schema
+
+`useNumberField` also supports Typed Schema validation through the `schema` prop.
+
+<Aside>
+
+Depending on the schema validation provider you are using, the API might slightly differ. Check the supported validation providers for more information. In this example we are using the `zod` schema validation provider.
+
+</Aside>
+
+```vue
+<script setup lang="ts">
+import { z } from 'zod';
+import { defineSchema } from '@formwerk/schema-zod';
+import NumberField from './NumberField.vue';
+
+const schema = defineSchema(
+  z
+    .number('Required')
+    .min(1, 'Must be greater than 0')
+    .max(100, 'Must be less than 100'),
+);
+</script>
+
+<template>
+  <NumberField label="Typed Schema" :schema="schema" />
+</template>
+```
+
+## Styling
+
+Styling the number field is similar to styling other form components. You have full control over how to style the component or how to implement its anatomical parts with any styling solution you like.
+
+<Tabs>
+
+  <TabItem label="Custom CSS">
+
+```vue
+<script setup lang="ts">
+import { NumberFieldProps, useNumberField } from '@formwerk/core';
+
+const props = defineProps<NumberFieldProps>();
+
+const {
+  inputProps,
+  labelProps,
+  errorMessage,
+  errorMessageProps,
+  incrementButtonProps,
+  decrementButtonProps,
+} = useNumberField(props);
+</script>
+
+<template>
+  <div class="InputNumber">
+    <label v-bind="labelProps">{{ label }}</label>
+
+    <div class="button-group">
+      <button type="button" v-bind="decrementButtonProps">-</button>
+      <input v-bind="inputProps" />
+      <button type="button" v-bind="incrementButtonProps">+</button>
+    </div>
+
+    <span v-bind="errorMessageProps" class="error-message">
+      {{ errorMessage }}
+    </span>
+  </div>
+</template>
+
+<style scoped>
+.InputNumber {
+  position: relative;
+  width: 100%;
+  margin-bottom: 1.5em;
+}
+
+label {
+  display: block;
+  margin-bottom: 0.25em;
+  width: 100%;
+}
+
+.button-group {
+  display: flex;
+  align-items: stretch;
+}
+
+input {
+  color: #333;
+  border: 2px solid transparent;
+  padding: 0.75em 1em;
+  width: 100%;
+  background-color: #f3f4f6;
+  transition: border-color 0.2s;
+}
+
+input:focus {
+  outline: none;
+  border-color: #3b82f6;
+}
+
+.error-message {
+  position: absolute;
+  left: 0;
+  bottom: -1.5em;
+  font-size: 0.875em;
+  color: #ef4444;
+}
+
+.InputNumber.has-error input {
+  background-color: #fee2e2;
+  color: #dc2626;
+}
+
+.InputNumber.has-error input:focus {
+  border-color: #dc2626;
+}
+
+button {
+  background-color: #2563eb;
+  color: white;
+  font-size: 1.125em;
+  padding: 0 0.5em;
+}
+
+button:disabled {
+  background-color: #d1d5db;
+}
+</style>
+```
+
+</TabItem>
+
+  <TabItem label="TailwindCSS">
+
+```vue
+<script setup lang="ts">
+import { NumberFieldProps, useNumberField } from '@formwerk/core';
+
+const props = defineProps<NumberFieldProps>();
+
+const {
+  inputProps,
+  labelProps,
+  errorMessage,
+  errorMessageProps,
+  incrementButtonProps,
+  decrementButtonProps,
+} = useNumberField(props);
+</script>
+
+<template>
+  <div class="InputNumber">
+    <label v-bind="labelProps">{{ label }}</label>
+
+    <div class="flex items-stretch">
+      <button type="button" v-bind="decrementButtonProps">-</button>
+      <input v-bind="inputProps" />
+
+      <button type="button" v-bind="incrementButtonProps">+</button>
+    </div>
+
+    <span v-bind="errorMessageProps" class="error-message">
+      {{ errorMessage }}
+    </span>
+  </div>
+</template>
+
+<style scoped lang="postcss">
+.InputNumber {
+  @apply relative w-full;
+  margin-bottom: calc(1em * 1.5);
+
+  label {
+    @apply block mb-1 w-full;
+  }
+
+  input {
+    @apply text-gray-800 border-2 border-transparent py-3 px-4 w-full bg-gray-100 focus:outline-none transition-colors duration-200 focus:border-blue-500;
+  }
+  .error-message {
+    @apply absolute left-0 text-sm text-red-500;
+    bottom: calc(-1.5 * 1em);
+  }
+
+  &.has-error {
+    input {
+      @apply bg-red-100 text-red-600 focus:border-red-500;
+    }
+  }
+
+  button {
+    @apply bg-blue-600 text-white text-lg px-2 disabled:bg-gray-300;
+  }
+}
+</style>
+```
+
+</TabItem>
+
+</Tabs>
+
+### Styling with CSS Pseudo-classes
+
+`useNumberField` leans heavily on the `input` element and the native CSS pseudo-classes. So when validating with Typed Schemas, you can still style the field with `:invalid/:user-invalid` and `:valid/:user-valid` pseudo-classes.
+
+That means you can take full advantage of the browser's CSS features without having to use conditional display with `v-if` or toggling classes with `:class` binding.
+
+```vue
+<script setup lang="ts">
+import { NumberFieldProps, useNumberField } from '@formwerk/core';
+
+const props = defineProps<NumberFieldProps>();
+
+const { inputProps, labelProps, errorMessage, errorMessageProps } =
+  useNumberField(props);
+</script>
+
+<template>
+  <div class="InputNumber">
+    <label v-bind="labelProps">{{ label }}</label>
+
+    <input v-bind="inputProps" />
+
+    <span v-bind="errorMessageProps" class="error-message">
+      {{ errorMessage }}
+    </span>
+  </div>
+</template>
+
+<style scoped>
+.InputNumber {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25em;
+}
+
+input {
+  color: #333;
+  border: 2px solid transparent;
+  padding: 0.75em 1em;
+  width: 100%;
+  background-color: #f3f4f6;
+  transition: border-color 0.2s;
+}
+
+input:user-invalid {
+  border-color: #dc2626;
+}
+
+input:user-valid {
+  border-color: #16a34a;
+}
+
+.error-message {
+  display: none;
+}
+
+.InputNumber:has(:user-invalid) {
+  .error-message {
+    display: block;
+  }
+}
+</style>
+```
+
+## Usage
