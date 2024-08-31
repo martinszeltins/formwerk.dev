@@ -3,7 +3,6 @@ title: Switch
 description: A guide in my new Starlight docs site.
 ---
 
-
 > A switch is an input widget that allows users to choose one of two values: on or off. Switches are similar to checkboxes and toggle buttons, which can also serve as binary inputs. One difference, however, is that switches can only be used for binary input.
 
 This composable provides the behavior, state and accessibility implementation for switch components.

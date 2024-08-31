@@ -3,7 +3,6 @@ title: Number Field
 description: A guide in my new Starlight docs site.
 ---
 
-
 Number fields are a common field in many forms, but natively they don't provide a great user experience. Here are a few cases where the native number input falls short:
 
 - It doesn't support different numeral systems. For example Arabic numerals (٠١٢٣٤٥٦٧٨٩) are a pain to work with.
@@ -32,8 +31,14 @@ import { NumberFieldProps, useNumberField } from '@formwerk/core';
 
 const props = defineProps<NumberFieldProps>();
 
-const { inputProps, labelProps, errorMessage, errorMessageProps, incrementButtonProps, decrementButtonProps } =
-  useNumberField(props);
+const {
+  inputProps,
+  labelProps,
+  errorMessage,
+  errorMessageProps,
+  incrementButtonProps,
+  decrementButtonProps,
+} = useNumberField(props);
 </script>
 
 <template>

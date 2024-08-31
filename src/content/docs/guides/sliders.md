@@ -3,7 +3,6 @@ title: Slider
 description: A guide in my new Starlight docs site.
 ---
 
-
 > A slider is an input where the user selects a value from within a given range. Sliders typically have a slider thumb that can be moved along a bar, rail, or track to change the value of the slider.
 
 This composable provides the behavior, state and accessibility implementation for slider components.
@@ -31,7 +30,10 @@ This composable provides the behavior, state and accessibility implementation fo
 
 ```vue
 <template>
-  <div v-bind="thumbProps" class="rounded-full bg-gray-400 focus-visible:bg-blue-500 w-4 h-4 flex-shrink-0">
+  <div
+    v-bind="thumbProps"
+    class="rounded-full bg-gray-400 focus-visible:bg-blue-500 w-4 h-4 flex-shrink-0"
+  >
     <div
       v-if="isDragging"
       class="absolute -top-7 bg-blue-400 px-1.5 py-1 rounded text-xs text-white font-medium left-1/2 -translate-x-1/2"
@@ -63,7 +65,11 @@ const { trackProps, groupProps, labelProps } = useSlider(props);
 </script>
 
 <template>
-  <div class="slider" v-bind="groupProps" :class="{ vertical: orientation === 'vertical' }">
+  <div
+    class="slider"
+    v-bind="groupProps"
+    :class="{ vertical: orientation === 'vertical' }"
+  >
     <div v-bind="labelProps">{{ label }}</div>
     <div v-bind="trackProps" class="track">
       <Thumb />
@@ -115,7 +121,11 @@ const { groupProps, trackProps, labelProps } = useSlider(props);
 </script>
 
 <template>
-  <div class="slider" v-bind="groupProps" :class="{ vertical: orientation === 'vertical' }">
+  <div
+    class="slider"
+    v-bind="groupProps"
+    :class="{ vertical: orientation === 'vertical' }"
+  >
     <div v-bind="labelProps">{{ label }}</div>
     <div v-bind="trackProps" class="track">
       <Thumb />

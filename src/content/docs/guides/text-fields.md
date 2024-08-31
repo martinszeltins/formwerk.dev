@@ -3,7 +3,6 @@ title: Text Field
 description: A guide in my new Starlight docs site.
 ---
 
-
 This composable provides the behavior, state and accessibility implementation for text input components.
 
 ## Features
@@ -22,7 +21,8 @@ import { TextFieldProps, useTextField } from '@formwerk/core';
 
 const props = defineProps<TextFieldProps>();
 
-const { inputProps, labelProps, errorMessage, errorMessageProps } = useTextField(props);
+const { inputProps, labelProps, errorMessage, errorMessageProps } =
+  useTextField(props);
 </script>
 
 <template>
@@ -71,7 +71,8 @@ import { TextFieldProps, useTextField } from '@formwerk/core';
 
 const props = defineProps<TextFieldProps>();
 
-const { inputProps, labelProps, errorMessage, errorMessageProps } = useTextField(props);
+const { inputProps, labelProps, errorMessage, errorMessageProps } =
+  useTextField(props);
 </script>
 
 <template>

@@ -3,7 +3,6 @@ title: Checkbox
 description: A guide in my new Starlight docs site.
 ---
 
-
 Checkboxes allow the user to make a binary choice, i.e. a choice between one of two possible mutually exclusive options. Unlike Radios, checkboxes can used on their own. For example, agreeing to the terms and conditions or subscribing to a newsletter. But checkboxes are more nuanced than that.
 
 They can also be used to represent options from a list of options, in this situation they are considered a group and multiple checkboxes can be selected at once.
@@ -68,7 +67,10 @@ const { labelProps, checkboxProps, isChecked } = useCheckbox(props);
     <div
       class="w-5 h-5 rounded-md flex-shrink-0 border border-gray-600 flex items-center justify-center focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
     >
-      <div class="w-3 h-3 rounded-md flex-shrink-0" :class="{ 'bg-blue-500': isChecked }" />
+      <div
+        class="w-3 h-3 rounded-md flex-shrink-0"
+        :class="{ 'bg-blue-500': isChecked }"
+      />
     </div>
 
     <span v-bind="labelProps" class="ml-1">{{ label }}</span>
@@ -91,7 +93,13 @@ import { CheckboxGroupProps, useCheckboxGroup } from '@formwerk/core';
 
 const props = defineProps<CheckboxGroupProps>();
 
-const { checkboxGroupProps, labelProps, descriptionProps, errorMessageProps, errorMessage } = useCheckboxGroup(props);
+const {
+  checkboxGroupProps,
+  labelProps,
+  descriptionProps,
+  errorMessageProps,
+  errorMessage,
+} = useCheckboxGroup(props);
 </script>
 
 <template>
@@ -103,15 +111,30 @@ const { checkboxGroupProps, labelProps, descriptionProps, errorMessageProps, err
     <span
       v-bind="labelProps"
       class="font-medium"
-      :class="{ 'mr-4': orientation === 'horizontal', 'mb-4': orientation !== 'horizontal' }"
+      :class="{
+        'mr-4': orientation === 'horizontal',
+        'mb-4': orientation !== 'horizontal',
+      }"
       >{{ label }}</span
     >
 
     <slot />
 
-    <div v-if="errorMessageProps" v-bind="errorMessageProps" class="text-red-500 text-xs">{{ errorMessage }}</div>
+    <div
+      v-if="errorMessageProps"
+      v-bind="errorMessageProps"
+      class="text-red-500 text-xs"
+    >
+      {{ errorMessage }}
+    </div>
 
-    <div v-else-if="description" v-bind="descriptionProps" class="text-gray-500 text-xs">{{ description }}</div>
+    <div
+      v-else-if="description"
+      v-bind="descriptionProps"
+      class="text-gray-500 text-xs"
+    >
+      {{ description }}
+    </div>
   </div>
 </template>
 ```

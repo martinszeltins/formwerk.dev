@@ -3,7 +3,6 @@ title: Search Field
 description: A guide in my new Starlight docs site.
 ---
 
-
 > input elements of type search are text fields designed for the user to enter search queries into. These are functionally identical to text inputs, but may be styled differently by the user agent.
 
 Search fields have extra behaviors and use-cases that set them apart from regular text fields. This composable provides the behavior, state and accessibility implementation for search fields.
@@ -32,7 +31,14 @@ import { SearchFieldProps, useSearchField } from '@formwerk/core';
 
 const props = defineProps<SearchFieldProps>();
 
-const { inputProps, labelProps, fieldValue, errorMessage, errorMessageProps, clearBtnProps } = useSearchField(props);
+const {
+  inputProps,
+  labelProps,
+  fieldValue,
+  errorMessage,
+  errorMessageProps,
+  clearBtnProps,
+} = useSearchField(props);
 </script>
 
 <template>
@@ -45,7 +51,13 @@ const { inputProps, labelProps, fieldValue, errorMessage, errorMessageProps, cle
       {{ errorMessage }}
     </span>
 
-    <button v-show="fieldValue" v-bind="clearBtnProps" class="absolute right-4 bottom-3">❌</button>
+    <button
+      v-show="fieldValue"
+      v-bind="clearBtnProps"
+      class="absolute right-4 bottom-3"
+    >
+      ❌
+    </button>
   </div>
 </template>
 

@@ -3,7 +3,6 @@ title: Radio
 description: A guide in my new Starlight docs site.
 ---
 
-
 > A radio group is a set of checkable buttons, known as radio buttons, where no more than one of the buttons can be checked at a time. Some implementations may initialize the set with all buttons in the unchecked state in order to force the user to check one of the buttons before moving past a certain point in the workflow.
 
 Radios in HTML do not have a "group" concept, but they get grouped implicitly by the "name" attribute. This isn't the case in Vue, as they are grouped by the model name they mutate. As such, a "group" concept is introduced in this library to provide a consistent API for radio groups regardless if they are bound to the same model or if they have the same name or not.
@@ -33,7 +32,13 @@ import { RadioGroupProps, useRadioGroup } from '@formwerk/core';
 
 const props = defineProps<RadioGroupProps>();
 
-const { radioGroupProps, labelProps, descriptionProps, errorMessageProps, errorMessage } = useRadioGroup(props);
+const {
+  radioGroupProps,
+  labelProps,
+  descriptionProps,
+  errorMessageProps,
+  errorMessage,
+} = useRadioGroup(props);
 </script>
 
 <template>
@@ -45,15 +50,30 @@ const { radioGroupProps, labelProps, descriptionProps, errorMessageProps, errorM
     <span
       v-bind="labelProps"
       class="font-medium"
-      :class="{ 'mr-4': orientation === 'horizontal', 'mb-4': orientation !== 'horizontal' }"
+      :class="{
+        'mr-4': orientation === 'horizontal',
+        'mb-4': orientation !== 'horizontal',
+      }"
       >{{ label }}</span
     >
 
     <slot />
 
-    <div v-if="errorMessageProps" v-bind="errorMessageProps" class="text-red-500 text-xs">{{ errorMessage }}</div>
+    <div
+      v-if="errorMessageProps"
+      v-bind="errorMessageProps"
+      class="text-red-500 text-xs"
+    >
+      {{ errorMessage }}
+    </div>
 
-    <div v-else-if="description" v-bind="descriptionProps" class="text-gray-500 text-xs">{{ description }}</div>
+    <div
+      v-else-if="description"
+      v-bind="descriptionProps"
+      class="text-gray-500 text-xs"
+    >
+      {{ description }}
+    </div>
   </div>
 </template>
 ```
@@ -103,7 +123,10 @@ const { labelProps, radioProps, isChecked } = useRadio(props);
       v-bind="radioProps"
       class="w-5 h-5 rounded-full flex-shrink-0 border border-gray-600 flex items-center justify-center focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
     >
-      <div class="w-3 h-3 rounded-full flex-shrink-0" :class="{ 'bg-blue-500': isChecked }" />
+      <div
+        class="w-3 h-3 rounded-full flex-shrink-0"
+        :class="{ 'bg-blue-500': isChecked }"
+      />
     </div>
 
     <label v-bind="labelProps" class="ml-1">{{ label }}</label>
