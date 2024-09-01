@@ -1,6 +1,8 @@
 ---
-title: Slider
+title: Sliders
 description: A guide in my new Starlight docs site.
+sidebar:
+  order: 8
 ---
 
 > A slider is an input where the user selects a value from within a given range. Sliders typically have a slider thumb that can be moved along a bar, rail, or track to change the value of the slider.
@@ -19,9 +21,12 @@ This composable provides the behavior, state and accessibility implementation fo
   - Clicking the track element sets the value of the slider or the nearest suitable thumb to the clicked position.
   - Dragging the thumb element changes the value of the slider.
 - Keyboard support
-  - <kbd>ArrowLeft</kbd> and <kbd>ArrowRight</kbd> keys increment and decrement the value respectively.
-  - <kbd>Home</kbd> and <kbd>End</kbd> keys set the value to the minimum and maximum values respectively.
-  - <kbd>PageUp</kbd> and <kbd>PageDown</kbd> keys increment and decrement the value by a large step respectively.
+  - <kbd>ArrowLeft</kbd> and <kbd>ArrowRight</kbd> keys increment and decrement
+    the value respectively.
+  - <kbd>Home</kbd> and <kbd>End</kbd> keys set the value to the minimum and
+    maximum values respectively.
+  - <kbd>PageUp</kbd> and <kbd>PageDown</kbd> keys increment and decrement the
+    value by a large step respectively.
   - Keys adapt to the direction (RTL or LTR) of the slider and the orientation of the slider (horizontal or vertical).
 
 ## Usage
