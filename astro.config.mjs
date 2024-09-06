@@ -1,6 +1,5 @@
 import { defineConfig } from 'astro/config';
 import starlight from '@astrojs/starlight';
-
 import tailwind from '@astrojs/tailwind';
 
 // https://astro.build/config
@@ -11,6 +10,7 @@ export default defineConfig({
       social: {
         github: 'https://github.com/withastro/starlight',
       },
+      customCss: ['./src/tailwind.css'],
       sidebar: [
         {
           label: 'Introduction',
@@ -35,6 +35,8 @@ export default defineConfig({
         },
       ],
     }),
-    tailwind(),
+    tailwind({
+      applyBaseStyles: false,
+    }),
   ],
 });
