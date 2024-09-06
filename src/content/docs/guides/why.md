@@ -51,13 +51,11 @@ All those libraries are excellent at what they do and you won't go wrong with an
 
 ### vee-validate
 
-I'm the author of vee-validate and I'm proud of what we've built there for 6 years now. It's a great library that does many things well.
+I'm the author of vee-validate and I'm proud of what we've built there for 6 years now. It's a great library that does a few things well.
 
-Its main offering is validation, and it does it very well. Yet, it does other things as well like value tracking and form handling.
+However I consider it to be a bit low-level for building form components. There is still a lot of stuff you still have to implement yourself.
 
-However I consider it to be a bit low-level for building form components. There is a lot of stuff you still have to implement yourself.
-
-Formwerk is an attempt to offer a more complete solution for building forms by stepping up the abstraction level. I consider it to be what vee-validate was always meant to be.
+Formwerk is an attempt to offer a more complete solution for building forms by stepping up the abstraction level. Formwerk takes a lot of key learnings from vee-validate and applies them broadly to form building.
 
 ### vuelidate
 
