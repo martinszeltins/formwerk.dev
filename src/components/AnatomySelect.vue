@@ -29,12 +29,7 @@
         <PhCaretDown class="ml-auto" />
       </div>
 
-      <AnatomyPart
-        text="Listbox"
-        position="bottom"
-        :distance="20"
-        class="w-full"
-      >
+      <AnatomyPart text="Popup" position="bottom" :distance="20" class="w-full">
         <div
           class="mt-1 flex w-full flex-col gap-1 rounded-md border border-zinc-600 bg-zinc-900 px-4 py-2"
         >
