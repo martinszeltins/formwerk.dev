@@ -21,6 +21,19 @@ export default {
   theme: {
     extend: {
       colors: {
+        aztec: {
+          50: '#f5f8f7',
+          100: '#dee9e5',
+          200: '#bdd2cc',
+          300: '#95b3ab',
+          400: '#6e938a',
+          500: '#547870',
+          600: '#425f59',
+          700: '#374e4a',
+          800: '#2f403d',
+          900: '#2a3735',
+          950: '#121a19',
+        },
         accent: chateauGreen,
         gray: colors.zinc,
       },
