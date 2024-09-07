@@ -6,8 +6,10 @@ sidebar:
 ---
 
 import { Tabs, TabItem, Aside } from '@astrojs/starlight/components';
+import AnatomyCanvas from '@components/AnatomyCanvas.vue';
+import AnatomyTextField from '@components/AnatomyTextField.vue';
 
-Text fields are used to allow users to input basic text into a form.
+Text fields are used to allow users to input plain text into a form.
 
 Text fields are implemented with the `input` element for single line of text or `textarea` element for multiple lines of text.
 
@@ -20,26 +22,9 @@ Text fields are implemented with the `input` element for single line of text or 
 
 ## Anatomy
 
-// TODO: Add anatomy image
-
-## API
-
-| Name                | Type                               | Description                                                         |
-| ------------------- | ---------------------------------- | ------------------------------------------------------------------- |
-| `descriptionProps`  | `AriaDescriptionProps`             | The description element's props.                                    |
-| `displayError`      | `() => string \| undefined`        | A getter to display the error message if touched.                   |
-| `errorMessage`      | `string \| undefined`              | The validation message.                                             |
-| `errorMessageProps` | `AriaErrorMessageProps`            | The error message element props.                                    |
-| `errors`            | `string[]`                         | The field's error messages.                                         |
-| `fieldValue`        | `string \| undefined`              | The current value of the field.                                     |
-| `inputProps`        | Complex Binding                    | The base element props.                                             |
-| `isDirty`           | `boolean`                          | Whether the field value has changed.                                |
-| `isTouched`         | `boolean`                          | Whether the field is touched.                                       |
-| `isValid`           | `boolean`                          | Whether the field has error messages.                               |
-| `labelProps`        | `AriaLabelProps`                   | The label element props.                                            |
-| `setErrors`         | `(msg: Arrayable<string>) => void` | Sets the error messages for the field and sets the `isValid` state. |
-| `setTouched`        | `(touched: boolean) => void`       | Sets the `isTouched` state.                                         |
-| `setValue`          | `(value: number) => void`          | Sets the field's current value.                                     |
+<AnatomyCanvas>
+  <AnatomyTextField />
+</AnatomyCanvas>
 
 ## Building a Text Field Component
 
@@ -75,12 +60,13 @@ const {
 
 <Aside type="caution">
 
-Only `text`, `email`, `tel` and `url` types are supported at the moment for `input` elements.
+Only `text`, `password`, `email`, `tel` and `url` types are supported at the moment for `input` elements.
 
 The other types have their own composables, check out the following guides:
 
 - Number field, check out the [Number Field](/guides/number-fields) guide.
 - Search field, check out the [Search Field](/guides/search-fields) guide.
+- No support for `date` fields at the moment.
 
 </Aside>
 
@@ -187,4 +173,51 @@ const schema = defineSchema(z.string().min(3).max(18));
 
 ## Styling
 
+Formwerk does not come with any markup or styling, which is often the parts that make a design system unique. That means you can use any styling solution you want, whether it's [TailwindCSS](https://tailwindcss.com/), or plain CSS.
+
 ## Usage
+
+## API
+
+### Props
+
+| Name                    | Type                                                            | Description                                        |
+| ----------------------- | --------------------------------------------------------------- | -------------------------------------------------- |
+| `label`                 | `string`                                                        | The label for the text field.                      |
+| `modelValue`            | `string`                                                        | The v-model value for the text field.              |
+| `description`           | `string`                                                        | Description text for the field.                    |
+| `name`                  | `string`                                                        | The name attribute for the input element.          |
+| `value`                 | `string`                                                        | The value attribute for the input element.         |
+| `type`                  | `'text' \| 'password' \| 'email' \| 'number' \| 'tel' \| 'url'` | The type of the input element.                     |
+| `maxLength`             | `Numberish`                                                     | The maximum length of the input.                   |
+| `minLength`             | `Numberish`                                                     | The minimum length of the input.                   |
+| `pattern`               | `string \| RegExp?`                                             | A regular expression pattern for input validation. |
+| `placeholder`           | `string`                                                        | Placeholder text for the input.                    |
+| `required`              | `boolean`                                                       | Whether the field is required.                     |
+| `readonly`              | `boolean`                                                       | Whether the field is read-only.                    |
+| `disabled`              | `boolean`                                                       | Whether the field is disabled.                     |
+| `schema`                | `TypedSchema<string>`                                           | A schema for validation.                           |
+| `disableHtmlValidation` | `boolean`                                                       | Whether to disable HTML5 validation.               |
+
+<Aside>
+  All the props above can be passed as `Ref<T>` or `() => T` and the reactivity will be handled for you.
+</Aside>
+
+### Returns
+
+| Name                | Type                               | Description                                                         |
+| ------------------- | ---------------------------------- | ------------------------------------------------------------------- |
+| `descriptionProps`  | `AriaDescriptionProps`             | The description element's props.                                    |
+| `displayError`      | `() => string \| undefined`        | A getter to display the error message if touched.                   |
+| `errorMessage`      | `string \| undefined`              | The validation message.                                             |
+| `errorMessageProps` | `AriaErrorMessageProps`            | The error message element props.                                    |
+| `errors`            | `string[]`                         | The field's error messages.                                         |
+| `fieldValue`        | `string \| undefined`              | The current value of the field.                                     |
+| `inputProps`        | Complex Binding                    | The base element props.                                             |
+| `isDirty`           | `boolean`                          | Whether the field value has changed.                                |
+| `isTouched`         | `boolean`                          | Whether the field is touched.                                       |
+| `isValid`           | `boolean`                          | Whether the field has error messages.                               |
+| `labelProps`        | `AriaLabelProps`                   | The label element props.                                            |
+| `setErrors`         | `(msg: Arrayable<string>) => void` | Sets the error messages for the field and sets the `isValid` state. |
+| `setTouched`        | `(touched: boolean) => void`       | Sets the `isTouched` state.                                         |
+| `setValue`          | `(value: number) => void`          | Sets the field's current value.                                     |
