@@ -8,6 +8,7 @@ sidebar:
 import { Tabs, TabItem, Aside } from '@astrojs/starlight/components';
 import AnatomyCanvas from '@components/AnatomyCanvas.vue';
 import AnatomyTextField from '@components/AnatomyTextField.vue';
+import MdxRepl from '@components/MdxRepl.vue';
 
 Text fields are used to allow users to input plain text into a form.
 
@@ -28,11 +29,13 @@ Text fields are implemented with the `input` element for single line of text or 
 
 ## Building a Text Field Component
 
+<MdxRepl client:load>
+
 ```vue
 <script setup lang="ts">
-import { TextFieldProps, useTextField } from '@formwerk/core';
+import { useTextField } from '@formwerk/core';
 
-const props = defineProps<TextFieldProps>();
+const props = defineProps();
 
 const {
   inputProps,
@@ -57,6 +60,8 @@ const {
   </div>
 </template>
 ```
+
+</MdxRepl>
 
 <Aside type="caution">
 
