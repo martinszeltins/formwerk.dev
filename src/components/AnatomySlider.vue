@@ -12,7 +12,7 @@
 
     <AnatomyPart text="Group" class="w-full">
       <div
-        class="relative flex w-full items-center rounded border border-dashed border-zinc-500 px-3 py-4"
+        class="relative flex w-full items-center rounded border border-dashed border-zinc-600 px-3 py-4"
       >
         <AnatomyPart
           text="Track"

@@ -14,7 +14,7 @@
           <AnatomyPart
             text="Increment button"
             class="flex items-center justify-center py-0.5"
-            position="right"
+            position="top"
           >
             <PhCaretUp />
           </AnatomyPart>
@@ -22,7 +22,7 @@
           <AnatomyPart
             text="Decrement button"
             class="flex items-center justify-center border-t border-zinc-600 py-0.5"
-            position="right"
+            position="bottom"
           >
             <PhCaretDown />
           </AnatomyPart>
@@ -30,7 +30,11 @@
       </div>
     </AnatomyPart>
 
-    <AnatomyPart text="Description or Error Message" position="right">
+    <AnatomyPart
+      text="Description or Error Message"
+      position="bottom"
+      :distance="20"
+    >
       <span class="mt-1 text-sm">Help text</span>
     </AnatomyPart>
   </div>

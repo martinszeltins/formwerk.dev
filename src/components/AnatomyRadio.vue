@@ -12,17 +12,17 @@
 
       <div class="ml-4 mt-4 flex flex-col pr-8">
         <div class="flex items-center gap-1">
-          <PhRadioButton />
+          <PhRadioButton class="size-6 text-zinc-500" />
           Tea
         </div>
         <AnatomyPart text="Input" :distance="30" position="left">
           <div class="flex items-center gap-1">
-            <PhRadioButtonFill />
+            <PhRadioButtonFill class="size-6 text-zinc-500" />
             Coffee
           </div>
         </AnatomyPart>
         <div class="flex items-center gap-1">
-          <PhRadioButton />
+          <PhRadioButton class="size-6 text-zinc-500" />
           <AnatomyPart text="Radio Label" :distance="20" position="bottom">
             Water
           </AnatomyPart>
