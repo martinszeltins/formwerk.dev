@@ -3,9 +3,27 @@ import starlight from '@astrojs/starlight';
 import tailwind from '@astrojs/tailwind';
 
 import vue from '@astrojs/vue';
+import Icons from 'unplugin-icons/vite';
+import IconsResolver from 'unplugin-icons/resolver';
+import Components from 'unplugin-vue-components/vite';
 
 // https://astro.build/config
 export default defineConfig({
+  vite: {
+    plugins: [
+      Components({
+        resolvers: [
+          IconsResolver({
+            enabledCollections: ['ph'],
+          }),
+        ],
+      }),
+      Icons({
+        compiler: 'vue3',
+        defaultClass: 'fill-current flex-shrink-0',
+      }),
+    ],
+  },
   integrations: [
     starlight({
       title: 'My Docs',

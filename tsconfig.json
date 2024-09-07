@@ -5,6 +5,7 @@
     "paths": {
       "@components/*": ["src/components/*"]
     },
-    "jsx": "preserve"
+    "jsx": "preserve",
+    "types": ["unplugin-icons/types/vue"]
   }
 }
