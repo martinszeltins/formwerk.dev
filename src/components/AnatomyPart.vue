@@ -5,7 +5,7 @@
 
   <div
     class="AnatomyPopover__popover text-sm font-medium italic text-zinc-400"
-    :class="[`is-${direction}`]"
+    :class="[`is-${direction}`, mirrored ? 'is-mirrored' : '']"
   >
     {{ text }}
   </div>
@@ -14,8 +14,14 @@
 <script setup lang="ts">
 import { useId } from 'vue';
 
-const { text, position = 'top' } = defineProps<{
+const {
+  text,
+  position = 'top',
+  distance = 40,
+} = defineProps<{
   text: string;
+  distance?: number;
+  mirrored?: boolean;
   position?:
     | 'center'
     | 'top'
@@ -34,6 +40,7 @@ const { text, position = 'top' } = defineProps<{
 
 const id = `--${useId()}`;
 const direction = position.split(' ')[0];
+const length = `${distance}px`;
 
 defineOptions({
   inheritAttrs: false,
@@ -56,7 +63,7 @@ defineOptions({
     content: '';
     @apply ml-1 block h-px bg-zinc-500;
     order: 1;
-    width: 40px;
+    width: v-bind(length);
   }
 
   &::before {
@@ -71,7 +78,7 @@ defineOptions({
 
     &::after {
       width: 1px;
-      height: 40px;
+      height: v-bind(length);
       @apply ml-0;
     }
   }
@@ -81,7 +88,7 @@ defineOptions({
 
     &::after {
       width: 1px;
-      height: 40px;
+      height: v-bind(length);
       @apply ml-0;
     }
   }
@@ -100,6 +107,10 @@ defineOptions({
 
   &.is-center {
     @apply -translate-y-1/2;
+
+    &.is-mirrored {
+      @apply translate-y-1/2 flex-col-reverse;
+    }
   }
 }
 </style>

@@ -6,6 +6,8 @@ sidebar:
 ---
 
 import { Tabs, TabItem, Aside } from '@astrojs/starlight/components';
+import AnatomyCanvas from '@components/AnatomyCanvas.vue';
+import AnatomyCheckboxes from '@components/AnatomyCheckboxes.vue';
 
 Checkboxes allow the user to toggle the field state on (ticked/checked) or off (unchecked). Checkboxes are mainly used in a couple of scenarios:
 
@@ -36,7 +38,9 @@ Currently, the following features are implemented:
 
 ## Anatomy
 
-// TODO: Add anatomy image
+<AnatomyCanvas>
+  <AnatomyCheckboxes />
+</AnatomyCanvas>
 
 ## API
 

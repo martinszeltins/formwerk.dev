@@ -5,6 +5,9 @@ sidebar:
   order: 4
 ---
 
+import AnatomyCanvas from '@components/AnatomyCanvas.vue';
+import AnatomySwitch from '@components/AnatomySwitch.vue';
+
 > A switch is an input widget that allows users to choose one of two values: on or off. Switches are similar to checkboxes and toggle buttons, which can also serve as binary inputs. One difference, however, is that switches can only be used for binary input.
 
 This composable provides the behavior, state and accessibility implementation for switch components.
@@ -16,6 +19,12 @@ The switch field has enough unique behaviors and use-cases that justifies it hav
 - You can use `input[type="checkbox"]` element as a base or any custom element.
 - Labeling and descriptions are automatically linked to switch and label elements.
 - Keyboard support for <kbd>Space</kbd> key to toggle the current value.
+
+## Anatomy
+
+<AnatomyCanvas>
+  <AnatomySwitch />
+</AnatomyCanvas>
 
 ## Usage
 
@@ -33,14 +42,14 @@ const { inputProps, labelProps, isPressed, handleClick } = useSwitch(props);
 <template>
   <div class="flex items-center">
     <div
-      class="flex items-center p-1 w-9 rounded-full transition-colors duration-200 cursor-pointer focus-within:ring-2 ring-blue-500 ring-offset-2"
+      class="flex w-9 cursor-pointer items-center rounded-full p-1 ring-blue-500 ring-offset-2 transition-colors duration-200 focus-within:ring-2"
       :class="{ 'bg-blue-500': isPressed, 'bg-gray-400': !isPressed }"
       @click="handleClick"
     >
       <input v-bind="inputProps" type="checkbox" class="sr-only" />
 
       <div
-        class="rounded-full w-3 h-3 flex-shrink-0 bg-white origin-center transition-transform duration-200"
+        class="h-3 w-3 flex-shrink-0 origin-center rounded-full bg-white transition-transform duration-200"
         :class="{ 'translate-x-4': isPressed }"
       ></div>
     </div>
@@ -65,11 +74,11 @@ const { switchProps, labelProps, isPressed } = useSwitch(props);
   <div class="flex items-center">
     <div
       v-bind="switchProps"
-      class="flex items-center p-1 w-9 rounded-full transition-colors duration-200 cursor-pointer focus-visible:outline-none focus:ring-2 ring-blue-500 ring-offset-2"
+      class="flex w-9 cursor-pointer items-center rounded-full p-1 ring-blue-500 ring-offset-2 transition-colors duration-200 focus:ring-2 focus-visible:outline-none"
       :class="{ 'bg-blue-500': isPressed, 'bg-gray-400': !isPressed }"
     >
       <div
-        class="rounded-full w-3 h-3 flex-shrink-0 bg-white origin-center transition-transform duration-200"
+        class="h-3 w-3 flex-shrink-0 origin-center rounded-full bg-white transition-transform duration-200"
         :class="{ 'translate-x-4': isPressed }"
       ></div>
     </div>

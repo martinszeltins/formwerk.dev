@@ -5,6 +5,9 @@ sidebar:
   order: 8
 ---
 
+import AnatomySlider from '@components/AnatomySlider.vue';
+import AnatomyCanvas from '@components/AnatomyCanvas.vue';
+
 > A slider is an input where the user selects a value from within a given range. Sliders typically have a slider thumb that can be moved along a bar, rail, or track to change the value of the slider.
 
 This composable provides the behavior, state and accessibility implementation for slider components.
@@ -29,6 +32,12 @@ This composable provides the behavior, state and accessibility implementation fo
     value by a large step respectively.
   - Keys adapt to the direction (RTL or LTR) of the slider and the orientation of the slider (horizontal or vertical).
 
+## Anatomy
+
+<AnatomyCanvas>
+  <AnatomySlider />
+</AnatomyCanvas>
+
 ## Usage
 
 ### Thumb Component
@@ -37,11 +46,11 @@ This composable provides the behavior, state and accessibility implementation fo
 <template>
   <div
     v-bind="thumbProps"
-    class="rounded-full bg-gray-400 focus-visible:bg-blue-500 w-4 h-4 flex-shrink-0"
+    class="h-4 w-4 flex-shrink-0 rounded-full bg-gray-400 focus-visible:bg-blue-500"
   >
     <div
       v-if="isDragging"
-      class="absolute -top-7 bg-blue-400 px-1.5 py-1 rounded text-xs text-white font-medium left-1/2 -translate-x-1/2"
+      class="absolute -top-7 left-1/2 -translate-x-1/2 rounded bg-blue-400 px-1.5 py-1 text-xs font-medium text-white"
     >
       {{ currentValue }}
     </div>
@@ -87,7 +96,7 @@ const { trackProps, groupProps, labelProps } = useSlider(props);
   width: 150px;
 
   .track {
-    @apply w-full py-2 flex items-center;
+    @apply flex w-full items-center py-2;
     &::before {
       content: '';
       @apply w-full bg-blue-600;
@@ -100,7 +109,7 @@ const { trackProps, groupProps, labelProps } = useSlider(props);
     width: unset;
 
     .track {
-      @apply h-full w-8  flex-col;
+      @apply h-full w-8 flex-col;
 
       &::before {
         @apply h-full bg-blue-600;
@@ -144,7 +153,7 @@ const { groupProps, trackProps, labelProps } = useSlider(props);
   width: 150px;
 
   .track {
-    @apply w-full py-2 flex items-center;
+    @apply flex w-full items-center py-2;
     &::before {
       content: '';
       @apply w-full bg-blue-600;
@@ -157,7 +166,7 @@ const { groupProps, trackProps, labelProps } = useSlider(props);
     width: unset;
 
     .track {
-      @apply h-full w-8  flex-col;
+      @apply h-full w-8 flex-col;
 
       &::before {
         @apply h-full bg-blue-600;
