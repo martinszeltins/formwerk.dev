@@ -5,6 +5,9 @@ sidebar:
   order: 2
 ---
 
+import AnatomyCanvas from '@components/AnatomyCanvas.vue';
+import AnatomySearchField from '@components/AnatomySearchField.vue';
+
 # useSearchField
 
 > input elements of type search are text fields designed for the user to enter search queries into. These are functionally identical to text inputs, but may be styled differently by the user agent.
@@ -17,6 +20,12 @@ A couple of behaviors set this apart from regular text fields:
 - They usually are used without a parent `form` elements and sometimes without a `submit` button. So they can be submitted with `Enter` keyboard key on their own.
 
 Some of these behaviors can be checked [here](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/search#differences_between_search_and_text_types).
+
+## Anatomy
+
+<AnatomyCanvas>
+  <AnatomySearchField />
+</AnatomyCanvas>
 
 ## Features
 
@@ -58,7 +67,7 @@ const {
     <button
       v-show="fieldValue"
       v-bind="clearBtnProps"
-      class="absolute right-4 bottom-3"
+      class="absolute bottom-3 right-4"
     >
       ❌
     </button>
@@ -71,11 +80,11 @@ const {
   margin-bottom: calc(1em * 1.5);
 
   label {
-    @apply block mb-1 w-full;
+    @apply mb-1 block w-full;
   }
 
   input {
-    @apply text-gray-800 rounded-md border-2 border-transparent py-3 px-4 w-full bg-gray-100 focus:outline-none transition-colors duration-200 focus:border-blue-500 appearance-none;
+    @apply w-full appearance-none rounded-md border-2 border-transparent bg-gray-100 px-4 py-3 text-gray-800 transition-colors duration-200 focus:border-blue-500 focus:outline-none;
 
     &::-webkit-search-cancel-button,
     &::-webkit-search-decoration {

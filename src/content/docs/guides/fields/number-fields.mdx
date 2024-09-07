@@ -6,6 +6,8 @@ sidebar:
 ---
 
 import { Tabs, TabItem, Aside } from '@astrojs/starlight/components';
+import AnatomyCanvas from '@components/AnatomyCanvas.vue';
+import AnatomyNumberField from '@components/AnatomyNumberField.vue';
 
 Number fields are a common field in many forms. They include built-in validation to reject non-numerical input. Additionally, the browser may provide stepper arrows to let the user increase and decrease the value with a configurable step amount.
 
@@ -33,7 +35,9 @@ Formwerk tries to address all these issues and more by utilizing the `Intl.Numbe
 
 ## Anatomy
 
-// TODO: Add anatomy image
+<AnatomyCanvas>
+  <AnatomyNumberField />
+</AnatomyCanvas>
 
 ## API
 

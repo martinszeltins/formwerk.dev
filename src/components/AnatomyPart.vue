@@ -17,6 +17,7 @@ import { useId } from 'vue';
 const { text, position = 'top' } = defineProps<{
   text: string;
   position?:
+    | 'center'
     | 'top'
     | 'bottom'
     | 'left'
@@ -64,7 +65,8 @@ defineOptions({
     order: 2;
   }
 
-  &.is-top {
+  &.is-top,
+  &.is-center {
     @apply mb-1 flex-col;
 
     &::after {
@@ -94,6 +96,10 @@ defineOptions({
 
   &.is-left {
     @apply mr-1;
+  }
+
+  &.is-center {
+    @apply -translate-y-1/2;
   }
 }
 </style>

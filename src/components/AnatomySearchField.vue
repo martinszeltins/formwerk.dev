@@ -6,9 +6,19 @@
 
     <AnatomyPart text="Input" position="center" class="w-full">
       <div
-        class="w-full rounded-md border border-zinc-600 bg-zinc-900 px-4 py-1.5 font-medium text-zinc-400"
+        class="flex w-full items-center gap-2 rounded-md border border-zinc-600 bg-zinc-900 px-4 py-1.5 font-medium text-zinc-400"
       >
+        <PhMagnifyingGlass />
+
         Value
+
+        <AnatomyPart
+          text="Clear button"
+          class="ml-auto flex items-center"
+          position="right"
+        >
+          <PhX />
+        </AnatomyPart>
       </div>
     </AnatomyPart>
 
@@ -20,4 +30,6 @@
 
 <script setup lang="ts">
 import AnatomyPart from './AnatomyPart.vue';
+import PhMagnifyingGlass from '~icons/ph/magnifying-glass';
+import PhX from '~icons/ph/x';
 </script>
