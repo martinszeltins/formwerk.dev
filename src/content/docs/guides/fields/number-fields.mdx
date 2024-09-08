@@ -8,6 +8,7 @@ sidebar:
 import { Tabs, TabItem, Aside } from '@astrojs/starlight/components';
 import AnatomyCanvas from '@components/AnatomyCanvas.vue';
 import AnatomyNumberField from '@components/AnatomyNumberField.vue';
+import MdxRepl from '@components/MdxRepl.vue';
 
 Number fields are a common field in many forms. They include built-in validation to reject non-numerical input. Additionally, the browser may provide stepper arrows to let the user increase and decrease the value with a configurable step amount.
 
@@ -68,22 +69,26 @@ You can start by importing the `useNumberField` composable and using it in your 
 
 The `useCheckbox` composable returns binding objects for the elements shown in the anatomy, you will use `v-bind` to bind them to the DOM elements.
 
+<MdxRepl client:load>
+
+<div slot="NumberField.vue">
 ```vue
 <script setup lang="ts">
-import { NumberFieldProps, useNumberField } from '@formwerk/core';
+import { type NumberFieldProps, useNumberField } from '@formwerk/core';
 
 const props = defineProps<NumberFieldProps>();
 
 const {
-  inputProps,
-  labelProps,
-  errorMessage,
-  descriptionProps,
-  errorMessageProps,
-  incrementButtonProps,
-  decrementButtonProps,
-  isValid,
+inputProps,
+labelProps,
+errorMessage,
+descriptionProps,
+errorMessageProps,
+incrementButtonProps,
+decrementButtonProps,
+isValid,
 } = useNumberField(props);
+
 </script>
 
 <template>
@@ -100,9 +105,25 @@ const {
     <div v-if="!isValid" v-bind="errorMessageProps">
       {{ errorMessage }}
     </div>
+
   </div>
 </template>
 ```
+</div>
+
+<div slot="App.vue">
+```vue
+<script setup lang="ts">
+import NumberField from './NumberField.vue';
+</script>
+
+<template>
+  <NumberField label="Number Field" />
+</template>
+```
+</div>
+
+</MdxRepl>
 
 Notice that we imported the `NumberFieldProps` in the previous example. This is recommended to use as your component prop types.
 
