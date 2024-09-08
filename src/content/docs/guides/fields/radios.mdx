@@ -7,6 +7,7 @@ sidebar:
 
 import AnatomyCanvas from '@components/AnatomyCanvas.vue';
 import AnatomyRadio from '@components/AnatomyRadio.vue';
+import MdxRepl from '@components/MdxRepl.vue';
 
 > A radio group is a set of checkable buttons, known as radio buttons, where no more than one of the buttons can be checked at a time. Some implementations may initialize the set with all buttons in the unchecked state in order to force the user to check one of the buttons before moving past a certain point in the workflow.
 
@@ -75,7 +76,7 @@ Unlike checkboxes, radio components must be grouped by a radio group component. 
 
 ```vue
 <script setup lang="ts">
-import { RadioGroupProps, useRadioGroup } from '@formwerk/core';
+import { type RadioGroupProps, useRadioGroup } from '@formwerk/core';
 
 const props = defineProps<RadioGroupProps>();
 
@@ -120,11 +121,15 @@ Provides the behavior, state and accessibility implementation for radio items. R
 
 You can use the `useRadio` composable to build a radio component with the `input` element as a base.
 
+<MdxRepl client:load>
+
+<div slot="Radio.vue">
+
 ```vue
 <script setup lang="ts">
-import { RadioItemProps, useRadio } from '@formwerk/core';
+import { type RadioProps, useRadio } from '@formwerk/core';
 
-const props = defineProps<RadioItemProps>();
+const props = defineProps<RadioProps>();
 
 const { labelProps, inputProps } = useRadio(props);
 </script>
@@ -137,28 +142,164 @@ const { labelProps, inputProps } = useRadio(props);
 </template>
 ```
 
+</div>
+
+<div slot="RadioGroup.vue">
+
+```vue
+<script setup lang="ts">
+import { type RadioGroupProps, useRadioGroup } from '@formwerk/core';
+
+const props = defineProps<RadioGroupProps>();
+
+const {
+  groupProps,
+  labelProps,
+  descriptionProps,
+  errorMessageProps,
+  errorMessage,
+} = useRadioGroup(props);
+</script>
+
+<template>
+  <div v-bind="groupProps" class="radio-group">
+    <span v-bind="labelProps">{{ label }}</span>
+
+    <slot />
+
+    <div v-if="errorMessageProps" v-bind="errorMessageProps">
+      {{ errorMessage }}
+    </div>
+
+    <div v-else-if="description" v-bind="descriptionProps">
+      {{ description }}
+    </div>
+  </div>
+</template>
+
+<style scoped>
+.radio-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+</style>
+```
+
+</div>
+
+<div slot="App.vue">
+```vue
+<script setup lang="ts">
+import Radio from './Radio.vue';
+import RadioGroup from './RadioGroup.vue';
+</script>
+
+<template>
+  <RadioGroup label="Radio Group">
+    <Radio label="Radio 1" value="1" />
+    <Radio label="Radio 2" value="2" />
+    <Radio label="Radio 3" value="3" />
+  </RadioGroup>
+</template>
+````
+
+</div>
+
+</MdxRepl>
+
 ### With custom HTML element as a base
 
 For special styling needs, you don't have to use the `input` element. You will be using `radioProps` instead of `inputProps`.
 
+<MdxRepl client:load>
+
+<div slot="Radio.vue">
+
 ```vue
 <script setup lang="ts">
-import { RadioItemProps, useRadio } from '@formwerk/core';
+import { type RadioProps, useRadio } from '@formwerk/core';
 
-const props = defineProps<RadioItemProps>();
+const props = defineProps<RadioProps>();
 
-const { labelProps, radioProps, isChecked } = useRadio(props);
+const { labelProps, inputProps, isChecked } = useRadio(props);
 </script>
 
 <template>
   <div>
-    <span v-bind="radioProps">
+    <span v-bind="inputProps">
       {{ isChecked ? '⏺' : '◯' }}
     </span>
     <span v-bind="labelProps">{{ label }}</span>
   </div>
 </template>
 ```
+
+</div>
+
+<div slot="RadioGroup.vue">
+
+```vue
+<script setup lang="ts">
+import { type RadioGroupProps, useRadioGroup } from '@formwerk/core';
+
+const props = defineProps<RadioGroupProps>();
+
+const {
+  groupProps,
+  labelProps,
+  descriptionProps,
+  errorMessageProps,
+  errorMessage,
+} = useRadioGroup(props);
+</script>
+
+<template>
+  <div v-bind="groupProps" class="radio-group">
+    <span v-bind="labelProps">{{ label }}</span>
+
+    <slot />
+
+    <div v-if="errorMessageProps" v-bind="errorMessageProps">
+      {{ errorMessage }}
+    </div>
+
+    <div v-else-if="description" v-bind="descriptionProps">
+      {{ description }}
+    </div>
+  </div>
+</template>
+
+<style scoped>
+.radio-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+</style>
+```
+
+</div>
+
+<div slot="App.vue">
+```vue
+<script setup lang="ts">
+import Radio from './Radio.vue';
+import RadioGroup from './RadioGroup.vue';
+</script>
+
+<template>
+  <RadioGroup label="Radio Group">
+    <Radio label="Radio 1" value="1" />
+    <Radio label="Radio 2" value="2" />
+    <Radio label="Radio 3" value="3" />
+  </RadioGroup>
+</template>
+````
+
+</div>
+
+</MdxRepl>
 
 ## Validation
 
