@@ -1,18 +1,12 @@
 import starlightPlugin from '@astrojs/starlight-tailwind';
 import colors from 'tailwindcss/colors';
 
-const chateauGreen = {
-  50: '#ecfdf3',
-  100: '#d0fbdf',
-  200: '#a5f5c5',
-  300: '#6ce9a7',
-  400: '#31d683',
-  500: '#0dbc6a',
-  600: '#029754',
-  700: '#027a47',
-  800: '#04613a',
-  900: '#054f32',
-  950: '#012d1c',
+// Generated color palettes
+const accent = {
+  200: '#8fdcba',
+  600: '#00543b',
+  900: '#003d2a',
+  950: '#002c1d',
 };
 
 /** @type {import('tailwindcss').Config} */
@@ -34,7 +28,7 @@ export default {
           900: '#2a3735',
           950: '#121a19',
         },
-        accent: chateauGreen,
+        accent,
         gray: colors.zinc,
       },
     },

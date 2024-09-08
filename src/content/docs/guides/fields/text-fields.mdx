@@ -5,6 +5,8 @@ sidebar:
   order: 1
 ---
 
+<script src="https://cdn.jsdelivr.net/npm/@live-codes/browser-compilers@0.15.1/dist/vue-compiler-sfc/vue-compiler-sfc.js"></script>
+
 import { Tabs, TabItem, Aside } from '@astrojs/starlight/components';
 import AnatomyCanvas from '@components/AnatomyCanvas.vue';
 import AnatomyTextField from '@components/AnatomyTextField.vue';
@@ -31,19 +33,21 @@ Text fields are implemented with the `input` element for single line of text or 
 
 <MdxRepl client:load>
 
+<div slot="TextField.vue">
 ```vue
 <script setup lang="ts">
-import { useTextField } from '@formwerk/core';
+import { type TextFieldProps, useTextField } from '@formwerk/core';
 
-const props = defineProps();
+const props = defineProps<TextFieldProps>();
 
 const {
-  inputProps,
-  labelProps,
-  errorMessage,
-  errorMessageProps,
-  descriptionProps,
+inputProps,
+labelProps,
+errorMessage,
+errorMessageProps,
+descriptionProps,
 } = useTextField(props);
+
 </script>
 
 <template>
@@ -57,9 +61,23 @@ const {
     <div v-else-if="description" v-bind="descriptionProps">
       {{ description }}
     </div>
+
   </div>
 </template>
 ```
+</div>
+
+<div slot="App.vue">
+```vue
+<script setup lang="ts">
+import TextField from './TextField.vue';
+</script>
+
+<template>
+  <TextField label="Text Field" />
+</template>
+```
+</div>
 
 </MdxRepl>
 
@@ -79,19 +97,23 @@ The other types have their own composables, check out the following guides:
 
 Instead of using a `input[type="text"]` element, you can switch to using a `textarea` element as a base element instead.
 
+<MdxRepl client:load>
+
+<div slot="TextAreaField.vue">
 ```vue
 <script setup lang="ts">
-import { TextFieldProps, useTextField } from '@formwerk/core';
+import { type TextFieldProps, useTextField } from '@formwerk/core';
 
 const props = defineProps<TextFieldProps>();
 
 const {
-  inputProps,
-  labelProps,
-  errorMessage,
-  errorMessageProps,
-  descriptionProps,
+inputProps,
+labelProps,
+errorMessage,
+errorMessageProps,
+descriptionProps,
 } = useTextField(props);
+
 </script>
 
 <template>
@@ -105,9 +127,24 @@ const {
     <div v-else-if="description" v-bind="descriptionProps">
       {{ description }}
     </div>
+
   </div>
 </template>
 ```
+</div>
+
+<div slot="App.vue">
+```vue
+<script setup lang="ts">
+import TextAreaField from './TextAreaField.vue';
+</script>
+
+<template>
+  <TextAreaField label="Text Area" />
+</template>
+```
+</div>
+</MdxRepl>
 
 ## Validation
 

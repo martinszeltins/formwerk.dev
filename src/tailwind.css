@@ -1,3 +1,9 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@screen 2xl {
+  :root {
+    --sl-content-width: 50rem;
+  }
+}

@@ -1,5 +1,6 @@
 <template>
   <div
+    ref="replContainer"
     class="not-content mt-8 flex flex-col space-y-0 overflow-hidden rounded-md"
   >
     <div class="flex items-center">
@@ -49,17 +50,15 @@ import {
   computed,
   defineAsyncComponent,
   defineComponent,
-  Fragment,
-  h,
   onMounted,
   ref,
   useSlots,
   version,
   type Component,
 } from 'vue';
-import { useVueImportMap } from './Repl/importMap';
+import { rewriteTypeImports, useVueImportMap } from './Repl/importMap';
 import { merge } from 'lodash-es';
-import { useStore } from './Repl/store';
+import { useStore, type SFCOptions } from './Repl/store';
 import Types from '@formwerk/core/dist/core.d.ts?raw';
 
 const Repl = defineAsyncComponent(() => import('./Repl.vue'));
@@ -70,7 +69,7 @@ const props = defineProps<{
   customCode?: string;
 }>();
 
-const contentEl = ref<HTMLDivElement>();
+const replContainer = ref<HTMLElement>();
 const replRef = ref<InstanceType<typeof Repl>>();
 
 // use a specific version of Vue
@@ -79,7 +78,6 @@ const { importMap, vueVersion } = useVueImportMap({
 });
 
 const store = useStore({
-  typescriptVersion: ref('latest'),
   builtinImportMap: computed(() =>
     merge(importMap.value, {
       imports: {
@@ -91,6 +89,27 @@ const store = useStore({
   ),
   vueVersion,
 });
+
+const staticFsFiles: Record<string, string> = {
+  'src/formwerk-core-types.d.ts': Types,
+};
+
+store.sfcOptions = merge(store.sfcOptions || {}, {
+  script: {
+    inlineTemplate: import.meta.env.PROD,
+    fs: {
+      fileExists: (filename) => {
+        return filename in staticFsFiles;
+      },
+      readFile: (filename) => {
+        return staticFsFiles[filename];
+      },
+      realpath: (filename) => {
+        return filename;
+      },
+    },
+  },
+} as SFCOptions);
 
 const activeFile = ref('App.vue');
 const slots = useSlots();
@@ -109,16 +128,21 @@ const files = computed(() => {
 });
 
 onMounted(() => {
+  if (!replContainer.value) {
+    return;
+  }
+
   const contents: Record<string, string> = {};
   for (const file in files.value) {
-    const fileEl = document.querySelector(`[data-file-name="${file}"]`);
+    const fileEl = replContainer.value.querySelector(
+      `[data-file-name="${file}"]`,
+    );
     if (fileEl) {
-      contents[file] =
-        fileEl.textContent ?? '<template>Failed to load file</template>';
+      const content = rewriteTypeImports(fileEl.textContent || '');
+      contents[file] = content ?? '<template>Failed to load file</template>';
     }
   }
 
   store.setFiles(contents);
-  console.log(contents);
 });
 </script>
