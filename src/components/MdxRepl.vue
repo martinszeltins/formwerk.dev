@@ -1,7 +1,27 @@
 <template>
-  <div class="mt-8 flex flex-col space-y-0 overflow-hidden rounded-md">
-    <div ref="contentEl">
-      <slot />
+  <div
+    class="not-content mt-8 flex flex-col space-y-0 overflow-hidden rounded-md"
+  >
+    <div class="flex items-center">
+      <button
+        v-for="(file, key) in files"
+        :key="key"
+        type="button"
+        class="cursor-pointer rounded-t-md px-3 py-1.5 text-white transition-colors duration-200"
+        :class="activeFile === key ? 'bg-zinc-600' : 'bg-zinc-950'"
+        @click="activeFile = key"
+      >
+        {{ key }}
+      </button>
+    </div>
+
+    <div
+      v-show="activeFile === key"
+      v-for="(file, key) in files"
+      :data-file-name="key"
+      :key="key"
+    >
+      <component :is="file" />
     </div>
 
     <Repl
@@ -25,10 +45,22 @@
 </template>
 
 <script setup lang="ts">
-import { computed, defineAsyncComponent, onMounted, ref, version } from 'vue';
+import {
+  computed,
+  defineAsyncComponent,
+  defineComponent,
+  Fragment,
+  h,
+  onMounted,
+  ref,
+  useSlots,
+  version,
+  type Component,
+} from 'vue';
 import { useVueImportMap } from './Repl/importMap';
 import { merge } from 'lodash-es';
 import { useStore } from './Repl/store';
+import Types from '@formwerk/core/dist/core.d.ts?raw';
 
 const Repl = defineAsyncComponent(() => import('./Repl.vue'));
 
@@ -46,11 +78,8 @@ const { importMap, vueVersion } = useVueImportMap({
   vueVersion: version,
 });
 
-const files = {
-  'App.vue': contentEl.value?.innerText || `<template>Hello</template>`,
-};
-
 const store = useStore({
+  typescriptVersion: ref('latest'),
   builtinImportMap: computed(() =>
     merge(importMap.value, {
       imports: {
@@ -63,13 +92,33 @@ const store = useStore({
   vueVersion,
 });
 
-store.setFiles(files, 'App.vue');
+const activeFile = ref('App.vue');
+const slots = useSlots();
+
+store.setFiles({
+  'App.vue': `<template>Loading...</template>`,
+});
+
+const files = computed(() => {
+  const records: Record<string, Component> = {};
+  for (const slot in slots) {
+    records[`${slot}`] = defineComponent(() => () => slots[slot]?.());
+  }
+
+  return records;
+});
 
 onMounted(() => {
-  const files = {
-    'App.vue': contentEl.value?.innerText || `<template>WTF</template>`,
-  };
+  const contents: Record<string, string> = {};
+  for (const file in files.value) {
+    const fileEl = document.querySelector(`[data-file-name="${file}"]`);
+    if (fileEl) {
+      contents[file] =
+        fileEl.textContent ?? '<template>Failed to load file</template>';
+    }
+  }
 
-  store.setFiles(files);
+  store.setFiles(contents);
+  console.log(contents);
 });
 </script>

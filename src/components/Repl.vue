@@ -13,7 +13,7 @@ const props = withDefaults(defineProps<Props>(), {
   showCompileOutput: true,
   showImportMap: true,
   showTsConfig: true,
-  clearConsole: true,
+  clearConsole: false,
   layoutReverse: false,
   ssr: false,
   layout: 'horizontal',
