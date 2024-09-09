@@ -5,9 +5,14 @@ sidebar:
   order: 3
 ---
 
+import { Aside } from '@astrojs/starlight/components';
 import AnatomyCanvas from '@components/AnatomyCanvas.vue';
 import AnatomyRadio from '@components/AnatomyRadio.vue';
 import MdxRepl from '@components/MdxRepl.vue';
+
+import RadioGroupPartial from './_partials/_radioGroup.mdx';
+import RadioInputPartial from './_partials/_radioInput.mdx';
+import RadioItemPartial from './_partials/_radioItem.mdx';
 
 > A radio group is a set of checkable buttons, known as radio buttons, where no more than one of the buttons can be checked at a time. Some implementations may initialize the set with all buttons in the unchecked state in order to force the user to check one of the buttons before moving past a certain point in the workflow.
 
@@ -15,13 +20,15 @@ Radios in HTML do not have a "group" concept, but they get grouped implicitly by
 
 This isn't the case in most UI libraries, as they are grouped by the model name they mutate. As such, a "group" concept is introduced in this library to provide a consistent API for radio groups regardless if they are bound to the same model or if they have the same name or not.
 
+This means you need to use both the `useRadioGroup` and `useRadio` composables in order to build radio components.
+
 [Aria Pattern](https://www.w3.org/WAI/ARIA/apg/patterns/radio/)
 
 ## Features
 
 You can build radio components using either the native HTML `input[type="radio"]` elements or custom HTML elements. We provide the behavior, state and accessibility implementation for both cases with the same API and features.
 
-Currently, the following features are implemented:
+The following features are implemented:
 
 - `v-model` support for radio groups.
 - Support for either `input[type="radio"]` or custom HTML elements as a base element for the radio component.
@@ -30,13 +37,213 @@ Currently, the following features are implemented:
   - Focus management with <kbd>ArrowLeft</kbd> and <kbd>ArrowRight</kbd> keys with RTL support.
   - Focus groups with Tab navigation.
   - Support for orientation with `horizontal` and `vertical` values.
-- Form management and validation with Typed Schemas or native HTML5 validation.
+- Form management, data collection and validation with Typed Schemas or native HTML5 validation.
 
 ## Anatomy
 
 <AnatomyCanvas>
   <AnatomyRadio />
 </AnatomyCanvas>
+
+## Building a Radio Group Component
+
+The `useRadioGroup` provides the behavior, state and accessibility implementation for group components.
+
+Unlike checkboxes, radio components **MUST** be grouped by a radio group component.
+
+Which is why we will start by building a radio group component.
+
+<RadioGroupPartial />
+
+Keep in mind that the `RadioGroup` component will be used in the following examples.
+
+## Building a Radio Component
+
+With the Radio Group component built, we can now build a radio input component or rather the radio item component. You will be using the `useRadio` composable to build the radio component.
+
+You can build radio components using either the native HTML `input[type="radio"]` elements or custom HTML elements. Doesn't matter which one you choose, both have the same exact API and formwerk does the work needed for each case behind the scenes.
+
+The following snippets shows you the starting point for building a radio component with the `useRadio` composable.
+
+```ts
+import { type RadioProps, useRadio } from '@formwerk/core';
+
+const props = defineProps<RadioProps>();
+
+const { labelProps, inputProps } = useRadio(props);
+```
+
+We also provide the `RadioProps` type for you to use as your component props. You are not required to use it but it is recommended to make use of the full feature set of the `useRadio` composable and by extension, your component.
+
+With the basics out of the way, let's build a radio component with two common variations.
+
+### With `input` element as a base
+
+You can use the `useRadio` composable to build a radio component with the `input` element as a base.
+
+<MdxRepl client:load>
+
+<div slot="Radio.vue">
+
+<RadioInputPartial />
+
+</div>
+
+<div slot="!RadioGroup.vue">
+  <RadioGroupPartial />
+</div>
+
+<div slot="App.vue">
+```vue
+<script setup lang="ts">
+import Radio from './Radio.vue';
+import RadioGroup from './RadioGroup.vue';
+</script>
+
+<template>
+  <RadioGroup label="Radio Group">
+    <Radio label="Radio 1" value="1" />
+    <Radio label="Radio 2" value="2" />
+    <Radio label="Radio 3" value="3" />
+  </RadioGroup>
+</template>
+````
+
+</div>
+
+</MdxRepl>
+
+The last example is limited to the styling capabilities of the native `input` element. A common solution is to visually hide the native input element and add custom elements in its place to have the best of both worlds.
+
+### With custom HTML element as a base
+
+For unlimited styling needs, you don't have to use the `input` element. With the same API you can use custom HTML elements as a binding target for `inputProps` object.
+
+In the following example we are using a `span` element as a base element for the radio. Try keyboard navigation, clicking, focusing and other interactions to see how it behaves.
+
+<MdxRepl client:load>
+
+<div slot="Radio.vue">
+  <RadioItemPartial />
+</div>
+
+<div slot="!RadioGroup.vue">
+  <RadioGroupPartial />
+</div>
+
+<div slot="App.vue">
+```vue
+<script setup lang="ts">
+import Radio from './Radio.vue';
+import RadioGroup from './RadioGroup.vue';
+</script>
+
+<template>
+  <RadioGroup label="Radio Group">
+    <Radio label="Radio 1" value="1" />
+    <Radio label="Radio 2" value="2" />
+    <Radio label="Radio 3" value="3" />
+  </RadioGroup>
+</template>
+````
+
+</div>
+
+</MdxRepl>
+
+## Validation
+
+Radio components support validation with native HTML5 constraints or typed schemas. However, the `useRadioGroup` is the one that accepts validation props.
+
+### HTML Constraint Validation
+
+The following properties are supported on `useRadioGroup` and `useRadio` that use the `input` element as a base. Custom elements do not support these properties.
+
+| Name       | Type      | Description                           |
+| ---------- | --------- | ------------------------------------- |
+| `required` | `boolean` | Whether the number field is required. |
+
+<MdxRepl client:load>
+
+<div slot="!Radio.vue">
+  <RadioInputPartial />
+</div>
+
+<div slot="!RadioGroup.vue">
+  <RadioGroupPartial />
+</div>
+
+<div slot="App.vue">
+
+```vue
+<script setup lang="ts">
+import Radio from './Radio.vue';
+import RadioGroup from './RadioGroup.vue';
+</script>
+
+<template>
+  <RadioGroup label="Radio Group" required>
+    <Radio label="Radio 1" value="1" />
+    <Radio label="Radio 2" value="2" />
+    <Radio label="Radio 3" value="3" />
+  </RadioGroup>
+</template>
+```
+
+</div>
+
+</MdxRepl>
+
+### Typed Schema
+
+`useRadioGroup` also supports Typed Schema validation through the `schema` prop.
+
+<Aside>
+
+Depending on the schema validation provider you are using, the API might slightly differ. Check the supported validation providers for more information. In this example we are using the `zod` schema validation provider.
+
+</Aside>
+
+Here is an example of using zod as a typed schema to validate the radio group, we will be using the radio item component from the previous examples.
+
+<MdxRepl client:load>
+
+<div slot="!RadioItem.vue">
+  <RadioItemPartial />
+</div>
+
+<div slot="!RadioGroup.vue">
+  <RadioGroupPartial />
+</div>
+
+<div slot="App.vue">
+
+```vue
+<script setup lang="ts">
+import { z } from 'zod';
+import { defineSchema } from '@formwerk/schema-zod';
+import RadioItem from './RadioItem.vue';
+import RadioGroup from './RadioGroup.vue';
+
+const schema = defineSchema(z.string().min(1, 'Please select an option'));
+</script>
+
+<template>
+  <RadioGroup label="Select a drink" :schema="schema">
+    <RadioItem label="Tea" value="🍵" />
+    <RadioItem label="Coffee" value="☕️" />
+    <RadioItem label="Milk" value="🥛" />
+  </RadioGroup>
+</template>
+```
+
+</div>
+
+</MdxRepl>
+
+## Styling
+
+## Usage
 
 ## API
 
@@ -67,242 +274,3 @@ Currently, the following features are implemented:
 | `isChecked`  | `boolean`        | If the radio is checked.         |
 | `isDisabled` | `boolean`        | If the radio is disabled.        |
 | `labelProps` | `AriaLabelProps` | The radio's label element props. |
-
-## Building a Radio Group Component
-
-The `useRadioGroup` provides the behavior, state and accessibility implementation for group components.
-
-Unlike checkboxes, radio components must be grouped by a radio group component. Which is why we will start by building a radio group component.
-
-```vue
-<script setup lang="ts">
-import { type RadioGroupProps, useRadioGroup } from '@formwerk/core';
-
-const props = defineProps<RadioGroupProps>();
-
-const {
-  radioGroupProps,
-  labelProps,
-  descriptionProps,
-  errorMessageProps,
-  errorMessage,
-} = useRadioGroup(props);
-</script>
-
-<template>
-  <div v-bind="radioGroupProps" class="radio-group">
-    <span v-bind="labelProps">{{ label }}</span>
-
-    <slot />
-
-    <div v-if="errorMessageProps" v-bind="errorMessageProps">
-      {{ errorMessage }}
-    </div>
-    <div v-else-if="description" v-bind="descriptionProps">
-      {{ description }}
-    </div>
-  </div>
-</template>
-
-<style scoped>
-.radio-group {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-</style>
-```
-
-Provides the behavior, state and accessibility implementation for radio items. Radio items can be built with or without `input` elements depending on your styling and behavior needs.
-
-## Building a Radio Component
-
-### With input element as a base
-
-You can use the `useRadio` composable to build a radio component with the `input` element as a base.
-
-<MdxRepl client:load>
-
-<div slot="Radio.vue">
-
-```vue
-<script setup lang="ts">
-import { type RadioProps, useRadio } from '@formwerk/core';
-
-const props = defineProps<RadioProps>();
-
-const { labelProps, inputProps } = useRadio(props);
-</script>
-
-<template>
-  <div>
-    <input v-bind="inputProps" />
-    <label v-bind="labelProps" class="ml-1">{{ label }}</label>
-  </div>
-</template>
-```
-
-</div>
-
-<div slot="!RadioGroup.vue">
-
-```vue
-<script setup lang="ts">
-import { type RadioGroupProps, useRadioGroup } from '@formwerk/core';
-
-const props = defineProps<RadioGroupProps>();
-
-const {
-  groupProps,
-  labelProps,
-  descriptionProps,
-  errorMessageProps,
-  errorMessage,
-} = useRadioGroup(props);
-</script>
-
-<template>
-  <div v-bind="groupProps" class="radio-group">
-    <span v-bind="labelProps">{{ label }}</span>
-
-    <slot />
-
-    <div v-if="errorMessageProps" v-bind="errorMessageProps">
-      {{ errorMessage }}
-    </div>
-
-    <div v-else-if="description" v-bind="descriptionProps">
-      {{ description }}
-    </div>
-  </div>
-</template>
-
-<style scoped>
-.radio-group {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-</style>
-```
-
-</div>
-
-<div slot="App.vue">
-```vue
-<script setup lang="ts">
-import Radio from './Radio.vue';
-import RadioGroup from './RadioGroup.vue';
-</script>
-
-<template>
-  <RadioGroup label="Radio Group">
-    <Radio label="Radio 1" value="1" />
-    <Radio label="Radio 2" value="2" />
-    <Radio label="Radio 3" value="3" />
-  </RadioGroup>
-</template>
-````
-
-</div>
-
-</MdxRepl>
-
-### With custom HTML element as a base
-
-For special styling needs, you don't have to use the `input` element. You will be using `radioProps` instead of `inputProps`.
-
-<MdxRepl client:load>
-
-<div slot="Radio.vue">
-
-```vue
-<script setup lang="ts">
-import { type RadioProps, useRadio } from '@formwerk/core';
-
-const props = defineProps<RadioProps>();
-
-const { labelProps, inputProps, isChecked } = useRadio(props);
-</script>
-
-<template>
-  <div>
-    <span v-bind="inputProps">
-      {{ isChecked ? '⏺' : '◯' }}
-    </span>
-    <span v-bind="labelProps">{{ label }}</span>
-  </div>
-</template>
-```
-
-</div>
-
-<div slot="!RadioGroup.vue">
-
-```vue
-<script setup lang="ts">
-import { type RadioGroupProps, useRadioGroup } from '@formwerk/core';
-
-const props = defineProps<RadioGroupProps>();
-
-const {
-  groupProps,
-  labelProps,
-  descriptionProps,
-  errorMessageProps,
-  errorMessage,
-} = useRadioGroup(props);
-</script>
-
-<template>
-  <div v-bind="groupProps" class="radio-group">
-    <span v-bind="labelProps">{{ label }}</span>
-
-    <slot />
-
-    <div v-if="errorMessageProps" v-bind="errorMessageProps">
-      {{ errorMessage }}
-    </div>
-
-    <div v-else-if="description" v-bind="descriptionProps">
-      {{ description }}
-    </div>
-  </div>
-</template>
-
-<style scoped>
-.radio-group {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-</style>
-```
-
-</div>
-
-<div slot="App.vue">
-```vue
-<script setup lang="ts">
-import Radio from './Radio.vue';
-import RadioGroup from './RadioGroup.vue';
-</script>
-
-<template>
-  <RadioGroup label="Radio Group">
-    <Radio label="Radio 1" value="1" />
-    <Radio label="Radio 2" value="2" />
-    <Radio label="Radio 3" value="3" />
-  </RadioGroup>
-</template>
-````
-
-</div>
-
-</MdxRepl>
-
-## Validation
-
-## Styling
-
-## Usage

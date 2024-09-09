@@ -1,0 +1,19 @@
+```vue
+<script setup lang="ts">
+import { type RadioProps, useRadio } from '@formwerk/core';
+
+const props = defineProps<RadioProps>();
+
+const { labelProps, inputProps, isChecked } = useRadio(props);
+</script>
+
+<template>
+  <div>
+    <span v-bind="inputProps">
+      {{ isChecked ? '🟢' : '⚫️' }}
+    </span>
+
+    <span v-bind="labelProps">{{ label }}</span>
+  </div>
+</template>
+```

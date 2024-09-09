@@ -1,0 +1,16 @@
+```vue
+<script setup lang="ts">
+import { type RadioProps, useRadio } from '@formwerk/core';
+
+const props = defineProps<RadioProps>();
+
+const { labelProps, inputProps } = useRadio(props);
+</script>
+
+<template>
+  <div>
+    <input v-bind="inputProps" />
+    <label v-bind="labelProps" class="ml-1">{{ label }}</label>
+  </div>
+</template>
+```

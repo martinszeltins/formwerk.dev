@@ -3,7 +3,7 @@
     ref="replContainer"
     class="not-content mt-8 flex flex-col space-y-0 overflow-hidden rounded-md"
   >
-    <div class="flex items-center">
+    <div v-if="tabs.length > 1" class="flex items-center">
       <button
         v-for="(file, key) in files"
         :key="key"
@@ -87,6 +87,9 @@ const store = useStore({
       imports: {
         vue: `https://unpkg.com/vue@${version}/dist/vue.esm-browser.prod.js`,
         '@formwerk/core': `https://unpkg.com/@formwerk/core@0.1.2/dist/core.esm.js`,
+        zod: 'https://unpkg.com/zod@3.21.4/lib/index.mjs',
+        '@formwerk/schema-zod':
+          'https://unpkg.com/@formwerk/schema-zod@0.1.2/dist/schema-zod.esm.js',
         // '@vueuse/core': 'https://unpkg.com/@vueuse/core?module',
       },
     }),
@@ -119,7 +122,7 @@ store.setFiles({
   'App.vue': `<template>Loading...</template>`,
 });
 
-const { files, activeFile } = useSlotFiles();
+const { files, activeFile, tabs } = useSlotFiles();
 
 onMounted(async () => {
   if (!replContainer.value) {
@@ -131,7 +134,6 @@ onMounted(async () => {
     const fileEl = replContainer.value.querySelector(
       `[data-file-name="${file}"]`,
     ) as HTMLElement | null;
-    console.log(fileEl);
     if (fileEl) {
       const content = rewriteTypeImports(fileEl.textContent || '');
       if (fileEl.hidden) {
@@ -162,7 +164,12 @@ function useSlotFiles() {
     ref(slotFiles);
 
   const activeFile = ref(Object.keys(slotFiles)[0]);
+  const tabs = computed(() => {
+    return Object.keys(files.value)
+      .filter((f) => !files.value[f].hidden)
+      .map((f) => files.value[f]);
+  });
 
-  return { files, activeFile };
+  return { files, tabs, activeFile };
 }
 </script>
