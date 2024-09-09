@@ -115,12 +115,11 @@ store.sfcOptions = merge(store.sfcOptions || {}, {
   },
 } as SFCOptions);
 
-const activeFile = ref('App.vue');
 store.setFiles({
   'App.vue': `<template>Loading...</template>`,
 });
 
-const files = useSlotFiles();
+const { files, activeFile } = useSlotFiles();
 
 onMounted(async () => {
   if (!replContainer.value) {
@@ -162,6 +161,8 @@ function useSlotFiles() {
   const files: Ref<Record<string, { render: Component; hidden: boolean }>> =
     ref(slotFiles);
 
-  return files;
+  const activeFile = ref(Object.keys(slotFiles)[0]);
+
+  return { files, activeFile };
 }
 </script>
