@@ -87,7 +87,7 @@ const store = useStore({
       imports: {
         vue: `https://unpkg.com/vue@${version}/dist/vue.esm-browser.prod.js`,
         '@formwerk/core': `https://unpkg.com/@formwerk/core@0.1.2/dist/core.esm.js`,
-        zod: 'https://unpkg.com/zod@3.21.4/lib/index.mjs',
+        zod: 'https://unpkg.com/zod@3.23.8/lib/index.mjs',
         '@formwerk/schema-zod':
           'https://unpkg.com/@formwerk/schema-zod@0.1.2/dist/schema-zod.esm.js',
         // '@vueuse/core': 'https://unpkg.com/@vueuse/core?module',

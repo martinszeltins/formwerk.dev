@@ -5,7 +5,7 @@ import { type RadioGroupProps, useRadioGroup } from '@formwerk/core';
 const props = defineProps<RadioGroupProps>();
 
 const {
-  radioGroupProps,
+  groupProps,
   labelProps,
   descriptionProps,
   errorMessageProps,
@@ -14,7 +14,7 @@ const {
 </script>
 
 <template>
-  <div v-bind="radioGroupProps">
+  <div v-bind="groupProps">
     <div v-bind="labelProps">{{ label }}</div>
 
     <slot />
@@ -27,12 +27,4 @@ const {
     </div>
   </div>
 </template>
-
-<style scoped>
-.radio-group {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-</style>
 ```

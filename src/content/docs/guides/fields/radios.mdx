@@ -220,12 +220,20 @@ Here is an example of using zod as a typed schema to validate the radio group, w
 
 ```vue
 <script setup lang="ts">
-import { z } from 'zod';
-import { defineSchema } from '@formwerk/schema-zod';
+import { useForm } from '@formwerk/core';
 import RadioItem from './RadioItem.vue';
 import RadioGroup from './RadioGroup.vue';
+import { z } from 'zod';
+import { defineSchema } from '@formwerk/schema-zod';
 
-const schema = defineSchema(z.string().min(1, 'Please select an option'));
+const { values } = useForm({});
+
+const schema = defineSchema(
+  z
+    .string()
+    .min(1, { message: 'Please select a drink' })
+    .startsWith('☕️', { message: 'WRONG ANSWER!' }),
+);
 </script>
 
 <template>
