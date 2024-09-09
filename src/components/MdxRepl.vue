@@ -8,6 +8,7 @@
         v-for="(file, key) in files"
         :key="key"
         type="button"
+        :hidden="file.hidden"
         class="cursor-pointer rounded-t-md px-3 py-1.5 text-white transition-colors duration-200"
         :class="activeFile === key ? 'bg-zinc-600' : 'bg-zinc-950'"
         @click="activeFile = key"
@@ -17,12 +18,13 @@
     </div>
 
     <div
-      v-show="activeFile === key"
-      v-for="(file, key) in files"
-      :data-file-name="key"
+      v-for="({ render, hidden }, key) in files"
       :key="key"
+      v-show="activeFile === key"
+      :data-file-name="key"
+      :hidden="hidden"
     >
-      <component :is="file" />
+      <component :is="render" />
     </div>
 
     <Repl
@@ -50,11 +52,13 @@ import {
   computed,
   defineAsyncComponent,
   defineComponent,
+  markRaw,
   onMounted,
   ref,
   useSlots,
   version,
   type Component,
+  type Ref,
 } from 'vue';
 import { rewriteTypeImports, useVueImportMap } from './Repl/importMap';
 import { merge } from 'lodash-es';
@@ -112,22 +116,13 @@ store.sfcOptions = merge(store.sfcOptions || {}, {
 } as SFCOptions);
 
 const activeFile = ref('App.vue');
-const slots = useSlots();
-
 store.setFiles({
   'App.vue': `<template>Loading...</template>`,
 });
 
-const files = computed(() => {
-  const records: Record<string, Component> = {};
-  for (const slot in slots) {
-    records[`${slot}`] = defineComponent(() => () => slots[slot]?.());
-  }
+const files = useSlotFiles();
 
-  return records;
-});
-
-onMounted(() => {
+onMounted(async () => {
   if (!replContainer.value) {
     return;
   }
@@ -136,13 +131,37 @@ onMounted(() => {
   for (const file in files.value) {
     const fileEl = replContainer.value.querySelector(
       `[data-file-name="${file}"]`,
-    );
+    ) as HTMLElement | null;
+    console.log(fileEl);
     if (fileEl) {
       const content = rewriteTypeImports(fileEl.textContent || '');
+      if (fileEl.hidden) {
+        files.value[file].hidden = true;
+      }
+
       contents[file] = content ?? '<template>Failed to load file</template>';
     }
   }
 
   store.setFiles(contents);
 });
+
+function useSlotFiles() {
+  const slots = useSlots();
+  const slotFiles: Record<string, { render: Component; hidden: boolean }> = {};
+  for (const slot in slots) {
+    const hidden = slot.startsWith('!');
+    const slotName = slot.replace('!', '');
+
+    slotFiles[`${slotName}`] = {
+      render: markRaw(defineComponent(() => () => slots[slot]?.())),
+      hidden,
+    };
+  }
+
+  const files: Ref<Record<string, { render: Component; hidden: boolean }>> =
+    ref(slotFiles);
+
+  return files;
+}
 </script>
