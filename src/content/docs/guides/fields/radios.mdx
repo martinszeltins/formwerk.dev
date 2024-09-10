@@ -234,7 +234,7 @@ const schema = defineSchema(
   z
     .string()
     .min(1, { message: 'Please select a drink' })
-    .startsWith('☕️', { message: 'WRONG ANSWER!' }),
+    .endsWith('☕️', { message: 'WRONG ANSWER!' }),
 );
 </script>
 
