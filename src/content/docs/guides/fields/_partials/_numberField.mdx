@@ -1,0 +1,35 @@
+```vue
+<script setup lang="ts">
+import { type NumberFieldProps, useNumberField } from '@formwerk/core';
+
+const props = defineProps<NumberFieldProps>();
+
+const {
+  inputProps,
+  labelProps,
+  errorMessage,
+  descriptionProps,
+  errorMessageProps,
+  incrementButtonProps,
+  decrementButtonProps,
+  isValid,
+} = useNumberField(props);
+</script>
+
+<template>
+  <div>
+    <label v-bind="labelProps">{{ label }}</label>
+    <div>
+      <button type="button" v-bind="decrementButtonProps">-</button>
+      <input v-bind="inputProps" />
+      <button type="button" v-bind="incrementButtonProps">+</button>
+    </div>
+
+    <div v-if="description" v-bind="descriptionProps">{{ description }}</div>
+
+    <div v-if="!isValid" v-bind="errorMessageProps">
+      {{ errorMessage }}
+    </div>
+  </div>
+</template>
+```

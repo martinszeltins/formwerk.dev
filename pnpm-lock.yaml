@@ -24,8 +24,8 @@ importers:
         specifier: ^4.5.0
         version: 4.5.0(astro@4.15.2(@types/node@22.5.4)(rollup@4.21.2)(typescript@5.5.4))(rollup@4.21.2)(vite@5.4.2(@types/node@22.5.4))(vue@3.5.3(typescript@5.5.4))
       '@formwerk/core':
-        specifier: ^0.1.1
-        version: 0.1.1(typescript@5.5.4)
+        specifier: ^0.1.3
+        version: 0.1.3(typescript@5.5.4)
       '@vue/compiler-sfc':
         specifier: ^3.5.3
         version: 3.5.3
@@ -632,8 +632,8 @@ packages:
   '@expressive-code/plugin-text-markers@0.35.6':
     resolution: {integrity: sha512-/k9eWVZSCs+uEKHR++22Uu6eIbHWEciVHbIuD8frT8DlqTtHYaaiwHPncO6KFWnGDz5i/gL7oyl6XmOi/E6GVg==}
 
-  '@formwerk/core@0.1.1':
-    resolution: {integrity: sha512-0Vhm9iKJWz4U+08knz5gAizo+UJbZ0T7JW2vOZmzCvlWwM3gMU7u+KRiSJb1QgIfY/fpwtaqkeprXdAUYYLTWw==}
+  '@formwerk/core@0.1.3':
+    resolution: {integrity: sha512-WuS5mEfN6XbXLeh7R4RVKuLLfYARqOJVcKtny+McvVBbODE+0BZ1H1ZclqrORbfaSCy0mTH4JjjLKzlMEqu1ew==}
 
   '@humanwhocodes/module-importer@1.0.1':
     resolution: {integrity: sha512-bxveV4V8v5Yb4ncFTT3rPSgZBOpCkjfK0y4oVVVJwIuDVBRMDXrPyXRL988i5ap9m9bnyEEjWfm5WkBmtffLfA==}
@@ -3263,8 +3263,8 @@ packages:
     resolution: {integrity: sha512-RAH822pAdBgcNMAfWnCBU3CFZcfZ/i1eZjwFU/dsLKumyuuP3niueg2UAukXYF0E2AAoc82ZSSf9J0WQBinzHA==}
     engines: {node: '>=12.20'}
 
-  type-fest@4.26.0:
-    resolution: {integrity: sha512-OduNjVJsFbifKb57UqZ2EMP1i4u64Xwow3NYXUtBbD4vIwJdQd4+xl8YDou1dlm4DVrtwT/7Ky8z8WyCULVfxw==}
+  type-fest@4.26.1:
+    resolution: {integrity: sha512-yOGpmOAL7CkKe/91I5O3gPICmJNLJ1G4zFYVAsRHg7M64biSnPtRj0WNQt++bRkjYOqjWXrhnUw1utzmVErAdg==}
     engines: {node: '>=16'}
 
   typesafe-path@0.2.2:
@@ -4352,10 +4352,10 @@ snapshots:
     dependencies:
       '@expressive-code/core': 0.35.6
 
-  '@formwerk/core@0.1.1(typescript@5.5.4)':
+  '@formwerk/core@0.1.3(typescript@5.5.4)':
     dependencies:
       klona: 2.0.6
-      type-fest: 4.26.0
+      type-fest: 4.26.1
       vue: 3.5.3(typescript@5.5.4)
     transitivePeerDependencies:
       - typescript
@@ -7560,7 +7560,7 @@ snapshots:
 
   type-fest@2.19.0: {}
 
-  type-fest@4.26.0: {}
+  type-fest@4.26.1: {}
 
   typesafe-path@0.2.2: {}
 

@@ -64,6 +64,7 @@ import { rewriteTypeImports, useVueImportMap } from './Repl/importMap';
 import { merge } from 'lodash-es';
 import { useStore, type SFCOptions } from './Repl/store';
 import Types from '@formwerk/core/dist/core.d.ts?raw';
+import { version as fwVersion } from '@formwerk/core';
 
 const Repl = defineAsyncComponent(() => import('./Repl.vue'));
 
@@ -86,10 +87,9 @@ const store = useStore({
     merge(importMap.value, {
       imports: {
         vue: `https://unpkg.com/vue@${version}/dist/vue.esm-browser.prod.js`,
-        '@formwerk/core': `https://unpkg.com/@formwerk/core@0.1.2/dist/core.esm.js`,
+        '@formwerk/core': `https://unpkg.com/@formwerk/core@${fwVersion}/dist/core.esm.js`,
         zod: 'https://unpkg.com/zod@3.23.8/lib/index.mjs',
-        '@formwerk/schema-zod':
-          'https://unpkg.com/@formwerk/schema-zod@0.1.2/dist/schema-zod.esm.js',
+        '@formwerk/schema-zod': `https://unpkg.com/@formwerk/schema-zod@${fwVersion}/dist/schema-zod.esm.js`,
         // '@vueuse/core': 'https://unpkg.com/@vueuse/core?module',
       },
     }),

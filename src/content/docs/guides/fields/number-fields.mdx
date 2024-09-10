@@ -8,6 +8,7 @@ sidebar:
 import { Tabs, TabItem, Aside } from '@astrojs/starlight/components';
 import AnatomyCanvas from '@components/AnatomyCanvas.vue';
 import AnatomyNumberField from '@components/AnatomyNumberField.vue';
+import NumberField from './_partials/_numberField.mdx';
 import MdxRepl from '@components/MdxRepl.vue';
 
 Number fields are a common field in many forms. They include built-in validation to reject non-numerical input. Additionally, the browser may provide stepper arrows to let the user increase and decrease the value with a configurable step amount.
@@ -72,55 +73,26 @@ The `useCheckbox` composable returns binding objects for the elements shown in t
 <MdxRepl client:load>
 
 <div slot="NumberField.vue">
-```vue
-<script setup lang="ts">
-import { type NumberFieldProps, useNumberField } from '@formwerk/core';
-
-const props = defineProps<NumberFieldProps>();
-
-const {
-inputProps,
-labelProps,
-errorMessage,
-descriptionProps,
-errorMessageProps,
-incrementButtonProps,
-decrementButtonProps,
-isValid,
-} = useNumberField(props);
-
-</script>
-
-<template>
-  <div>
-    <label v-bind="labelProps">{{ label }}</label>
-    <div>
-      <button type="button" v-bind="decrementButtonProps">-</button>
-      <input v-bind="inputProps" />
-      <button type="button" v-bind="incrementButtonProps">+</button>
-    </div>
-
-    <div v-if="description" v-bind="descriptionProps">{{ description }}</div>
-
-    <div v-if="!isValid" v-bind="errorMessageProps">
-      {{ errorMessage }}
-    </div>
-
-  </div>
-</template>
-```
+  <NumberField />
 </div>
 
 <div slot="App.vue">
+
 ```vue
 <script setup lang="ts">
+import { ref } from 'vue';
 import NumberField from './NumberField.vue';
+
+const count = ref(5);
 </script>
 
 <template>
-  <NumberField label="Number Field" />
+  <NumberField label="Count" v-model="count" />
+
+  Count is: {{ count }}
 </template>
 ```
+
 </div>
 
 </MdxRepl>
@@ -153,17 +125,30 @@ Here is an example of how to use the `max` and `min` properties to limit the num
 
 Assuming you have a `NumberField` component like the one shown above, you can use it like this:
 
+<MdxRepl client:load>
+
+<div slot="NumberField.vue">
+  <NumberField />
+</div>
+
+<div slot="App.vue">
+
 ```vue
 <script setup lang="ts">
+import { ref } from 'vue';
 import NumberField from './NumberField.vue';
 
-const value = ref(50);
+const value = ref(26);
 </script>
 
 <template>
-  <NumberField v-model="value" max="100" min="0" step="2" required />
+  <NumberField v-model="value" max="50" min="0" step="2" required />
 </template>
 ```
+
+</div>
+
+</MdxRepl>
 
 ### Typed Schema
 
@@ -175,6 +160,14 @@ Depending on the schema validation provider you are using, the API might slightl
 
 </Aside>
 
+<MdxRepl client:load>
+
+<div slot="NumberField.vue">
+  <NumberField />
+</div>
+
+<div slot="App.vue">
+
 ```vue
 <script setup lang="ts">
 import { z } from 'zod';
@@ -185,14 +178,18 @@ const schema = defineSchema(
   z
     .number('Required')
     .min(1, 'Must be greater than 0')
-    .max(100, 'Must be less than 100'),
+    .max(14, 'Must be less than 14'),
 );
 </script>
 
 <template>
-  <NumberField label="Typed Schema" :schema="schema" />
+  <NumberField label="Number" :schema="schema" />
 </template>
 ```
+
+</div>
+
+</MdxRepl>
 
 ## Styled Examples
 
