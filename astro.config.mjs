@@ -14,7 +14,7 @@ export default defineConfig({
       Components({
         resolvers: [
           IconsResolver({
-            enabledCollections: ['ph'],
+            enabledCollections: ['ph', 'vscode-icons'],
           }),
         ],
       }),

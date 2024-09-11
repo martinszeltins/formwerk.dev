@@ -26,6 +26,9 @@ importers:
       '@formwerk/core':
         specifier: ^0.1.5
         version: 0.1.5(typescript@5.6.2)
+      '@iconify-json/vscode-icons':
+        specifier: ^1.2.1
+        version: 1.2.1
       '@vue/compiler-sfc':
         specifier: ^3.5.4
         version: 3.5.4
@@ -649,6 +652,9 @@ packages:
 
   '@iconify-json/ph@1.2.0':
     resolution: {integrity: sha512-013eLpgTmX1lACOuDnkuhC7gRHyYj9w/j8SyDmlyUYvsKQrwdRsv1otcXtwH3DevuDAzSkreeeRsCeez+gTyVA==}
+
+  '@iconify-json/vscode-icons@1.2.1':
+    resolution: {integrity: sha512-pEZCknk+6xlx7JC8e5Sz0cpkS3yezKKSouii0OTkUnTM3Kljc7V01AbYJ3iarw4b41jV0CpDpzj3BzRdvweGaA==}
 
   '@iconify/types@2.0.0':
     resolution: {integrity: sha512-+wluvCrRhXrhyOmRDJ3q8mux9JkKy5SJ/v8ol2tu4FVjyYvtEzkc/3pK15ET6RKg4b4w4BmTk1+gsCUhf21Ykg==}
@@ -4393,6 +4399,10 @@ snapshots:
   '@humanwhocodes/retry@0.3.0': {}
 
   '@iconify-json/ph@1.2.0':
+    dependencies:
+      '@iconify/types': 2.0.0
+
+  '@iconify-json/vscode-icons@1.2.1':
     dependencies:
       '@iconify/types': 2.0.0
 
