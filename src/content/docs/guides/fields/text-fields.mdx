@@ -11,6 +11,8 @@ import { Tabs, TabItem, Aside } from '@astrojs/starlight/components';
 import AnatomyCanvas from '@components/AnatomyCanvas.vue';
 import AnatomyTextField from '@components/AnatomyTextField.vue';
 import MdxRepl from '@components/MdxRepl.vue';
+import TextFieldPartial from './_partials/_textField.mdx';
+import StyledTextFieldPartial from './_partials/_styledTextField.mdx';
 
 Text fields are used to allow users to input plain text into a form.
 
@@ -34,49 +36,26 @@ Text fields are implemented with the `input` element for single line of text or 
 <MdxRepl client:load>
 
 <div slot="TextField.vue">
-```vue
-<script setup lang="ts">
-import { type TextFieldProps, useTextField } from '@formwerk/core';
-
-const props = defineProps<TextFieldProps>();
-
-const {
-inputProps,
-labelProps,
-errorMessage,
-errorMessageProps,
-descriptionProps,
-} = useTextField(props);
-
-</script>
-
-<template>
-  <div>
-    <label v-bind="labelProps">{{ label }}</label>
-    <input v-bind="inputProps" />
-
-    <div v-if="errorMessage" v-bind="errorMessageProps">
-      {{ errorMessage }}
-    </div>
-    <div v-else-if="description" v-bind="descriptionProps">
-      {{ description }}
-    </div>
-
-  </div>
-</template>
-```
+  <TextFieldPartial />
 </div>
 
 <div slot="App.vue">
+
 ```vue
 <script setup lang="ts">
 import TextField from './TextField.vue';
+import { ref } from 'vue';
+
+const name = ref('');
 </script>
 
 <template>
-  <TextField label="Text Field" />
+  <TextField v-model="name" label="Your name" />
+
+  <h2>Hello, {{ name }}</h2>
 </template>
 ```
+
 </div>
 
 </MdxRepl>
@@ -119,7 +98,7 @@ descriptionProps,
 <template>
   <div>
     <label v-bind="labelProps">{{ label }}</label>
-    <textarea v-bind="inputProps" />
+    <textarea v-bind="inputProps" :style="{ display: 'block' }" />
 
     <div v-if="errorMessage" v-bind="errorMessageProps">
       {{ errorMessage }}
@@ -140,7 +119,7 @@ import TextAreaField from './TextAreaField.vue';
 </script>
 
 <template>
-  <TextAreaField label="Text Area" />
+  <TextAreaField label="Write a poem" />
 </template>
 ```
 </div>
@@ -177,17 +156,32 @@ Here is an example of how to use the `maxLength` and `minLength` properties to l
 
 Assuming you have a `TextField` component like the one shown above, you can use it like this:
 
+<MdxRepl client:load>
+
+<div slot="!TextField.vue">
+  <TextFieldPartial />
+</div>
+
+<div slot="App.vue">
+
 ```vue
 <script setup lang="ts">
 import TextField from './TextField.vue';
-
-const value = ref('');
 </script>
 
 <template>
-  <TextField v-model="value" maxLength="18" minLength="3" required />
+  <TextField
+    label="HTML Constraints Demo"
+    maxLength="8"
+    minLength="3"
+    required
+  />
 </template>
 ```
+
+</div>
+
+</MdxRepl>
 
 ### Typed Schema
 
@@ -199,13 +193,21 @@ Depending on the schema validation provider you are using, the API might slightl
 
 </Aside>
 
+<MdxRepl client:load>
+
+<div slot="!TextField.vue">
+  <TextFieldPartial />
+</div>
+
+<div slot="App.vue">
+
 ```vue
 <script setup lang="ts">
 import { z } from 'zod';
 import { defineSchema } from '@formwerk/schema-zod';
 import TextField from './TextField.vue';
 
-const schema = defineSchema(z.string().min(3).max(18));
+const schema = defineSchema(z.string().min(3).max(8));
 </script>
 
 <template>
@@ -213,11 +215,232 @@ const schema = defineSchema(z.string().min(3).max(18));
 </template>
 ```
 
+</div>
+
+</MdxRepl>
+
+### Mixed Validation
+
+All text fields created with Formwerk support mixed validation, which means you can use both HTML constraints and Typed schemas to validate the field and they work seamlessly together.
+
+Note that HTML constraints are validated first, so any errors from the HTML constraints will be displayed first. Then once all HTML constraints are satisfied, the typed schema is validated.
+
+<MdxRepl client:load>
+
+<div slot="!TextField.vue">
+  <TextFieldPartial />
+</div>
+
+<div slot="App.vue">
+
+```vue
+<script setup lang="ts">
+import { z } from 'zod';
+import { defineSchema } from '@formwerk/schema-zod';
+import TextField from './TextField.vue';
+
+const schema = defineSchema(z.string().min(3).max(20));
+</script>
+
+<template>
+  <TextField label="Mixed Validation" :schema="schema" type="url" required />
+</template>
+```
+
+</div>
+
+</MdxRepl>
+
+This makes schemas lighter, however we recommend sticking to one or the other per form for maintainability.
+
+If you need to disable the native validation, you can do so by setting the `disableHtmlValidation` prop to `true`.
+
+<MdxRepl client:load>
+
+<div slot="!TextField.vue">
+  <TextFieldPartial />
+</div>
+
+<div slot="App.vue">
+
+```vue
+<script setup lang="ts">
+import { z } from 'zod';
+import { defineSchema } from '@formwerk/schema-zod';
+import TextField from './TextField.vue';
+
+const schema = defineSchema(z.string().min(3).max(20));
+</script>
+
+<template>
+  <TextField
+    label="HTML Validation Disabled"
+    disable-html-validation
+    :schema="schema"
+    type="url"
+    required
+  />
+</template>
+```
+
+</div>
+
+</MdxRepl>
+
+You can also disable it globally for all fields, for more information check out the [Validation](/guides/forms/validation) guide.
+
 ## Styling
 
 Formwerk does not come with any markup or styling, which is often the parts that make a design system unique. That means you can use any styling solution you want, whether it's [TailwindCSS](https://tailwindcss.com/), or plain CSS.
 
+This is an example of how you can style a text field using plain CSS, we take advantage of native CSS pseudo-classes to style the field when it is focused, hovered, or has an error. No JS-state is needed to style the field.
+
+<MdxRepl client:load>
+
+<div slot="TextFieldStyled.vue">
+  <StyledTextFieldPartial />
+</div>
+
+<div slot="App.vue">
+
+```vue
+<script setup lang="ts">
+import TextField from './TextFieldStyled.vue';
+</script>
+
+<template>
+  <TextField
+    label="Email Address"
+    description="We will not share your email with anyone."
+    type="email"
+    placeholder="example@example.com"
+    required
+  />
+</template>
+```
+
+</div>
+
+</MdxRepl>
+
+Notice that in the last example we made use of the `:user-invalid` and `:user-valid` pseudo-classes to style the field which are just some of the features available in all modern browsers. With no JavaScript we managed to show the error message when appropriate.
+
+Formwerk leans into that to provide a more seamless experience for the user. In fact, even if you use Typed Schemas to validate the field, the pseudo-classes will still work. Here is a quick example with the same `TextFieldStyled` component, but this time we pass in a typed schema validation.
+
+<MdxRepl client:load>
+
+<div slot="!TextFieldStyled.vue">
+  <StyledTextFieldPartial />
+</div>
+
+<div slot="App.vue">
+
+```vue
+<script setup lang="ts">
+import { z } from 'zod';
+import { defineSchema } from '@formwerk/schema-zod';
+import TextField from './TextFieldStyled.vue';
+
+const schema = defineSchema(z.string().email());
+</script>
+
+<template>
+  <TextField
+    label="Email Address with Typed Schema"
+    :schema="schema"
+    description="We will not share your email with anyone."
+    placeholder="example@example.com"
+  />
+</template>
+```
+
+</div>
+
+</MdxRepl>
+
 ## Usage
+
+### Disabled
+
+Use disabled to mark fields as non-interactive, disabled fields are not validated and are not submitted.
+
+If you need to prevent the user from interacting with the field while still allowing it to submit, consider using `readonly` instead.
+
+<MdxRepl client:load>
+
+<div slot="!TextField.vue">
+  <TextFieldPartial />
+</div>
+
+<div slot="App.vue">
+
+```vue
+<script setup lang="ts">
+import TextField from './TextField.vue';
+</script>
+
+<template>
+  <TextField label="Disabled Field" disabled />
+</template>
+```
+
+</div>
+
+</MdxRepl>
+
+### Readonly
+
+Readonly fields are validated and submitted, but they do not accept user input. The field is still focusable and the value is copyable. For more info, check the [MDN](https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/readonly).
+
+<MdxRepl client:load>
+
+<div slot="!TextField.vue">
+  <TextFieldPartial />
+</div>
+
+<div slot="App.vue">
+
+```vue
+<script setup lang="ts">
+import TextField from './TextField.vue';
+</script>
+
+<template>
+  <TextField label="Readonly Field" value="You can't change me" readonly />
+</template>
+```
+
+</div>
+
+</MdxRepl>
+
+### RTL
+
+The text field doesn't really need much for RTL support, however the `dir` prop can be used to set the direction of the field for convenience.
+
+There is a lot more to directionality and localization, for more info check out the [Localization](/guides/extras/i18n) guide.
+
+<MdxRepl client:load>
+
+<div slot="!TextField.vue">
+  <TextFieldPartial />
+</div>
+
+<div slot="App.vue">
+
+```vue
+<script setup lang="ts">
+import TextField from './TextField.vue';
+</script>
+
+<template>
+  <TextField label="RTL Field" dir="rtl" />
+</template>
+```
+
+</div>
+
+</MdxRepl>
 
 ## API
 
@@ -263,3 +486,7 @@ Formwerk does not come with any markup or styling, which is often the parts that
 | `setErrors`         | `(msg: Arrayable<string>) => void` | Sets the error messages for the field and sets the `isValid` state. |
 | `setTouched`        | `(touched: boolean) => void`       | Sets the `isTouched` state.                                         |
 | `setValue`          | `(value: number) => void`          | Sets the field's current value.                                     |
+
+```
+
+```

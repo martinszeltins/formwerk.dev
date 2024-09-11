@@ -1,0 +1,107 @@
+```vue
+<script setup lang="ts">
+import { type TextFieldProps, useTextField } from '@formwerk/core';
+
+const props = defineProps<TextFieldProps>();
+
+const {
+  inputProps,
+  labelProps,
+  errorMessage,
+  errorMessageProps,
+  descriptionProps,
+} = useTextField(props);
+</script>
+
+<template>
+  <div class="field">
+    <label v-bind="labelProps">{{ label }}</label>
+    <input v-bind="inputProps" :style="{ display: 'block' }" />
+
+    <div v-if="errorMessage" v-bind="errorMessageProps" class="error">
+      {{ errorMessage }}
+    </div>
+
+    <div v-if="description" v-bind="descriptionProps" class="hint">
+      {{ description }}
+    </div>
+  </div>
+</template>
+
+<style scoped>
+label {
+  display: block;
+  margin-bottom: 0.25rem;
+  font-size: 14px;
+  font-weight: 500;
+  color: #333;
+}
+
+.hint {
+  font-size: 13px;
+  color: #666;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.hint,
+.error {
+  margin-top: 0.25rem;
+}
+
+input {
+  display: block;
+  width: max-content;
+  padding: 0.5rem 0.6rem;
+  font-size: 13px;
+  color: #333;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  transition: border-color 0.3s ease;
+
+  &:focus {
+    outline: none;
+    border-color: #007bff;
+    box-shadow: 0 0 0 1px #007bff;
+  }
+}
+
+.error {
+  display: none;
+  font-size: 13px;
+  color: #f00;
+}
+
+.field {
+  &:has(:focus) {
+    .hint {
+      opacity: 1;
+    }
+  }
+
+  &:has(:user-invalid) {
+    .error {
+      display: block;
+    }
+
+    .hint {
+      display: none;
+    }
+
+    input {
+      border-color: #f00;
+    }
+  }
+
+  &:has(:user-valid) {
+    .error {
+      display: none;
+    }
+
+    input {
+      border-color: #059669;
+    }
+  }
+}
+</style>
+```

@@ -1,0 +1,29 @@
+```vue
+<script setup lang="ts">
+import { type TextFieldProps, useTextField } from '@formwerk/core';
+
+const props = defineProps<TextFieldProps>();
+
+const {
+  inputProps,
+  labelProps,
+  errorMessage,
+  errorMessageProps,
+  descriptionProps,
+} = useTextField(props);
+</script>
+
+<template>
+  <div>
+    <label v-bind="labelProps">{{ label }}</label>
+    <input v-bind="inputProps" :style="{ display: 'block' }" />
+
+    <div v-if="errorMessage" v-bind="errorMessageProps">
+      {{ errorMessage }}
+    </div>
+    <div v-else-if="description" v-bind="descriptionProps">
+      {{ description }}
+    </div>
+  </div>
+</template>
+```
