@@ -5,13 +5,13 @@
   >
     <div v-if="tabs.length > 1" class="flex items-center">
       <button
-        v-for="(tab, key) in tabs"
-        :key="key"
+        v-for="(tab, idx) in tabs"
+        :key="tab.filename"
         type="button"
         :hidden="tab.hidden"
         :aria-selected="activeFile === tab.filename"
         :class="{
-          'border-r': key === tabs.length - 1,
+          'border-r': idx === tabs.length - 1,
         }"
         class="group relative flex cursor-pointer items-center gap-1 rounded-t-lg border-l border-t border-zinc-700 bg-zinc-950 px-3 py-1.5 text-sm text-zinc-500 transition-colors duration-200 aria-selected:bg-zinc-800 aria-selected:text-white"
         @click="activeFile = tab.filename"
@@ -82,6 +82,7 @@ const props = defineProps<{
   hideErrors?: boolean;
   importMaps?: Record<string, string>;
   customCode?: string;
+  activeFile?: string;
 }>();
 
 const fileIcons: Record<string, Component> = {
@@ -178,7 +179,6 @@ function useSlotFiles() {
   const files: Ref<Record<string, { render: Component; hidden: boolean }>> =
     ref(slotFiles);
 
-  const activeFile = ref(Object.keys(slotFiles)[0]);
   const tabs = computed(() => {
     return Object.keys(files.value)
       .filter((f) => !files.value[f].hidden)
@@ -191,8 +191,23 @@ function useSlotFiles() {
           filename: f,
           icon,
         };
+      })
+      .sort((a, b) => {
+        if (a.filename === 'App.vue' && b.filename !== 'App.vue') {
+          return 1;
+        }
+
+        if (a.filename !== 'App.vue' && b.filename === 'App.vue') {
+          return -1;
+        }
+
+        return 0;
       });
   });
+
+  const activeFile = ref(
+    props.activeFile || tabs.value[0]?.filename || Object.keys(slotFiles)[0],
+  );
 
   return { files, tabs, activeFile };
 }
