@@ -8,7 +8,8 @@ sidebar:
 import { Tabs, TabItem, Aside } from '@astrojs/starlight/components';
 import AnatomyCanvas from '@components/AnatomyCanvas.vue';
 import AnatomyNumberField from '@components/AnatomyNumberField.vue';
-import NumberField from './_partials/_numberField.mdx';
+import NumberFieldPartial from './_partials/_numberField.mdx';
+import StyledNumberFieldPartial from './_partials/_numberFieldStyled.mdx';
 import MdxRepl from '@components/MdxRepl.vue';
 
 Number fields are a common field in many forms. They include built-in validation to reject non-numerical input. Additionally, the browser may provide stepper arrows to let the user increase and decrease the value with a configurable step amount.
@@ -17,22 +18,22 @@ The Number field is usually used for number values rather than numeric values. F
 
 The native HTML number input and most other implementations do not offer a good experience. Here are a couple of common issues:
 
-- **Lack of proper internationalization:** Mainly, the lack of support for other numeral systems like the Arabic numerals `(٠١٢٣٤٥٦٧٨٩)` are a pain to work with. Users often have to switch keyboard languages/layout to enter numbers and even then it is not perfect as keyboards don't always have all the necessary characters for decimals and thousands separators. This means the number input is not accessible for the global audience.
+- **Lack of proper internationalization:** Mainly, the lack of support for other numeral systems like the Arabic numerals `(٠١٢٣٤٥٦٧٨٩)` are a pain to work with. Users often have to switch keyboard languages/layout to enter numbers and even then it is not perfect. Keyboards don't always have all the necessary characters for decimals and thousands separators. This means the number input is not accessible for the global audience.
 - **No formatting support:** this includes grouping `,` and displaying units and currencies and other simple masking features.
 
-Formwerk tries to address all these issues and more by utilizing the `Intl.NumberFormat` API and providing a solid foundation for building number fields that are accessible and easy to use for users all over the world.
+Formwerk tries to address all these issues and more by utilizing the `Intl.NumberFormat` API. It provides a solid foundation for building number fields that are accessible and easy to use for users all over the world.
 
 ## Features
 
 - Supports using the `input` element as a base with `type="text"` (don't worry, we add the `inputmode` automatically for accessability and mobile keyboards).
-- Labeling and descriptions are automatically linked to input and label elements.
-- Validation and error messages support with native HTML validation or Typed schemas.
+- Labeling, descriptions, error message displays are automatically linked to input and label elements with `aria-*` attributes.
 - Formatting and parsing numbers with the `Intl.NumberFormat` API depending on the site locale or the user's preferred language.
-- Support for different numeral systems.
+- Support for multiple numeral systems (Latin, Arabic, and Chinese).
 - Support for `Intl.NumberFormat` units and currencies.
-- Support for the Spinbutton ARIA pattern for increment/decrement buttons.
+- Support for the [Spinbutton ARIA pattern](https://www.w3.org/WAI/ARIA/apg/patterns/spinbutton/) for increment/decrement buttons.
 - Support for `min`, `max` and `step` attributes.
-- Rejects non-numerical input characters.
+- Validation support with native HTML constraint validation or Typed schemas.
+- Rejects non-numerical input characters and any incoming key presses that would make the number invalid.
 - Support for `v-model` binding.
 
 ## Anatomy
@@ -41,39 +42,16 @@ Formwerk tries to address all these issues and more by utilizing the `Intl.Numbe
   <AnatomyNumberField />
 </AnatomyCanvas>
 
-## API
-
-| Name                   | Type                               | Description                                                         |
-| ---------------------- | ---------------------------------- | ------------------------------------------------------------------- |
-| `decrement`            | `() => void`                       | Decreases the number value by the step amount.                      |
-| `decrementButtonProps` | Complex Binding                    | The decrement button element's props.                               |
-| `descriptionProps`     | `AriaDescriptionProps`             | The description element's props.                                    |
-| `displayError`         | `() => string \| undefined`        | A getter to display the error message if touched.                   |
-| `errorMessage`         | `string \| undefined`              | The validation message.                                             |
-| `errorMessageProps`    | `AriaErrorMessageProps`            | The error message element props.                                    |
-| `errors`               | `string[]`                         | The field's error messages.                                         |
-| `fieldValue`           | `number \| undefined`              | The current value of the field.                                     |
-| `increment`            | `() => void`                       | Increases the number value by the step amount.                      |
-| `incrementButtonProps` | Complex Binding                    | The increment button element's props.                               |
-| `inputProps`           | Complex Binding                    | The base element props.                                             |
-| `isDirty`              | `boolean`                          | Whether the field value has changed.                                |
-| `isTouched`            | `boolean`                          | Whether the field is touched.                                       |
-| `isValid`              | `boolean`                          | Whether the field has error messages.                               |
-| `labelProps`           | `AriaLabelProps`                   | The label element props.                                            |
-| `setErrors`            | `(msg: Arrayable<string>) => void` | Sets the error messages for the field and sets the `isValid` state. |
-| `setTouched`           | `(touched: boolean) => void`       | Sets the `isTouched` state.                                         |
-| `setValue`             | `(value: number) => void`          | Sets the field's current value.                                     |
-
 ## Building a Number Field Component
 
 You can start by importing the `useNumberField` composable and using it in your number field component.
 
-The `useCheckbox` composable returns binding objects for the elements shown in the anatomy, you will use `v-bind` to bind them to the DOM elements.
+The `useNumberField` composable returns binding objects for the elements shown in the [anatomy](#anatomy), you will use `v-bind` to bind them to the corresponding DOM elements.
 
 <MdxRepl client:load>
 
 <div slot="NumberField.vue">
-  <NumberField />
+  <NumberFieldPartial />
 </div>
 
 <div slot="App.vue">
@@ -99,7 +77,7 @@ const count = ref(5);
 
 Notice that we imported the `NumberFieldProps` in the previous example. This is recommended to use as your component prop types.
 
-Not only you get type safety for your component out of it but also it handles the reactivity aspects of the props so you don't have to.
+Not only you get type safety for your component out of it but also it handles the reactivity aspects of the props so you don't have to. You are free to extend it with your own props or omit the ones you don't need.
 
 ## Validation
 
@@ -127,8 +105,8 @@ Assuming you have a `NumberField` component like the one shown above, you can us
 
 <MdxRepl client:load>
 
-<div slot="NumberField.vue">
-  <NumberField />
+<div slot="!NumberField.vue">
+  <NumberFieldPartial />
 </div>
 
 <div slot="App.vue">
@@ -142,7 +120,14 @@ const value = ref(26);
 </script>
 
 <template>
-  <NumberField v-model="value" max="50" min="0" step="2" required />
+  <NumberField
+    v-model="value"
+    label="Amount"
+    max="50"
+    min="0"
+    step="2"
+    required
+  />
 </template>
 ```
 
@@ -162,8 +147,8 @@ Depending on the schema validation provider you are using, the API might slightl
 
 <MdxRepl client:load>
 
-<div slot="NumberField.vue">
-  <NumberField />
+<div slot="!NumberField.vue">
+  <NumberFieldPartial />
 </div>
 
 <div slot="App.vue">
@@ -191,8 +176,275 @@ const schema = defineSchema(
 
 </MdxRepl>
 
+### Mixed Validation
+
+While it is unlikely that you need both HTML constraints and Typed schemas to validate a number field, Formwerk supports mixed validation, which means you can use both HTML constraints and Typed schemas to validate the field and define step amount and min/max values and they work seamlessly together.
+
+Note that HTML constraints are validated first, so any errors from the HTML constraints will be displayed first. Then once all HTML constraints are satisfied, the typed schema is validated.
+
+<MdxRepl client:load>
+
+<div slot="!NumberField.vue">
+  <NumberFieldPartial />
+</div>
+
+<div slot="App.vue">
+
+```vue
+<script setup lang="ts">
+import { z } from 'zod';
+import { defineSchema } from '@formwerk/schema-zod';
+import NumberField from './NumberField.vue';
+
+const schema = defineSchema(z.number().min(1).max(10));
+</script>
+
+<template>
+  <NumberField label="Number" :schema="schema" max="50" min="0" step="2" />
+</template>
+```
+
+</div>
+
+</MdxRepl>
+
 ## Styled Examples
 
-Styling the number field is similar to styling other form components. You have full control over how to style the component or how to implement its anatomical parts with any styling solution you like.
+Formwerk does not come with any markup or styling, which is often the parts that make a design system unique. That means you can use any styling solution you want, whether it's [TailwindCSS](https://tailwindcss.com/), or plain CSS.
+
+This is an example of how you can style a text field using plain CSS, we take advantage of native CSS pseudo-classes to style the field when it is focused, hovered, or has an error. No JS-state is needed to style the field.
+
+<MdxRepl client:load>
+
+<div slot="NumberFieldStyled.vue">
+  <StyledNumberFieldPartial />
+</div>
+
+<div slot="App.vue">
+
+```vue
+<script setup lang="ts">
+import NumberField from './NumberFieldStyled.vue';
+import { z } from 'zod';
+import { defineSchema } from '@formwerk/schema-zod';
+
+const schema = defineSchema(z.number().min(1).max(10));
+</script>
+
+<template>
+  <NumberField
+    label="Amount"
+    :schema="schema"
+    description="Enter a number between 1 and 10"
+  />
+</template>
+```
+
+</div>
+
+</MdxRepl>
 
 ## Usage
+
+### Disabled
+
+Use disabled to mark fields as non-interactive, disabled fields are not validated and are not submitted.
+
+If you need to prevent the user from interacting with the field while still allowing it to submit, consider using `readonly` instead.
+
+<MdxRepl client:load>
+
+<div slot="!NumberField.vue">
+  <NumberFieldPartial />
+</div>
+
+<div slot="App.vue">
+
+```vue
+<script setup lang="ts">
+import NumberField from './NumberField.vue';
+</script>
+
+<template>
+  <NumberField label="Disabled" disabled />
+</template>
+```
+
+</div>
+
+</MdxRepl>
+
+### Readonly
+
+Readonly fields are validated and submitted, but they do not accept user input. The field is still focusable and the value is copyable. For more info, check the [MDN](https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/readonly).
+
+<MdxRepl client:load>
+
+<div slot="!NumberField.vue">
+  <NumberFieldPartial />
+</div>
+
+<div slot="App.vue">
+
+```vue
+<script setup lang="ts">
+import NumberField from './NumberField.vue';
+</script>
+
+<template>
+  <NumberField label="Readonly" value="47" readonly />
+</template>
+```
+
+</div>
+
+</MdxRepl>
+
+### Formatting and Units
+
+You can use the `formatOptions` prop to format the number field value. It accepts all [options](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/NumberFormat/NumberFormat#options) that are supported by the `Intl.NumberFormat` API.
+
+<MdxRepl client:load>
+
+<div slot="!NumberField.vue">
+  <NumberFieldPartial />
+</div>
+
+<div slot="App.vue">
+
+```vue
+<script setup lang="ts">
+import { ref } from 'vue';
+import NumberField from './NumberField.vue';
+
+const value = ref(1000);
+</script>
+
+<template>
+  <NumberField
+    label="Amount"
+    v-model="value"
+    step="100"
+    :formatOptions="{ style: 'currency', currency: 'USD' }"
+  />
+
+  number value is: {{ value }}
+</template>
+```
+
+</div>
+
+</MdxRepl>
+
+### i18n
+
+Aside from [formatting](#formatting-and-units) you can also use any numeral system supported by the `Intl.NumberFormat` API. Like Arabic, and Chinese.
+
+The number field also accepts a `locale` prop to change the locale of the number field. Usually you should not want to pass it manually but for demonstration purposes it is shown below.
+
+Actually, here are 3 fields each with a different numeral system bound to the same value, and you get the parsed value with either of them.
+
+<MdxRepl client:load>
+
+<div slot="!NumberField.vue">
+  <NumberFieldPartial />
+</div>
+
+<div slot="App.vue">
+
+```vue
+<script setup lang="ts">
+import { ref } from 'vue';
+import NumberField from './NumberField.vue';
+
+const value = ref(10);
+</script>
+
+<template>
+  <NumberField label="Latin" v-model="value" />
+  <NumberField label="Arabic" v-model="value" locale="ar-EG" />
+  <NumberField label="Chinese" v-model="value" locale="zh-cn-u-nu-hanidec" />
+
+  value is: {{ value }}
+</template>
+```
+
+</div>
+
+</MdxRepl>
+
+### RTL
+
+The number field doesn't really need much for RTL support, however the `dir` prop can be used to set the direction of the field for convenience.
+
+There is a lot more to directionality and localization, for more info check out the [Localization](/guides/extras/i18n) guide.
+
+<MdxRepl client:load>
+
+<div slot="!NumberField.vue">
+  <NumberFieldPartial />
+</div>
+
+<div slot="App.vue">
+
+```vue
+<script setup lang="ts">
+import NumberField from './NumberField.vue';
+</script>
+
+<template>
+  <NumberField label="Amount" value="10" dir="rtl" />
+</template>
+```
+
+</div>
+
+</MdxRepl>
+
+## API
+
+### Props
+
+| Name                    | Type                        | Description                               |
+| ----------------------- | --------------------------- | ----------------------------------------- |
+| `label`                 | `string`                    | The label for the number field.           |
+| `locale`                | `string?`                   | The locale to use for formatting.         |
+| `modelValue`            | `number?`                   | The v-model value for the number field.   |
+| `description`           | `string?`                   | Description text for the number field.    |
+| `incrementLabel`        | `string?`                   | Label for the increment button.           |
+| `decrementLabel`        | `string?`                   | Label for the decrement button.           |
+| `name`                  | `string?`                   | The name attribute for the input element. |
+| `value`                 | `Numberish?`                | The initial value of the number field.    |
+| `min`                   | `Numberish?`                | The minimum allowed value.                |
+| `max`                   | `Numberish?`                | The maximum allowed value.                |
+| `step`                  | `Numberish?`                | The step value for increments/decrements. |
+| `placeholder`           | `string?`                   | Placeholder text for the input.           |
+| `required`              | `boolean?`                  | Whether the field is required.            |
+| `readonly`              | `boolean?`                  | Whether the field is read-only.           |
+| `disabled`              | `boolean?`                  | Whether the field is disabled.            |
+| `formatOptions`         | `Intl.NumberFormatOptions?` | Options for number formatting.            |
+| `schema`                | `TypedSchema<number>?`      | Schema for validation.                    |
+| `disableHtmlValidation` | `boolean?`                  | Whether to disable HTML5 validation.      |
+
+### Returns
+
+| Name                   | Type                               | Description                                                         |
+| ---------------------- | ---------------------------------- | ------------------------------------------------------------------- |
+| `decrement`            | `() => void`                       | Decreases the number value by the step amount.                      |
+| `decrementButtonProps` | Complex Binding                    | The decrement button element's props.                               |
+| `descriptionProps`     | `AriaDescriptionProps`             | The description element's props.                                    |
+| `displayError`         | `() => string \| undefined`        | A getter to display the error message if touched.                   |
+| `errorMessage`         | `string \| undefined`              | The validation message.                                             |
+| `errorMessageProps`    | `AriaErrorMessageProps`            | The error message element props.                                    |
+| `errors`               | `string[]`                         | The field's error messages.                                         |
+| `fieldValue`           | `number \| undefined`              | The current value of the field.                                     |
+| `increment`            | `() => void`                       | Increases the number value by the step amount.                      |
+| `incrementButtonProps` | Complex Binding                    | The increment button element's props.                               |
+| `inputProps`           | Complex Binding                    | The base element props.                                             |
+| `isDirty`              | `boolean`                          | Whether the field value has changed.                                |
+| `isTouched`            | `boolean`                          | Whether the field is touched.                                       |
+| `isValid`              | `boolean`                          | Whether the field has error messages.                               |
+| `labelProps`           | `AriaLabelProps`                   | The label element props.                                            |
+| `setErrors`            | `(msg: Arrayable<string>) => void` | Sets the error messages for the field and sets the `isValid` state. |
+| `setTouched`           | `(touched: boolean) => void`       | Sets the `isTouched` state.                                         |
+| `setValue`             | `(value: number) => void`          | Sets the field's current value.                                     |

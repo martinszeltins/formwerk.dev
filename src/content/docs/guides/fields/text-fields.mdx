@@ -21,8 +21,8 @@ Text fields are implemented with the `input` element for single line of text or 
 ## Features
 
 - Uses `input` or `textarea` elements as a base.
-- Accessibility support for labels, descriptions, and error messages.
-- Validation and error messages support with native HTML constraint validation or Typed schemas.
+- Labeling, descriptions, error message displays are automatically linked to input and label elements with `aria-*` attributes.
+- Validation support with native HTML constraint validation or Typed schemas.
 - Support for `v-model` binding.
 
 ## Anatomy
@@ -32,6 +32,10 @@ Text fields are implemented with the `input` element for single line of text or 
 </AnatomyCanvas>
 
 ## Building a Text Field Component
+
+You can start by importing the `useTextField` composable and using it in your text field component.
+
+The `useTextField` composable returns binding objects for the elements shown in the [anatomy](#anatomy), you will use `v-bind` to bind them to the corresponding DOM elements.
 
 <MdxRepl client:load>
 
@@ -71,6 +75,10 @@ The other types have their own composables, check out the following guides:
 - No support for `date` fields at the moment.
 
 </Aside>
+
+Notice that we imported the `TextFieldProps` in the previous example. This is recommended to use as your component prop types.
+
+Not only you get type safety for your component out of it but also it handles the reactivity aspects of the props so you don't have to. You are free to extend it with your own props or omit the ones you don't need.
 
 ## Building a Text Area Component
 
@@ -129,7 +137,7 @@ import TextAreaField from './TextAreaField.vue';
 
 ### HTML Constraints
 
-You can use native HTML validation or Typed schemas to validate the number field. The following properties are supported:
+You can use native HTML validation or Typed schemas to validate the text field. The following properties are supported:
 
 | Name        | Type               | Description                                                               |
 | ----------- | ------------------ | ------------------------------------------------------------------------- |
@@ -486,7 +494,3 @@ import TextField from './TextField.vue';
 | `setErrors`         | `(msg: Arrayable<string>) => void` | Sets the error messages for the field and sets the `isValid` state. |
 | `setTouched`        | `(touched: boolean) => void`       | Sets the `isTouched` state.                                         |
 | `setValue`          | `(value: number) => void`          | Sets the field's current value.                                     |
-
-```
-
-```
