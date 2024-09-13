@@ -28,7 +28,8 @@ export default defineConfig({
     starlight({
       title: 'My Docs',
       social: {
-        github: 'https://github.com/withastro/starlight',
+        github: 'https://github.com/formwerkjs/formwerk',
+        discord: 'https://discord.gg/gQ7wqpvT5X',
       },
       customCss: ['./src/tailwind.css'],
       sidebar: [

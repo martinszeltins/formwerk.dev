@@ -2,6 +2,11 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  --sl-text-h3: var(--sl-text-2xl);
+  --sl-text-h4: var(--sl-text-xl);
+}
+
 @screen 2xl {
   :root {
     --sl-content-width: 50rem;
