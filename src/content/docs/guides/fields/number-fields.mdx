@@ -212,7 +212,7 @@ const schema = defineSchema(z.number().min(1).max(10));
 
 Formwerk does not come with any markup or styling, which is often the parts that make a design system unique. That means you can use any styling solution you want, whether it's [TailwindCSS](https://tailwindcss.com/), or plain CSS.
 
-This is an example of how you can style a text field using plain CSS, we take advantage of native CSS pseudo-classes to style the field when it is focused, hovered, or has an error. No JS-state is needed to style the field.
+This is an example of how you can style a text field using plain CSS, we take advantage of native CSS pseudo-classes to style the field when it is focused, hovered, or has an error. We require some help from the `isTouched` state returned by the `useNumberField` composable to style the field.
 
 <MdxRepl client:load>
 
@@ -228,13 +228,14 @@ import NumberField from './NumberFieldStyled.vue';
 import { z } from 'zod';
 import { defineSchema } from '@formwerk/schema-zod';
 
-const schema = defineSchema(z.number().min(1).max(10));
+const schema = defineSchema(z.number().min(0).max(10));
 </script>
 
 <template>
   <NumberField
     label="Amount"
     :schema="schema"
+    value="0"
     description="Enter a number between 1 and 10"
   />
 </template>

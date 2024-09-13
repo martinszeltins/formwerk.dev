@@ -12,11 +12,12 @@ const {
   errorMessageProps,
   incrementButtonProps,
   decrementButtonProps,
+  isTouched,
 } = useNumberField(props);
 </script>
 
 <template>
-  <div class="field">
+  <div class="field" :class="{ 'is-touched': isTouched }">
     <label v-bind="labelProps">{{ label }}</label>
     <div class="input-wrapper">
       <input v-bind="inputProps" />
@@ -138,27 +139,29 @@ label {
     }
   }
 
-  &:has(:invalid) {
-    .error {
-      display: block;
+  &.is-touched {
+    &:has(:invalid) {
+      .error {
+        display: block;
+      }
+
+      .hint {
+        display: none;
+      }
+
+      .input-wrapper {
+        border-color: var(--color-error);
+      }
     }
 
-    .hint {
-      display: none;
-    }
+    &:has(:valid) {
+      .error {
+        display: none;
+      }
 
-    .input-wrapper {
-      border-color: var(--color-error);
-    }
-  }
-
-  &:has(:valid) {
-    .error {
-      display: none;
-    }
-
-    .input-wrapper {
-      border-color: var(--color-valid);
+      .input-wrapper {
+        border-color: var(--color-valid);
+      }
     }
   }
 }

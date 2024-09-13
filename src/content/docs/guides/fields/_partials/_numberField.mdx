@@ -12,7 +12,6 @@ const {
   errorMessageProps,
   incrementButtonProps,
   decrementButtonProps,
-  isValid,
 } = useNumberField(props);
 </script>
 
@@ -27,7 +26,7 @@ const {
 
     <div v-if="description" v-bind="descriptionProps">{{ description }}</div>
 
-    <div v-if="!isValid" v-bind="errorMessageProps">
+    <div v-if="errorMessage" v-bind="errorMessageProps">
       {{ errorMessage }}
     </div>
   </div>
