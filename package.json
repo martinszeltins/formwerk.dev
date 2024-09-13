@@ -38,6 +38,7 @@
     "@commitlint/cli": "^19.5.0",
     "@commitlint/config-conventional": "^19.5.0",
     "@eslint/js": "^9.10.0",
+    "@expressive-code/plugin-collapsible-sections": "^0.36.1",
     "@iconify-json/ph": "^1.2.0",
     "@types/hash-sum": "^1.0.2",
     "@types/lodash-es": "^4.17.12",
