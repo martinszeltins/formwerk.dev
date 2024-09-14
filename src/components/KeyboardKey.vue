@@ -17,11 +17,11 @@ function keyboardSymbol(key: string, os = 'mac') {
     Enter: '↩',
     Backspace: '⌫',
     Delete: '⌦',
-    Escape: '⎋',
+    Escape: 'Esc',
     Tab: '⇥',
     PageUp: '⇞',
     PageDown: '⇟',
-    Space: '␣',
+    Space: '⎵',
   };
 
   const macFormats = {
