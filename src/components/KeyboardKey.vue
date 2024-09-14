@@ -77,7 +77,7 @@ const key = computed(() => {
 
 <style lang="postcss" scoped>
 .kbd {
-  @apply relative box-border inline-flex h-7 select-none items-center gap-1 overflow-hidden rounded-md border border-gray-500 bg-gray-700 px-2 text-center align-baseline capitalize leading-none transition-colors duration-100;
+  @apply relative box-border inline-flex h-7 select-none items-center gap-1 overflow-hidden rounded-md border border-gray-500 bg-gray-800 px-2 pb-0.5 text-center align-baseline capitalize leading-none transition-colors duration-100;
 
   .key-part {
     @apply leading-none transition-transform duration-100;

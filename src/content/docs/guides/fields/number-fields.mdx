@@ -8,9 +8,11 @@ sidebar:
 import { Tabs, TabItem, Aside } from '@astrojs/starlight/components';
 import AnatomyCanvas from '@components/AnatomyCanvas.vue';
 import AnatomyNumberField from '@components/AnatomyNumberField.vue';
-import NumberFieldPartial from './_partials/_numberField.mdx';
-import StyledNumberFieldPartial from './_partials/_numberFieldStyled.mdx';
 import MdxRepl from '@components/MdxRepl.vue';
+import Kbd from '@components/KeyboardKey.vue';
+
+import StyledNumberFieldPartial from './_partials/_numberFieldStyled.mdx';
+import NumberFieldPartial from './_partials/_numberField.mdx';
 
 Number fields are a common field in many forms. They include built-in validation to reject non-numerical input. Additionally, the browser may provide stepper arrows to let the user increase and decrease the value with a configurable step amount.
 
@@ -35,6 +37,16 @@ Formwerk tries to address all these issues and more by utilizing the `Intl.Numbe
 - Validation support with native HTML constraint validation or Typed schemas.
 - Rejects non-numerical input characters and any incoming key presses that would make the number invalid.
 - Support for `v-model` binding.
+- Supported Keyboard features:
+
+| Key                                        | Description                                                          |
+| ------------------------------------------ | -------------------------------------------------------------------- |
+| <Kbd code="ArrowUp" label="Arrow Up" />    | increment the value by the step amount.                              |
+| <Kbd code="ArrowDown" label="Arrow Down"/> | decrement the value by the step amount.                              |
+| <Kbd code="PageUp" label="Page Up" />      | increment the value by larger multiple of the step amount.           |
+| <Kbd code="PageDown" label="Page Down" />  | decrement the value by larger multiple of the step amount.           |
+| <Kbd code="Home" />                        | set the value to the min value if provided, otherwise has no effect. |
+| <Kbd code="End" />                         | set the value to the max value if provided, otherwise has no effect. |
 
 ## Anatomy
 
