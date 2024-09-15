@@ -87,9 +87,7 @@ const count = ref(5);
 
 </MdxRepl>
 
-Notice that we imported the `NumberFieldProps` in the previous example. This is recommended to use as your component prop types.
-
-Not only you get type safety for your component out of it but also it handles the reactivity aspects of the props so you don't have to. You are free to extend it with your own props or omit the ones you don't need.
+Notice that we imported the `NumberFieldProps` in the previous example. This is recommended to use as your component prop types. Not only you get type safety for your component out of it but also it handles the reactivity aspects of the props so you don't have to. You are free to extend it with your own props or omit the ones you don't need.
 
 ## Validation
 
@@ -422,6 +420,8 @@ There is a lot more to directionality and localization, for more info check out 
 
 ### Props
 
+These are the properties that can be passed to the `useNumberField` composable.
+
 | Name                    | Type                        | Description                               |
 | ----------------------- | --------------------------- | ----------------------------------------- |
 | `label`                 | `string`                    | The label for the number field.           |
@@ -443,7 +443,13 @@ There is a lot more to directionality and localization, for more info check out 
 | `schema`                | `TypedSchema<number>?`      | Schema for validation.                    |
 | `disableHtmlValidation` | `boolean?`                  | Whether to disable HTML5 validation.      |
 
+<Aside>
+  Most of the props above can be passed as `Ref<T>` or `() => T` and the reactivity will be handled for you.
+</Aside>
+
 ### Returns
+
+These are the properties in the object returned by the `useNumberField` composable.
 
 | Name                   | Type                               | Description                                                         |
 | ---------------------- | ---------------------------------- | ------------------------------------------------------------------- |

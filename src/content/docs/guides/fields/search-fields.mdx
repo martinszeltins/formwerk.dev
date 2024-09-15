@@ -5,8 +5,15 @@ sidebar:
   order: 8
 ---
 
+import { Aside } from '@astrojs/starlight/components';
+
 import AnatomyCanvas from '@components/AnatomyCanvas.vue';
 import AnatomySearchField from '@components/AnatomySearchField.vue';
+import Kbd from '@components/KeyboardKey.vue';
+import MdxRepl from '@components/MdxRepl.vue';
+
+import SearchFieldPartial from './_partials/_searchField.mdx';
+import StyledSearchFieldPartial from './_partials/_styledSearchField.mdx';
 
 # useSearchField
 
@@ -16,10 +23,24 @@ Search fields have extra behaviors and use-cases that set them apart from regula
 
 A couple of behaviors set this apart from regular text fields:
 
-- They can be cleared with `Escape` keyboard key or the clear button.
-- They usually are used without a parent `form` elements and sometimes without a `submit` button. So they can be submitted with `Enter` keyboard key on their own.
+- The text content can be cleared with the clear button or a keyboard shortcut.
+- They are usually used without a parent `form` elements and sometimes without a `submit` button. So they can be submitted with `Enter` keyboard key on their own.
 
-Some of these behaviors can be checked [here](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/search#differences_between_search_and_text_types).
+You can find more information about the differences [here](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/search#differences_between_search_and_text_types).
+
+## Features
+
+- Uses `input[type="search"]` element as a base.
+- Labeling, descriptions, error message displays are automatically linked to input and label elements with `aria-*` attributes.
+- Support for a custom clear button.
+- Validation support with native HTML constraint validation or Typed schemas.
+- Support for `v-model` binding.
+- Supported Keyboard features:
+
+| Key                               | Description                                                                                        |
+| --------------------------------- | -------------------------------------------------------------------------------------------------- |
+| <Kbd code="Esc" />                | Clears the input value.                                                                            |
+| <Kbd code="Enter" label="Enter"/> | If in a form, submits the form. Otherwise submits the input with the `onSubmit` event or callback. |
 
 ## Anatomy
 
@@ -27,80 +48,403 @@ Some of these behaviors can be checked [here](https://developer.mozilla.org/en-U
   <AnatomySearchField />
 </AnatomyCanvas>
 
-## Features
+## Building a Search Field Component
 
-- Uses `input[type="search"]` element as a base.
-- Labeling and descriptions are automatically linked to input and label elements.
-- Keyboard support for <kbd>Enter</kbd> key to submit the current value.
-- Keyboard support for <kbd>Escape</kbd> key to clear the current value.
-- Support for custom clear button.
-- Validation and error messages support either native or otherwise.
+The `useSearchField` composable returns binding objects for the elements shown in the [anatomy](#anatomy), you will use `v-bind` to bind them to the corresponding DOM elements.
 
-## Usage
+<MdxRepl client:load>
+
+<div slot="SearchField.vue">
+  <SearchFieldPartial />
+</div>
+
+<div slot="App.vue">
 
 ```vue
 <script setup lang="ts">
-import { SearchFieldProps, useSearchField } from '@formwerk/core';
+import { ref } from 'vue';
+import SearchField from './SearchField.vue';
 
-const props = defineProps<SearchFieldProps>();
-
-const {
-  inputProps,
-  labelProps,
-  fieldValue,
-  errorMessage,
-  errorMessageProps,
-  clearBtnProps,
-} = useSearchField(props);
+const search = ref('');
 </script>
 
 <template>
-  <div class="InputSearch">
-    <label v-bind="labelProps">{{ label }}</label>
+  <SearchField label="Search for something" v-model="search" />
 
-    <input v-bind="inputProps" type="text xd" />
-
-    <span v-bind="errorMessageProps" class="error-message">
-      {{ errorMessage }}
-    </span>
-
-    <button
-      v-show="fieldValue"
-      v-bind="clearBtnProps"
-      class="absolute bottom-3 right-4"
-    >
-      ❌
-    </button>
-  </div>
+  Search value: {{ search }}
 </template>
-
-<style scoped lang="postcss">
-.InputSearch {
-  @apply relative w-full;
-  margin-bottom: calc(1em * 1.5);
-
-  label {
-    @apply mb-1 block w-full;
-  }
-
-  input {
-    @apply w-full appearance-none rounded-md border-2 border-transparent bg-gray-100 px-4 py-3 text-gray-800 transition-colors duration-200 focus:border-blue-500 focus:outline-none;
-
-    &::-webkit-search-cancel-button,
-    &::-webkit-search-decoration {
-      -webkit-appearance: none;
-    }
-  }
-  .error-message {
-    @apply absolute left-0 text-sm text-red-500;
-    bottom: calc(-1.5 * 1em);
-  }
-
-  &.has-error {
-    input {
-      @apply bg-red-100 text-red-600 focus:border-red-500;
-    }
-  }
-}
-</style>
 ```
+
+</div>
+
+</MdxRepl>
+
+Notice that we imported the `SearchFieldProps` in the previous example. This is recommended to use as your component prop types. Not only you get type safety for your component out of it but also it handles the reactivity aspects of the props so you don't have to. You are free to extend it with your own props or omit the ones you don't need.
+
+## Validation
+
+### HTML Constraints
+
+You can use native HTML validation or Typed schemas to validate the text field. The following properties are supported:
+
+| Name        | Type               | Description                          |
+| ----------- | ------------------ | ------------------------------------ |
+| `maxLength` | `number`           | The maximum length of characters     |
+| `minLength` | `number`           | The minimum length of characters     |
+| `required`  | `boolean`          | Whether the text field is required.  |
+| `pattern`   | `string \| RegExp` | A regular expression for validation. |
+
+<Aside>
+  Note that `minLength`, and `maxLength` attributes accept a number or a string,
+  the string however must be parseable as a number. Formwerk takes care of
+  typing strings safely and parsing them so you don't have to bind the values as
+  numbers.
+</Aside>
+
+Here is an example of how to use the `maxLength` and `minLength` properties to limit the text length between 3 and 18 characters.
+
+Assuming you have a `SearchField` component like the one shown above, you can use it like this:
+
+<MdxRepl client:load>
+
+<div slot="!SearchField.vue">
+  <SearchFieldPartial />
+</div>
+
+<div slot="App.vue">
+
+```vue
+<script setup lang="ts">
+import { ref } from 'vue';
+import SearchField from './SearchField.vue';
+
+const search = ref('');
+</script>
+
+<template>
+  <SearchField
+    label="Search for something"
+    v-model="search"
+    required
+    min-length="3"
+    max-length="8"
+  />
+</template>
+```
+
+</div>
+
+</MdxRepl>
+
+### Typed Schema
+
+`useSearchField` also supports Typed Schema validation through the `schema` prop.
+
+<Aside>
+
+Depending on the schema validation provider you are using, the API might slightly differ. Check the supported validation providers for more information. In this example we are using the `zod` schema validation provider.
+
+</Aside>
+
+<MdxRepl client:load>
+
+<div slot="!SearchField.vue">
+  <SearchFieldPartial />
+</div>
+
+<div slot="App.vue">
+
+```vue
+<script setup lang="ts">
+import { z } from 'zod';
+import { defineSchema } from '@formwerk/schema-zod';
+import SearchField from './SearchField.vue';
+
+const schema = defineSchema(z.string().min(3).max(8));
+</script>
+
+<template>
+  <SearchField label="Typed Schema" :schema="schema" />
+</template>
+```
+
+</div>
+
+</MdxRepl>
+
+### Mixed Validation
+
+All search fields created with Formwerk support mixed validation, which means you can use both HTML constraints and Typed schemas to validate the field and they work seamlessly together.
+
+Note that HTML constraints are validated first, so any errors from the HTML constraints will be displayed first. Then once all HTML constraints are satisfied, the typed schema is validated.
+
+<MdxRepl client:load>
+
+<div slot="!SearchField.vue">
+  <SearchFieldPartial />
+</div>
+
+<div slot="App.vue">
+
+```vue
+<script setup lang="ts">
+import { z } from 'zod';
+import { defineSchema } from '@formwerk/schema-zod';
+import SearchField from './SearchField.vue';
+
+const schema = defineSchema(z.string().min(3).max(8));
+</script>
+
+<template>
+  <SearchField label="Mixed Validation" :schema="schema" required />
+</template>
+```
+
+</div>
+
+</MdxRepl>
+
+This makes schemas lighter, however we recommend sticking to one or the other per form for maintainability.
+
+If you need to disable the native validation, you can do so by setting the `disableHtmlValidation` prop to `true`.
+
+<MdxRepl client:load>
+
+<div slot="!SearchField.vue">
+  <SearchFieldPartial />
+</div>
+
+<div slot="App.vue">
+
+```vue
+<script setup lang="ts">
+import { z } from 'zod';
+import { defineSchema } from '@formwerk/schema-zod';
+import SearchField from './SearchField.vue';
+
+const schema = defineSchema(z.string().min(3).max(10));
+</script>
+
+<template>
+  <SearchField
+    label="HTML Validation Disabled"
+    disable-html-validation
+    :schema="schema"
+    required
+  />
+</template>
+```
+
+</div>
+
+</MdxRepl>
+
+You can also disable it globally for all fields, for more information check out the [Validation](/guides/forms/validation) guide.
+
+## Styling
+
+Formwerk does not come with any markup or styling for the search field. That means you can use any styling solution you want, whether it's [TailwindCSS](https://tailwindcss.com/), or plain CSS.
+
+This is an example of how you can style a search field using plain CSS, we take advantage of native CSS pseudo-classes to style the field when it is focused, hovered, or has an error. No JS-state is needed to style the field.
+
+<MdxRepl client:load>
+
+<div slot="SearchField.vue">
+  <StyledSearchFieldPartial />
+</div>
+
+<div slot="App.vue">
+
+```vue
+<script setup lang="ts">
+import SearchField from './SearchField.vue';
+import { z } from 'zod';
+import { defineSchema } from '@formwerk/schema-zod';
+
+const schema = defineSchema(z.string().min(3).max(10));
+</script>
+
+<template>
+  <SearchField
+    label="Search"
+    description="Are you interested in Coffee?"
+    placeholder="Search for something..."
+    :schema="schema"
+  />
+</template>
+```
+
+</div>
+
+</MdxRepl>
+
+## Usage
+
+### Disabled
+
+You can disable the search field by setting the `disabled` prop to `true`. Disabled fields are not editable, will not be validated and will not be submitted with the form.
+
+If you need to prevent the user from interacting with the field while still allowing it to submit, consider using `readonly` instead.
+
+<MdxRepl client:load>
+
+<div slot="!SearchField.vue">
+  <SearchFieldPartial />
+</div>
+
+<div slot="App.vue">
+
+```vue
+<script setup lang="ts">
+import SearchField from './SearchField.vue';
+</script>
+
+<template>
+  <SearchField label="Disabled" disabled />
+</template>
+```
+
+</div>
+
+</MdxRepl>
+
+### Readonly
+
+Readonly fields are validated and submitted, but they do not accept user input. The field is still focusable and the value is copyable. For more info, check the [MDN](https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/readonly).
+
+<MdxRepl client:load>
+
+<div slot="!SearchField.vue">
+  <SearchFieldPartial />
+</div>
+
+<div slot="App.vue">
+
+```vue
+<script setup lang="ts">
+import SearchField from './SearchField.vue';
+</script>
+
+<template>
+  <SearchField label="Readonly" value="Can't change this" readonly />
+</template>
+```
+
+</div>
+
+</MdxRepl>
+
+### RTL
+
+The search field doesn't really need much for RTL support, however the `dir` prop can be used to set the direction of the field for convenience.
+
+<MdxRepl client:load>
+
+<div slot="!SearchField.vue">
+  <SearchFieldPartial />
+</div>
+
+<div slot="App.vue">
+
+```vue
+<script setup lang="ts">
+import SearchField from './SearchField.vue';
+</script>
+
+<template>
+  <SearchField label="RTL Search" dir="rtl" />
+</template>
+```
+
+</div>
+
+</MdxRepl>
+
+<Aside>
+
+There is a lot more to directionality and localization, for more info check out the [i18n guide](/guides/extras/i18n).
+
+</Aside>
+
+### Submitting
+
+Search fields can be used without a parent `form` element and sometimes without a `submit` button. The `useSearchField` accepts a `onSubmit` callback that is called when the user presses the `Enter` key on the field.
+
+<MdxRepl client:load>
+
+<div slot="!SearchField.vue">
+  <SearchFieldPartial />
+</div>
+
+<div slot="App.vue">
+
+```vue
+<script setup lang="ts">
+import SearchField from './SearchField.vue';
+
+const onSubmit = (value: string) => {
+  alert(`Searching for: ${value}`);
+};
+</script>
+
+<template>
+  <SearchField label="Search" @submit="onSubmit" />
+</template>
+```
+
+</div>
+
+</MdxRepl>
+
+Note that empty search fields can be submitted, so you might want to validate the field before submitting.
+
+## API
+
+### Props
+
+These are the properties that can be passed to the `useSearchField` composable.
+
+| Name                    | Type                      | Description                               |
+| ----------------------- | ------------------------- | ----------------------------------------- |
+| `label`                 | `string`                  | The label for the number field.           |
+| `clearButtonLabel`      | `string?`                 | Label for the clear button.               |
+| `modelValue`            | `string?`                 | The v-model value for the number field.   |
+| `description`           | `string?`                 | Description text for the number field.    |
+| `name`                  | `string?`                 | The name attribute for the input element. |
+| `value`                 | `string?`                 | The initial value of the number field.    |
+| `maxLength`             | `Numberish?`              | The maximum length of characters.         |
+| `minLength`             | `Numberish?`              | The minimum length of characters.         |
+| `pattern`               | `string \| undefined`     | A regular expression for validation.      |
+| `placeholder`           | `string \| undefined`     | Placeholder text for the input.           |
+| `required`              | `boolean?`                | Whether the field is required.            |
+| `readonly`              | `boolean?`                | Whether the field is read-only.           |
+| `disabled`              | `boolean?`                | Whether the field is disabled.            |
+| `schema`                | `TypedSchema<string>?`    | Schema for validation.                    |
+| `onSubmit`              | `(value: string) => void` | Callback function for form submission.    |
+| `disableHtmlValidation` | `boolean?`                | Whether to disable HTML5 validation.      |
+
+<Aside>
+  All the props above can be passed as `Ref<T>` or `() => T` and the reactivity will be handled for you.
+</Aside>
+
+### Returns
+
+These are the properties in the object returned by the `useSearchField` composable.
+
+| Name                | Type                               | Description                                                         |
+| ------------------- | ---------------------------------- | ------------------------------------------------------------------- |
+| `descriptionProps`  | `AriaDescriptionProps`             | The description element's props.                                    |
+| `displayError`      | `() => string \| undefined`        | A getter to display the error message if touched.                   |
+| `errorMessage`      | `string \| undefined`              | The validation message.                                             |
+| `errorMessageProps` | `AriaErrorMessageProps`            | The error message element props.                                    |
+| `errors`            | `string[]`                         | The field's error messages.                                         |
+| `fieldValue`        | `string \| undefined`              | The current value of the field.                                     |
+| `inputProps`        | Complex Binding                    | The base element props.                                             |
+| `clearBtnProps`     | Complex Binding                    | The clear value button element props.                               |
+| `isDirty`           | `boolean`                          | Whether the field value has changed.                                |
+| `isTouched`         | `boolean`                          | Whether the field is touched.                                       |
+| `isValid`           | `boolean`                          | Whether the field has error messages.                               |
+| `labelProps`        | `AriaLabelProps`                   | The label element props.                                            |
+| `setErrors`         | `(msg: Arrayable<string>) => void` | Sets the error messages for the field and sets the `isValid` state. |
+| `setTouched`        | `(touched: boolean) => void`       | Sets the `isTouched` state.                                         |
+| `setValue`          | `(value: number) => void`          | Sets the field's current value.                                     |
