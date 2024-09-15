@@ -75,6 +75,7 @@ import Types from '@formwerk/core/dist/core.d.ts?raw';
 import { version as fwVersion } from '@formwerk/core';
 import VueIcon from '~icons/vscode-icons/file-type-vue';
 import TsIcon from '~icons/vscode-icons/file-type-typescript';
+import CssIcon from '~icons/vscode-icons/file-type-css';
 
 const Repl = defineAsyncComponent(() => import('./Repl.vue'));
 
@@ -88,6 +89,7 @@ const props = defineProps<{
 const fileIcons: Record<string, Component> = {
   vue: markRaw(VueIcon),
   ts: markRaw(TsIcon),
+  css: markRaw(CssIcon),
 };
 
 const replContainer = ref<HTMLElement>();
