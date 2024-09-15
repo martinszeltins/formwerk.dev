@@ -1,4 +1,4 @@
-```vue collapse={17-67}
+```vue collapse={15-59}
 <script setup lang="ts">
 import { type RadioProps, useRadio } from '@formwerk/core';
 
@@ -8,11 +8,9 @@ const { labelProps, inputProps } = useRadio(props);
 </script>
 
 <template>
-  <label v-bind="labelProps" class="radio-item">
-    <input v-bind="inputProps" class="sr-only" />
-
-    {{ label }}
-  </label>
+  <div class="radio-item" v-bind="inputProps">
+    <span v-bind="labelProps">{{ label }}</span>
+  </div>
 </template>
 
 <style scoped>
@@ -26,7 +24,6 @@ const { labelProps, inputProps } = useRadio(props);
   --color-hover: #eee;
 
   display: inline-flex;
-  width: max-content;
   align-items: center;
   border-radius: 99999px;
   padding: 0.5rem 1rem;
@@ -43,28 +40,20 @@ const { labelProps, inputProps } = useRadio(props);
     border: 1px solid var(--color-focus);
   }
 
-  &:has(:checked) {
+  &[aria-checked='true'] {
     background-color: var(--color-focus);
     color: #fff;
   }
 
-  &:has(:disabled) {
+  &[aria-disabled='true'] {
     opacity: 0.5;
     cursor: not-allowed;
     background-color: var(--color-border);
   }
-}
 
-/** This is a common utility CSS class, you can find it in your CSS framework of choice */
-.sr-only {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  padding: 0;
-  margin: -1px;
-  overflow: hidden;
-  clip: rect(0, 0, 0, 0);
-  border: 0;
+  &[aria-readonly='true'] {
+    opacity: 0.5;
+  }
 }
 </style>
 ```

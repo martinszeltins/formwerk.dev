@@ -1,4 +1,4 @@
-```vue
+```vue collapse={38-104}
 <script setup lang="ts">
 import { type RadioGroupProps, useRadioGroup } from '@formwerk/core';
 
@@ -10,11 +10,16 @@ const {
   descriptionProps,
   errorMessageProps,
   errorMessage,
+  isTouched,
 } = useRadioGroup(props);
 </script>
 
 <template>
-  <div v-bind="groupProps" class="radio-group">
+  <div
+    v-bind="groupProps"
+    class="radio-group"
+    :class="{ 'is-touched': isTouched }"
+  >
     <div v-bind="labelProps" class="group-label">{{ label }}</div>
 
     <div class="radios-container">
@@ -31,8 +36,8 @@ const {
   </div>
 </template>
 
-<style>
-:root {
+<style scoped>
+.radio-group {
   --color-text: #333;
   --color-hint: #666;
   --color-border: #ccc;
@@ -40,11 +45,7 @@ const {
   --color-error: #f00;
   --color-valid: #059669;
   --color-hover: #eee;
-}
-</style>
 
-<style scoped>
-.radio-group {
   display: flex;
   flex-direction: column;
 
@@ -68,6 +69,8 @@ const {
 
   .radios-container {
     margin-top: 0.25rem;
+    display: flex;
+    gap: 0.5rem;
   }
 
   .group-label {
@@ -84,13 +87,19 @@ const {
     }
   }
 
-  &:has(:invalid) {
+  &.is-touched[aria-invalid='true'] {
     .error {
       display: block;
     }
 
     .hint {
       display: none;
+    }
+  }
+
+  &[aria-orientation='vertical'] {
+    .radios-container {
+      flex-direction: column;
     }
   }
 }

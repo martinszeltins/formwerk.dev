@@ -16,6 +16,7 @@ import RadioInputPartial from './_partials/_radioInput.mdx';
 import RadioItemPartial from './_partials/_radioItem.mdx';
 import StyledRadioInputPartial from './_partials/_styledRadioInput.mdx';
 import StyledRadioGroup from './_partials/_styledRadioGroup.mdx';
+import StyledCustomRadioPartial from './_partials/_styledCustomRadio.mdx';
 
 > A radio group is a set of checkable buttons, known as radio buttons, where no more than one of the buttons can be checked at a time. Some implementations may initialize the set with all buttons in the unchecked state in order to force the user to check one of the buttons before moving past a certain point in the workflow.
 
@@ -232,10 +233,7 @@ import { z } from 'zod';
 import { defineSchema } from '@formwerk/schema-zod';
 
 const schema = defineSchema(
-  z
-    .string()
-    .min(1, { message: 'Please select a drink' })
-    .endsWith('☕️', { message: 'WRONG ANSWER!' }),
+  z.string().min(1, 'Please select a drink').endsWith('☕️', 'WRONG ANSWER!'),
 );
 </script>
 
@@ -278,6 +276,51 @@ import RadioItem from './RadioItem.vue';
 import RadioGroup from './RadioGroup.vue';
 
 const schema = defineSchema(
+  z.string().min(1, 'Please select a drink').endsWith('☕️', 'WRONG ANSWER!'),
+);
+</script>
+
+<template>
+  <RadioGroup
+    label="Select a drink"
+    description="There is only one right answer"
+    :schema="schema"
+  >
+    <RadioItem label="Tea 🍵" value="🍵" />
+    <RadioItem label="Coffee ☕️" value="☕️" />
+    <RadioItem label="Milk 🥛" value="🥛" />
+  </RadioGroup>
+</template>
+```
+
+</div>
+
+</MdxRepl>
+
+You can alternatively use custom HTML elements as a base for the radio component without having to visually hide the `input` element. But since you won't have any of the input pseudo classes, they will instead be replaced with `aria-*` attributes.
+
+Here is the same example with custom HTML elements as a base.
+
+<MdxRepl client:load>
+
+<div slot="RadioItem.vue">
+  <StyledCustomRadioPartial />
+</div>
+
+<div slot="RadioGroup.vue">
+  <StyledRadioGroup />
+</div>
+
+<div slot="App.vue">
+
+```vue
+<script setup lang="ts">
+import { z } from 'zod';
+import { defineSchema } from '@formwerk/schema-zod';
+import RadioItem from './RadioItem.vue';
+import RadioGroup from './RadioGroup.vue';
+
+const schema = defineSchema(
   z
     .string()
     .min(1, { message: 'Please select a drink' })
@@ -287,7 +330,7 @@ const schema = defineSchema(
 
 <template>
   <RadioGroup
-    label="Radio Group"
+    label="Select a drink"
     description="There is only one right answer"
     :schema="schema"
   >
@@ -303,6 +346,167 @@ const schema = defineSchema(
 </MdxRepl>
 
 ## Usage
+
+### Disabled
+
+You can disable individual radio items or the whole group with the `disabled` prop on either. Disabled radio items are not focusable. Disabled groups are not submitted and are not validated.
+
+We made use of the styled radio component that we created above to make it clearer that the radio items are disabled.
+
+<MdxRepl client:load>
+
+<div slot="!RadioItem.vue">
+  <StyledRadioInputPartial />
+</div>
+
+<div slot="!RadioGroup.vue">
+  <StyledRadioGroup />
+</div>
+
+<div slot="App.vue">
+
+```vue
+<script setup lang="ts">
+import RadioItem from './RadioItem.vue';
+import RadioGroup from './RadioGroup.vue';
+</script>
+
+<template>
+  <RadioGroup label="Radio Group">
+    <RadioItem label="Radio 1" value="1" />
+    <RadioItem label="Radio 2" value="2" />
+    <RadioItem label="Radio 3" value="3" disabled />
+    <RadioItem label="Radio 3" value="4" />
+  </RadioGroup>
+
+  <RadioGroup label="Disabled Group" disabled>
+    <RadioItem label="Radio 1" value="1" />
+    <RadioItem label="Radio 2" value="2" />
+    <RadioItem label="Radio 3" value="3" />
+  </RadioGroup>
+</template>
+```
+
+</div>
+
+</MdxRepl>
+
+If you need to prevent the user from interacting with the group while still allowing it to submit, consider using `readonly` instead.
+
+### Readonly
+
+Only available on the group, the `readonly` prop prevents the user from interacting with the group while still allowing it to submit and be validated.
+
+<MdxRepl client:load>
+
+<div slot="!RadioItem.vue">
+  <StyledRadioInputPartial />
+</div>
+
+<div slot="!RadioGroup.vue">
+  <StyledRadioGroup />
+</div>
+
+<div slot="App.vue">
+
+```vue
+<script setup lang="ts">
+import { ref } from 'vue';
+import RadioItem from './RadioItem.vue';
+import RadioGroup from './RadioGroup.vue';
+
+const value = ref('☕️');
+</script>
+
+<template>
+  <RadioGroup
+    label="Select a drink"
+    v-model="value"
+    description="Can't change this"
+    readonly
+  >
+    <RadioItem label="Tea 🍵" value="🍵" />
+    <RadioItem label="Coffee ☕️" value="☕️" />
+    <RadioItem label="Milk 🥛" value="🥛" />
+  </RadioGroup>
+</template>
+```
+
+</div>
+
+</MdxRepl>
+
+### Orientation
+
+Radio group accept an `orientation` prop that can be set to `horizontal` or `vertical`. The orientation does not affect the focus order, but you can use it to layout the radio items in a row or column with CSS.
+
+There is not default value assumed for the orientation, but if it is provided the group element will have a `aria-orientation` attribute set to the value of the prop. So you can use that to style it.
+
+<MdxRepl client:load>
+
+<div slot="!RadioItem.vue">
+  <StyledRadioInputPartial />
+</div>
+
+<div slot="!RadioGroup.vue">
+  <StyledRadioGroup />
+</div>
+
+<div slot="App.vue">
+
+```vue
+<script setup lang="ts">
+import RadioItem from './RadioItem.vue';
+import RadioGroup from './RadioGroup.vue';
+</script>
+
+<template>
+  <RadioGroup label="Radio Group" orientation="vertical">
+    <RadioItem label="Radio 1" value="1" />
+    <RadioItem label="Radio 2" value="2" />
+    <RadioItem label="Radio 3" value="3" />
+  </RadioGroup>
+</template>
+```
+
+</div>
+
+</MdxRepl>
+
+### RTL
+
+The radio group accepts a `dir` prop that can be set to `ltr` or `rtl`. Unlike the orientation, the `dir` prop affects the focus order of the radio items as the Left and Right arrow keys will navigate the items in the opposite direction.
+
+<MdxRepl client:load>
+
+<div slot="!RadioItem.vue">
+  <StyledRadioInputPartial />
+</div>
+
+<div slot="!RadioGroup.vue">
+  <StyledRadioGroup />
+</div>
+
+<div slot="App.vue">
+
+```vue
+<script setup lang="ts">
+import RadioItem from './RadioItem.vue';
+import RadioGroup from './RadioGroup.vue';
+</script>
+
+<template>
+  <RadioGroup label="RTL Group" dir="rtl">
+    <RadioItem label="Radio 1" value="1" />
+    <RadioItem label="Radio 2" value="2" />
+    <RadioItem label="Radio 3" value="3" />
+  </RadioGroup>
+</template>
+```
+
+</div>
+
+</MdxRepl>
 
 ## API
 
