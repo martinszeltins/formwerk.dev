@@ -1,24 +1,38 @@
 ---
 title: Switches
-description: A guide in my new Starlight docs site.
+description: Learn how to build accessible switch Vue components with Formwerk.
 sidebar:
   order: 7
 ---
 
+import { Aside } from '@astrojs/starlight/components';
+
 import AnatomyCanvas from '@components/AnatomyCanvas.vue';
 import AnatomySwitch from '@components/AnatomySwitch.vue';
+import MdxRepl from '@components/MdxRepl.vue';
+import Kbd from '@components/KeyboardKey.vue';
+
+import SwitchPartial from './_partials/_switch.mdx';
+import SwitchCustomPartial from './_partials/_switchCustom.mdx';
+import StyledSwitch from './_partials/_styledSwitch.mdx';
 
 > A switch is an input widget that allows users to choose one of two values: on or off. Switches are similar to checkboxes and toggle buttons, which can also serve as binary inputs. One difference, however, is that switches can only be used for binary input.
 
-This composable provides the behavior, state and accessibility implementation for switch components.
-
-The switch field has enough unique behaviors and use-cases that justifies it having its own composable. The binary state of a switch means it shouldn't be used to represent "required" inputs where the switch needs to be "on". It is a user preference that can be turned off. This implies a few things, one of which is that the switch is not validatable.
+The switch field has enough unique behaviors and use-cases that justifies it having its own composable. The binary state of a switch means it shouldn't be used to represent "required" inputs where the switch needs to be "on". It is a user preference that can be turned off.
 
 ## Features
 
 - You can use `input[type="checkbox"]` element as a base or any custom element.
-- Labeling and descriptions are automatically linked to switch and label elements.
-- Keyboard support for <kbd>Space</kbd> key to toggle the current value.
+- Labeling, descriptions, error message displays are automatically linked to input and label elements with `aria-*` attributes.
+- Support for custom `on` and `off` values.
+- Validation support with Typed Schemas.
+- Support for `v-model` binding.
+- Supported keyboard features:
+
+| Key                                | Description                |
+| ---------------------------------- | -------------------------- |
+| <Kbd code="Space" label="Space" /> | Toggles the switch on/off. |
+| <Kbd code="Enter" label="Enter" /> | Toggles the switch on/off. |
 
 ## Anatomy
 
@@ -26,64 +40,379 @@ The switch field has enough unique behaviors and use-cases that justifies it hav
   <AnatomySwitch />
 </AnatomyCanvas>
 
-## Usage
+## Building a Switch component
 
-### With input elements (recommended)
+The `useSwitch` composable provides the necessary props and methods to build a switch component. It returns binding objects for the elements shown in the [anatomy](#anatomy), you will use `v-bind` to bind them to the corresponding DOM elements.
+
+There is two ways to build a switch component:
+
+- With an `input[type="checkbox"]` as a base element.
+- Without an `input` element, like a `div` or a `button`.
+
+We will review the two ways to build a switch component in the following examples.
+
+### With `input[type="checkbox"]` base element
+
+We will add some styling to the next example because switches don't look like one unless we style it. Also it would just look like a checkbox.
+
+<MdxRepl client:load>
+
+<div slot="Switch.vue">
+  <SwitchPartial />
+</div>
+
+<div slot="App.vue">
 
 ```vue
 <script setup lang="ts">
-import { useSwitch, SwitchFieldProps } from '@formwerk/core';
+import { ref } from 'vue';
+import Switch from './Switch.vue';
 
-const props = defineProps<SwitchFieldProps>();
-
-const { inputProps, labelProps, isPressed, handleClick } = useSwitch(props);
+const isOn = ref(false);
 </script>
 
 <template>
-  <div class="flex items-center">
-    <div
-      class="flex w-9 cursor-pointer items-center rounded-full p-1 ring-blue-500 ring-offset-2 transition-colors duration-200 focus-within:ring-2"
-      :class="{ 'bg-blue-500': isPressed, 'bg-gray-400': !isPressed }"
-      @click="handleClick"
-    >
-      <input v-bind="inputProps" type="checkbox" class="sr-only" />
+  <Switch label="Theme" v-model="isOn" />
 
-      <div
-        class="h-3 w-3 flex-shrink-0 origin-center rounded-full bg-white transition-transform duration-200"
-        :class="{ 'translate-x-4': isPressed }"
-      ></div>
-    </div>
-
-    <label class="ml-2" v-bind="labelProps">{{ label }}</label>
-  </div>
+  <div>Switch is: {{ isOn }}</div>
 </template>
 ```
+
+</div>
+
+</MdxRepl>
 
 ### Without input elements
 
+Similar to the previous example, we can get the exact same look and behavior with a `div` element or a `button` element.
+
+In this example will actually use `svg` element to closely resemble a switch, we will borrow those SVG paths from [Phosphor Icons](https://phosphoricons.com/).
+
+<MdxRepl client:load>
+
+<div slot="Switch.vue">
+  <SwitchCustomPartial />
+</div>
+
+<div slot="App.vue">
+
 ```vue
 <script setup lang="ts">
-import { useSwitch, SwitchFieldProps } from '@formwerk/core';
+import { ref } from 'vue';
+import Switch from './Switch.vue';
 
-const props = defineProps<SwitchFieldProps>();
-
-const { switchProps, labelProps, isPressed } = useSwitch(props);
+const isOn = ref(false);
 </script>
 
 <template>
-  <div class="flex items-center">
-    <div
-      v-bind="switchProps"
-      class="flex w-9 cursor-pointer items-center rounded-full p-1 ring-blue-500 ring-offset-2 transition-colors duration-200 focus:ring-2 focus-visible:outline-none"
-      :class="{ 'bg-blue-500': isPressed, 'bg-gray-400': !isPressed }"
-    >
-      <div
-        class="h-3 w-3 flex-shrink-0 origin-center rounded-full bg-white transition-transform duration-200"
-        :class="{ 'translate-x-4': isPressed }"
-      ></div>
-    </div>
-
-    <label class="ml-2" v-bind="labelProps">{{ label }}</label>
-  </div>
+  <Switch label="Theme" v-model="isOn" />
+  <div>Switch is: {{ isOn }}</div>
 </template>
 ```
+
+</div>
+
+</MdxRepl>
+
+## Validation
+
+### HTML Constraints
+
+While ideally the switch field should not be validatable, you can still use the `required` attribute if you chose to use an `input[type="checkbox"]` as a base element. We make no assumption about how you want to use the switch field.
+
+| Name       | Type      | Description                           |
+| ---------- | --------- | ------------------------------------- |
+| `required` | `boolean` | Whether the number field is required. |
+
+<MdxRepl client:load>
+
+<div slot="!Switch.vue">
+  <SwitchPartial />
+</div>
+
+<div slot="App.vue">
+
+```vue
+<script setup lang="ts">
+import Switch from './Switch.vue';
+</script>
+
+<template>
+  <Switch label="HTML Validation" required />
+</template>
+```
+
+</div>
+
+</MdxRepl>
+
+### Typed Schemas
+
+You can also pass a `schema` prop to the switch component to validate the value.
+
+<Aside>
+
+Depending on the schema validation provider you are using, the API might slightly differ. Check the supported validation providers for more information. In this example we are using the `zod` schema validation provider.
+
+</Aside>
+
+<MdxRepl client:load>
+
+<div slot="!Switch.vue">
+  <SwitchCustomPartial />
+</div>
+
+<div slot="App.vue">
+
+```vue
+<script setup lang="ts">
+import { z } from 'zod';
+import { defineSchema } from '@formwerk/schema-zod';
+import Switch from './Switch.vue';
+
+const schema = defineSchema(z.literal(true));
+</script>
+
+<template>
+  <Switch label="Typed Schema" :schema="schema" />
+</template>
+```
+
+</div>
+
+</MdxRepl>
+
+### Mixed Validation
+
+While it is unlikely that you need both HTML constraints and Typed schemas to validate a number field, Formwerk supports mixed validation, which means you can use both HTML constraints and Typed schemas to validate the switch and they will work together.
+
+Note that HTML constraints are validated first, so any errors from the HTML constraints will be displayed first. Then once all HTML constraints are satisfied, the typed schema is validated.
+
+<MdxRepl client:load>
+
+<div slot="!Switch.vue">
+  <SwitchPartial />
+</div>
+
+<div slot="App.vue">
+
+```vue
+<script setup lang="ts">
+import { z } from 'zod';
+import { defineSchema } from '@formwerk/schema-zod';
+import Switch from './Switch.vue';
+
+const schema = defineSchema(
+  z.custom((val) => {
+    return val !== true;
+  }, 'I am a paradox'),
+);
+</script>
+
+<template>
+  <Switch label="Mixed Validation" required :schema="schema" />
+</template>
+```
+
+</div>
+
+</MdxRepl>
+
+If you need to disable the native validation, you can do so by setting the `disableHtmlValidation` prop to `true`. You can also disable it globally for all fields, for more information check out the [Validation](/guides/forms/validation) guide.
+
+<MdxRepl client:load>
+
+<div slot="!Switch.vue">
+  <SwitchPartial />
+</div>
+
+<div slot="App.vue">
+
+```vue
+<script setup lang="ts">
+import { z } from 'zod';
+import { defineSchema } from '@formwerk/schema-zod';
+import Switch from './Switch.vue';
+
+const schema = defineSchema(
+  z.custom((val) => {
+    return val !== true;
+  }, 'I am a paradox'),
+);
+</script>
+
+<template>
+  <Switch
+    label="Mixed Validation"
+    required
+    :schema="schema"
+    disable-html-validation
+  />
+</template>
+```
+
+</div>
+
+</MdxRepl>
+
+## Styling
+
+Since you have complete control over how to style the switch component. That means you can use any styling solution you want, whether it's [TailwindCSS](https://tailwindcss.com/), or plain CSS.
+
+The previous examples already did some styling, but you can always add more to it. Here is an example with plain CSS:
+
+<MdxRepl client:load>
+
+<div slot="Switch.vue">
+  <StyledSwitch />
+</div>
+
+<div slot="App.vue">
+
+```vue
+<script setup lang="ts">
+import { z } from 'zod';
+import { defineSchema } from '@formwerk/schema-zod';
+import Switch from './Switch.vue';
+
+const schema = defineSchema(z.literal(true));
+</script>
+
+<template>
+  <Switch label="Keep on" :schema="schema" />
+</template>
+```
+
+</div>
+
+</MdxRepl>
+
+## Usage
+
+### Disabled
+
+Use disabled to mark the switch as non-interactive. Disabled switches are not validated and will not be submitted.
+
+If you need to prevent the user from interacting with the field while still allowing it to submit, consider using `readonly` instead.
+
+<MdxRepl client:load>
+
+<div slot="!Switch.vue">
+  <StyledSwitch />
+</div>
+
+<div slot="App.vue">
+
+```vue
+<script setup lang="ts">
+import Switch from './Switch.vue';
+</script>
+
+<template>
+  <Switch label="Disabled switch" disabled />
+</template>
+```
+
+</div>
+
+</MdxRepl>
+
+### Readonly
+
+Readonly switches are validated and submitted, but they do not accept user input. The switch is still focusable and the value is copyable. For more info, check the [MDN](https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/readonly).
+
+<MdxRepl client:load>
+
+<div slot="!Switch.vue">
+  <StyledSwitch />
+</div>
+
+<div slot="App.vue">
+
+```vue
+<script setup lang="ts">
+import { ref } from 'vue';
+import Switch from './Switch.vue';
+
+const value = ref(true);
+</script>
+
+<template>
+  <Switch label="Readonly switch" v-model="value" readonly />
+</template>
+```
+
+</div>
+
+</MdxRepl>
+
+### Custom On/Off values
+
+You can customize the `on` and `off` values of the switch component by passing the `trueValue` and `falseValue` props. They can be anything you want.
+
+<MdxRepl client:load>
+
+<div slot="!Switch.vue">
+  <StyledSwitch />
+</div>
+
+<div slot="App.vue">
+
+```vue
+<script setup lang="ts">
+import { ref } from 'vue';
+import Switch from './Switch.vue';
+
+const value = ref('off');
+</script>
+
+<template>
+  <Switch
+    label="Custom values"
+    v-model="value"
+    :trueValue="'on'"
+    :falseValue="'off'"
+  />
+
+  <div>Value is: {{ value }}</div>
+</template>
+```
+
+</div>
+
+</MdxRepl>
+
+## API
+
+## Props
+
+These are the properties that can be passed to the `useSwitch` composable.
+
+| Name                  | Type                   | Description                                                  |
+| --------------------- | ---------------------- | ------------------------------------------------------------ |
+| label                 | `string`               | The label for the switch component.                          |
+| name                  | `string`               | The name attribute for the switch component.                 |
+| modelValue            | `boolean`              | The value of the switch component.                           |
+| required              | `boolean`              | Whether the switch component is required.                    |
+| readonly              | `boolean`              | Whether the switch component is readonly.                    |
+| disabled              | `boolean`              | Whether the switch component is disabled.                    |
+| trueValue             | `any`                  | The value to be assigned when the switch is on.              |
+| falseValue            | `any`                  | The value to be assigned when the switch is off.             |
+| schema                | `TypedSchema<unknown>` | The schema to validate the switch component value.           |
+| disableHtmlValidation | `boolean`              | Whether to disable HTML validation for the switch component. |
+
+### Returns
+
+These are the properties in the object returned by the `useSwitch` composable.
+
+| Name                | Type                        | Description                            |
+| ------------------- | --------------------------- | -------------------------------------- |
+| `errorMessage`      | `string \| undefined`       | The validation message.                |
+| `errorMessageProps` | `AriaErrorMessageProps`     | The error message element props.       |
+| `inputProps`        | Complex Binding             | The base element props.                |
+| `isDirty`           | `boolean`                   | Whether the switch value has changed.  |
+| `isPressed`         | `boolean`                   | Whether the switch is on/off.          |
+| `isTouched`         | `boolean`                   | Whether the switch is touched.         |
+| `isValid`           | `boolean`                   | Whether the switch has error messages. |
+| `labelProps`        | `AriaLabelProps`            | The label element props.               |
+| `togglePressed`     | `(force?: boolean) => void` | Switches the field value on/off        |
