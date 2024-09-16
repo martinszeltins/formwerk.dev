@@ -3,10 +3,10 @@ import colors from 'tailwindcss/colors';
 
 // Generated color palettes
 const accent = {
-  200: '#8fdcba',
-  600: '#00543b',
-  900: '#003d2a',
-  950: '#002c1d',
+  200: '#34d399',
+  600: '#10b981',
+  900: '#065f46',
+  950: '#064e3b',
 };
 
 /** @type {import('tailwindcss').Config} */
