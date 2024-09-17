@@ -1,13 +1,22 @@
 ---
 title: Checkboxes
-description: A guide in my new Starlight docs site.
+description: Learn how to build accessible Vue.js checkbox Vue components with Formwerk.
 sidebar:
   order: 4
 ---
 
 import { Tabs, TabItem, Aside } from '@astrojs/starlight/components';
+
 import AnatomyCanvas from '@components/AnatomyCanvas.vue';
 import AnatomyCheckboxes from '@components/AnatomyCheckboxes.vue';
+import MdxRepl from '@components/MdxRepl.vue';
+import Kbd from '@components/KeyboardKey.vue';
+
+import CheckboxPartial from './_partials/_checkbox.mdx';
+import StyledCheckboxPartial from './_partials/_checkboxStyled.mdx';
+import CheckboxCustomPartial from './_partials/_checkboxCustom.mdx';
+import CheckboxGroupPartial from './_partials/_checkboxGroup.mdx';
+import StyledCheckboxGroupPartial from './_partials/_checkboxGroupStyled.mdx';
 
 Checkboxes allow the user to toggle the field state on (ticked/checked) or off (unchecked). Checkboxes are mainly used in a couple of scenarios:
 
@@ -18,29 +27,326 @@ Checkboxes are more nuanced than that, and we've put a lot of thought into how t
 
 [Aria Patterns](https://www.w3.org/WAI/ARIA/apg/patterns/checkbox/)
 
-You will be using the `useCheckbox` composable to build the individual checkbox component and the `useCheckboxGroup` composable to build the checkbox group component.
-
 ## Features
 
-You can build checkboxes using either the native HTML `input[type="checkbox"]` elements or custom HTML elements. We provide the behavior, state and accessibility implementation for both cases with the same API and features.
+You can build checkboxes using either the native HTML `input[type="checkbox"]` elements or other HTML elements. We provide the behavior, state and accessibility implementation for both cases with the same API and features.
 
 Currently, the following features are implemented:
 
-- `v-model` support for both single and multiple checkboxes.
-- Support for either `input[type="checkbox"]` or custom HTML elements as a base element for the checkbox.
-- Custom `true-value` and `false-value` instead of just `true`/`false` values.
+- Support for either `input[type="checkbox"]` or any other HTML elements as a base element for the checkbox.
+- Labeling, descriptions, error message displays are automatically linked to input and label elements with `aria-*` attributes.
+- Custom checked/unchecked values.
 - Support for `indeterminate` state.
-- Accessibility for labels, descriptions, error messages, checkbox groups, and custom checkboxes.
+- Form management, data collection and validation with Typed Schemas or native HTML5 validation.
+- Support for orientation with `horizontal` and `vertical` values.
+- `v-model` support for both single and grouped checkboxes.
 - Supported Keyboard features:
-  - Pressing <kbd>Space</kbd> to toggle the checkbox checked state.
-  - Focus management with <kbd>Tab</kbd> navigation.
-- Form management and validation with Typed Schemas or native HTML5 validation.
+
+| Key                                                                                                | Description                                                                                      |
+| -------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------ |
+| <Kbd code="Space" label="Space" />                                                                 | Selects the focused checkbox item.                                                               |
+| <Kbd code="Tab" label="Tab" />                                                                     | Moves the focus to the next checkbox item or the next tab order element in the document.         |
+| <div class="flex gap-1"><Kbd code="Shift" label="Shift" /> + <Kbd code="Tab" label="Tab" /> </div> | Moves the focus to the previous checkbox item or the previous tab order element in the document. |
 
 ## Anatomy
 
 <AnatomyCanvas>
   <AnatomyCheckboxes />
 </AnatomyCanvas>
+
+## Building a Checkbox component
+
+The `useCheckbox` composable provides the behavior, state and accessibility implementation for checkbox items. Checkbox items can be built with either `input[type="checkbox"]` or custom HTML elements depending on your styling needs.
+
+You can start by importing the `useCheckbox` composable and using it in your checkbox component.
+
+```ts
+import { CheckboxProps, useCheckbox } from '@formwerk/core';
+
+const props = defineProps<CheckboxProps>();
+
+const { labelProps, inputProps } = useCheckbox(props);
+```
+
+The `useCheckbox` composable returns binding objects for the elements shown in the anatomy, you will use `v-bind` to bind them to the DOM elements.
+
+```vue
+<input v-bind="inputProps" />
+<label v-bind="labelProps">{{ label }}</label>
+```
+
+Under the hood those bindings contain all the necessary attributes and event listeners to manage the checkbox state and behavior and to ensure the support of assistive technologies.
+
+With that out of the way, let's see how you can build a checkbox component, there are two ways to do it.
+
+### With `input` as a base element
+
+This is how you would build a custom checkbox item component using the `useCheckbox` composable.
+
+<MdxRepl client:load>
+
+<div slot="Checkbox.vue">
+  <CheckboxPartial />
+</div>
+
+<div slot="App.vue">
+
+```vue
+<script setup lang="ts">
+import { ref } from 'vue';
+import Checkbox from './Checkbox.vue';
+
+const isChecked = ref(false);
+</script>
+
+<template>
+  <Checkbox label="Terms" v-model="isChecked" />
+
+  isChecked {{ isChecked }}
+</template>
+```
+
+</div>
+
+</MdxRepl>
+
+### With other HTML elements as a base
+
+For special styling needs, you don't have to use the `input` element. You can use a custom HTML element as a base with the same API.
+
+<MdxRepl client:load>
+
+<div slot="Checkbox.vue">
+  <CheckboxCustomPartial />
+</div>
+
+<div slot="App.vue">
+
+```vue
+<script setup lang="ts">
+import { ref } from 'vue';
+import Checkbox from './Checkbox.vue';
+
+const isChecked = ref(false);
+</script>
+
+<template>
+  <Checkbox label="Terms" v-model="isChecked" />
+
+  isChecked {{ isChecked }}
+</template>
+```
+
+</div>
+
+</MdxRepl>
+
+## Building a Checkbox Group component
+
+You will use the `useCheckboxGroup` composable to build a checkbox group component. The composables offers the behavior, state and accessibility implementation for checkbox groups.
+
+<Aside>
+
+When a checkbox component is nested inside a checkbox group, **it will NOT
+report its own state**. With the exception of the `isChecked` state, all other
+states will report the group's state instead. Think of it as the checkbox
+loses some sense of individuality and reports the group's state as its own.
+
+This also means `v-model` should be used on the group component and not on the individual checkboxes.
+
+</Aside>
+
+Assuming that you've already built a checkbox component using the `useCheckbox` composable as the two are tightly coupled, the following example shows how you can build a checkbox group component.
+
+We will use the a checkbox without an `input` element base just to show you that it does not matter what element you use as a base. The same behaviors will be provided for either.
+
+<MdxRepl client:load>
+
+<div slot="!Checkbox.vue">
+  <CheckboxCustomPartial />
+</div>
+
+<div slot="CheckboxGroup.vue">
+  <CheckboxGroupPartial />
+</div>
+
+<div slot="App.vue">
+
+```vue
+<script setup lang="ts">
+import { ref } from 'vue';
+import Checkbox from './Checkbox.vue';
+import CheckboxGroup from './CheckboxGroup.vue';
+
+const colors = ref([]);
+</script>
+
+<template>
+  <CheckboxGroup label="Colors" v-model="colors">
+    <Checkbox label="Red" value="red" />
+    <Checkbox label="Green" value="green" />
+    <Checkbox label="Blue" value="blue" />
+  </CheckboxGroup>
+
+  selected colors: {{ colors }}
+</template>
+```
+
+</div>
+
+</MdxRepl>
+
+## Validation
+
+Checkbox components and checkbox groups can be validated by using Typed Schemas or native HTML5 validation via the `schema` prop on each of them.
+
+When checkboxes are a part of a checkbox group, they will not report their own error messages as the group component should be responsible for displaying the error message.
+
+### HTML Constraints
+
+The following properties are supported on both composables, if you use the `input` element as a base for the checkbox.
+
+| Name       | Type      | Description                                |
+| ---------- | --------- | ------------------------------------------ |
+| `required` | `boolean` | Whether the checkbox or group is required. |
+
+Here is an example of how to use the `required` property on either a `CheckboxItem` or a `CheckboxGroup`.
+
+<MdxRepl client:load>
+
+<div slot="!Checkbox.vue">
+  <CheckboxPartial />
+</div>
+
+<div slot="!CheckboxGroup.vue">
+  <CheckboxGroupPartial />
+</div>
+
+<div slot="App.vue">
+
+```vue
+<script setup lang="ts">
+import { ref } from 'vue';
+import Checkbox from './Checkbox.vue';
+import CheckboxGroup from './CheckboxGroup.vue';
+</script>
+
+<template>
+  <!-- Single checkbox -->
+  <Checkbox label="Terms" required />
+
+  <!-- Checkbox group -->
+  <CheckboxGroup name="test" label="Colors" required>
+    <Checkbox label="Red" value="red" />
+    <Checkbox label="Green" value="green" />
+    <Checkbox label="Blue" value="blue" />
+  </CheckboxGroup>
+</template>
+```
+
+</div>
+
+</MdxRepl>
+
+Note that marking any checkbox item that is part of a checkbox group as required will not make the group required and it will be ignored.
+
+### Typed Schema
+
+Both `useCheckbox` and `useCheckboxGroup` support Typed Schema validation through the `schema` prop.
+
+<MdxRepl client:load>
+
+<div slot="!Checkbox.vue">
+  <CheckboxPartial />
+</div>
+
+<div slot="!CheckboxGroup.vue">
+  <CheckboxGroupPartial />
+</div>
+
+<div slot="App.vue">
+
+```vue
+<script setup lang="ts">
+import { z } from 'zod';
+import { defineSchema } from '@formwerk/schema-zod';
+import Checkbox from './Checkbox.vue';
+import CheckboxGroup from './CheckboxGroup.vue';
+
+const schema = defineSchema(z.array(z.string()).min(1, 'Required'));
+const singleSchema = defineSchema(z.literal(true, 'Required'));
+</script>
+
+<template>
+  <!-- Single checkbox -->
+  <Checkbox label="Terms" :value="true" :schema="singleSchema" />
+
+  <!-- Checkbox group -->
+  <CheckboxGroup label="Colors (Typed Schema)" :schema="schema">
+    <Checkbox label="Red" value="red" />
+    <Checkbox label="Green" value="green" />
+    <Checkbox label="Blue" value="blue" />
+  </CheckboxGroup>
+</template>
+```
+
+</div>
+
+</MdxRepl>
+
+## Styling
+
+With the native `input` being limited in terms of styling, you can consider hiding it visually and instead use a custom element in its place. Note that while the element is visually hidden, it will still be announced by assistive technologies. Alternatively, you can use any element as a base instead.
+
+The `.sr-only` class is used to hide the `input` element from the visual layout but keep it accessible to assistive technologies. You should have a similar class in your styling solution or framework as this use-case is very common.
+
+Another thing to note is we've placed the `input` element inside a `label` element to ensure that the checkbox is still focusable and that clicking on the label also toggles the checkbox.
+
+<MdxRepl client:load>
+
+<div slot="Checkbox.vue">
+  <StyledCheckboxPartial />
+</div>
+
+<div slot="CheckboxGroup.vue">
+  <StyledCheckboxGroupPartial />
+</div>
+
+<div slot="App.vue">
+
+```vue
+<script setup lang="ts">
+import Checkbox from './Checkbox.vue';
+import CheckboxGroup from './CheckboxGroup.vue';
+import { z } from 'zod';
+import { defineSchema } from '@formwerk/schema-zod';
+
+const schema = defineSchema(
+  z
+    .array(z.string())
+    .min(1, 'Please select a drink')
+    .max(2, 'You can only select up to 2 drinks'),
+);
+</script>
+
+<template>
+  <CheckboxGroup
+    label="Select a drink"
+    description="Select up to 2 drinks"
+    :schema="schema"
+  >
+    <Checkbox label="Tea 🍵" value="🍵" />
+    <Checkbox label="Coffee ☕️" value="☕️" />
+    <Checkbox label="Milk 🥛" value="🥛" />
+  </CheckboxGroup>
+</template>
+```
+
+</div>
+
+</MdxRepl>
+
+## Usage
 
 ## API
 
@@ -82,344 +388,3 @@ Currently, the following features are implemented:
 | `setErrors`         | `(msg: Arrayable<string>) => void` | Sets the error messages for the group and sets the `isValid` state.           |
 | `setTouched`        | `(touched: boolean) => void`       | Sets the `isTouched` state.                                                   |
 | `setValue`          | `(value: any[]) => void`           | Sets the group value and updates each item's checked state.                   |
-
-## Building a Checkbox component
-
-The `useCheckbox` composable provides the behavior, state and accessibility implementation for checkbox items. Checkbox items can be built with either `input[type="checkbox"]` or custom HTML elements depending on your styling needs.
-
-You can start by importing the `useCheckbox` composable and using it in your checkbox component.
-
-```ts
-import { CheckboxProps, useCheckbox } from '@formwerk/core';
-
-const props = defineProps<CheckboxProps>();
-
-const { labelProps, inputProps } = useCheckbox(props);
-```
-
-The `useCheckbox` composable returns binding objects for the elements shown in the anatomy, you will use `v-bind` to bind them to the DOM elements.
-
-```vue
-<input v-bind="inputProps" />
-<label v-bind="labelProps">{{ label }}</label>
-```
-
-Under the hood those bindings contain all the necessary attributes and event listeners to manage the checkbox state and behavior and to ensure the support of assistive technologies.
-
-With that out of the way, let's see how you can build a checkbox component, there are two ways to do it.
-
-### With `input` as a base element
-
-This is how you would build a custom checkbox item component using the `useCheckbox` composable.
-
-```vue
-<script setup lang="ts">
-import { CheckboxProps, useCheckbox } from '@formwerk/core';
-
-const props = defineProps<CheckboxProps>();
-
-const { labelProps, inputProps } = useCheckbox(props);
-</script>
-
-<template>
-  <div class="control">
-    <input v-bind="inputProps" />
-
-    <label v-bind="labelProps">{{ label }}</label>
-  </div>
-</template>
-
-<style scoped>
-.control {
-  display: flex;
-  align-items: center;
-
-  label {
-    margin-left: 0.25rem;
-  }
-}
-</style>
-```
-
-### With custom HTML element as a base
-
-For special styling needs, you don't have to use the `input` element. You can use a custom HTML element as a base with the same API.
-
-```vue
-<script setup lang="ts">
-import { CheckboxProps, useCheckbox } from '@formwerk/core';
-
-const props = defineProps<CheckboxProps>();
-
-const { labelProps, checkboxProps, isChecked } = useCheckbox(props);
-</script>
-
-<template>
-  <div v-bind="checkboxProps">
-    <div>
-      {{ isChecked ? '✅' : '⬛️' }}
-    </div>
-
-    <span v-bind="labelProps">{{ label }}</span>
-  </div>
-</template>
-```
-
-## Building a Checkbox Group component
-
-Provides the behavior, state and accessibility implementation for group components.
-
-- A checkbox group can have a `v-model` bound to it.
-- A checkbox group considers all children that call `useCheckbox` as one item of the group.
-
-<Aside>
-  When a checkbox component is nested inside a checkbox group, **it will NOT
-  report its own state**. With the exception of the `isChecked` state, all other
-  states will report the group's state instead. Think of it as the checkbox
-  loses some sense of individuality and reports the group's state as its own.
-</Aside>
-
-You can build a checkbox group component using the `useCheckboxGroup` composable. This assumes that you've already built a checkbox component using the `useCheckbox` composable as the two are tightly coupled.
-
-```vue
-<script setup lang="ts">
-import { CheckboxGroupProps, useCheckboxGroup } from '@formwerk/core';
-
-const props = defineProps<CheckboxGroupProps>();
-
-const {
-  checkboxGroupProps,
-  labelProps,
-  descriptionProps,
-  errorMessageProps,
-  errorMessage,
-} = useCheckboxGroup(props);
-</script>
-
-<template>
-  <div v-bind="checkboxGroupProps">
-    <div v-bind="labelProps">{{ label }}</div>
-
-    <slot />
-
-    <div v-if="errorMessage" v-bind="errorMessageProps">
-      {{ errorMessage }}
-    </div>
-
-    <div v-else-if="description" v-bind="descriptionProps">
-      {{ description }}
-    </div>
-  </div>
-</template>
-```
-
-Then you can use your `CheckboxGroup` component and nest your checkboxes inside of it.
-
-```vue
-<template>
-  <CheckboxGroup label="Select your favorite colors">
-    <Checkbox label="Red" value="red" />
-    <Checkbox label="Green" value="green" />
-    <Checkbox label="Blue" value="blue" />
-  </CheckboxGroup>
-</template>
-```
-
-<Aside>
-
-Note that setting any state on a single checkbox will also set the group state on the parent `CheckboxGroup` component. This is because the group can be considered as a single form field and as such their state is now shared.
-
-</Aside>
-
-## Validation
-
-Checkbox components and checkbox groups can be validated by using Typed Schemas or native HTML5 validation via the `schema` prop on each of them.
-
-When checkboxes are a part of a checkbox group, they will not report their own error messages as the group component should be responsible for displaying the error message.
-
-### HTML Constraints
-
-The following properties are supported on both composables:
-
-| Name       | Type      | Description                           |
-| ---------- | --------- | ------------------------------------- |
-| `required` | `boolean` | Whether the number field is required. |
-
-Here is an example of how to use the `required` property on either a `CheckboxItem` or a `CheckboxGroup`.
-
-```vue
-<script setup lang="ts">
-import CheckboxGroupItem from '@/components/CheckboxGroupItem.vue';
-import CheckboxItem from '@/components/CheckboxItem.vue';
-</script>
-
-<template>
-  <!-- Single checkbox -->
-  <CheckboxItem label="Terms" :value="true" required />
-
-  <!-- Checkbox group -->
-  <CheckboxGroup label="HTML Validation" required>
-    <CheckboxItem label="Red" value="red" />
-    <CheckboxItem label="Green" value="green" />
-    <CheckboxItem label="Blue" value="blue" />
-  </CheckboxGroup>
-</template>
-```
-
-Note that marking any checkbox item that is part of a checkbox group as required will not make the group required and it will be ignored.
-
-### Typed Schema
-
-Both `useCheckbox` and `useCheckboxGroup` support Typed Schema validation through the `schema` prop.
-
-```vue
-<script setup lang="ts">
-import { z } from 'zod';
-import { defineSchema } from '@formwerk/schema-zod';
-import CheckboxGroupItem from '@/components/CheckboxGroupItem.vue';
-import CheckboxItem from '@/components/CheckboxItem.vue';
-
-const schema = defineSchema(z.array(z.string()).min(1, 'Required'));
-const singleSchema = defineSchema(z.literal(true, 'Required'));
-</script>
-
-<template>
-  <!-- Single checkbox -->
-  <CheckboxItem label="Terms" :value="true" :schema="singleSchema" />
-
-  <!-- Checkbox group -->
-  <CheckboxGroup label="Typed Schema" :schema="schema">
-    <CheckboxItem label="Red" value="red" />
-    <CheckboxItem label="Green" value="green" />
-    <CheckboxItem label="Blue" value="blue" />
-  </CheckboxGroup>
-</template>
-```
-
-## Styling
-
-### Styling base `input` elements
-
-With the native `input` being limited in terms of styling, you can consider hiding it visually and instead use a custom element in its place. Note that while the element is visually hidden, it will still be announced by assistive technologies.
-
-```vue
-<script setup lang="ts">
-import { CheckboxProps, useCheckbox } from '@formwerk/core';
-
-const props = defineProps<CheckboxProps>();
-
-const { labelProps, checkboxProps, isChecked } = useCheckbox(props);
-</script>
-
-<template>
-  <label class="control" v-bind="labelProps">
-    <input v-bind="inputProps" class="sr-only" />
-
-    <span class="control-box">
-      <span class="control-box-tick"></span>
-    </span>
-
-    {{ label }}
-  </label>
-</template>
-
-<style scoped>
-.sr-only {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  padding: 0;
-  margin: -1px;
-  overflow: hidden;
-  clip: rect(0, 0, 0, 0);
-  white-space: nowrap;
-  border-width: 0;
-}
-
-.control {
-  display: flex;
-  align-items: center;
-
-  &-box {
-    width: 1.25rem;
-    height: 1.25rem;
-    border: 2px solid #000;
-  }
-
-  &-box-tick {
-    width: 100%;
-    height: 100%;
-    background-color: #000;
-  }
-
-  &[aria-checked='true'] {
-    .control-box-tick {
-      background-color: #3b82f6;
-    }
-  }
-}
-</style>
-```
-
-The `.sr-only` class is used to hide the `input` element from the visual layout but keep it accessible to assistive technologies. You should have a similar class in your styling solution or framework as this use-case is very common.
-
-Another thing to note is we've placed the `input` element inside a `label` element to ensure that the checkbox is still focusable and that clicking on the label also toggles the checkbox.
-
-### Styling base custom HTML elements
-
-This approach doesn't have quirks like the native `input` element and you have full control over the checkbox styling.
-
-Formwerk makes sure that the checkbox behaves as a single form field and that its state, accessibility, and interactions are managed properly.
-
-```vue
-<script setup lang="ts">
-import { CheckboxProps, useCheckbox } from '@formwerk/core';
-
-const props = defineProps<CheckboxProps>();
-
-const { labelProps, checkboxProps, isChecked } = useCheckbox(props);
-</script>
-
-<template>
-  <div class="control">
-    <div v-bind="checkboxProps" class="control-box">
-      <div class="control-box-tick"></div>
-    </div>
-
-    <span v-bind="labelProps">{{ label }}</span>
-  </div>
-</template>
-
-<style scoped>
-.control {
-  display: flex;
-  align-items: center;
-
-  &-box {
-    width: 1.25rem;
-    height: 1.25rem;
-    border: 2px solid #000;
-  }
-
-  &-box-tick {
-    width: 100%;
-    height: 100%;
-    background-color: #000;
-  }
-
-  &[aria-checked='true'] {
-    .control-box-tick {
-      background-color: #3b82f6;
-    }
-  }
-}
-
-label {
-  margin-left: 0.25rem;
-}
-</style>
-```
-
-### Styled Examples
-
-## Usage

@@ -1,0 +1,19 @@
+```vue
+<script setup lang="ts">
+import { type CheckboxProps, useCheckbox } from '@formwerk/core';
+
+const props = defineProps<CheckboxProps>();
+
+const { labelProps, inputProps, isChecked } = useCheckbox(props);
+</script>
+
+<template>
+  <div>
+    <span v-bind="inputProps">
+      {{ isChecked ? '✅' : '⬛️' }}
+    </span>
+
+    <span v-bind="labelProps">{{ label }}</span>
+  </div>
+</template>
+```
