@@ -1,4 +1,4 @@
-```vue
+```vue collapse={37-100}
 <script setup lang="ts">
 import { type CheckboxGroupProps, useCheckboxGroup } from '@formwerk/core';
 
@@ -10,11 +10,16 @@ const {
   descriptionProps,
   errorMessageProps,
   errorMessage,
+  isTouched,
 } = useCheckboxGroup(props);
 </script>
 
 <template>
-  <div v-bind="groupProps" class="checkbox-group">
+  <div
+    v-bind="groupProps"
+    class="checkbox-group"
+    :class="{ 'is-touched': isTouched }"
+  >
     <div v-bind="labelProps" class="group-label">{{ label }}</div>
 
     <div class="checkboxes-container">
@@ -82,19 +87,13 @@ const {
     }
   }
 
-  &:has(:user-invalid) {
+  &.is-touched:has(:invalid) {
     .error {
       display: block;
     }
 
     .hint {
       display: none;
-    }
-  }
-
-  &[aria-orientation='vertical'] {
-    .checkboxes-container {
-      flex-direction: column;
     }
   }
 }

@@ -1,4 +1,4 @@
-```vue collapse={43-113}
+```vue collapse={43-124}
 <script setup lang="ts">
 import { type CheckboxProps, useCheckbox } from '@formwerk/core';
 
@@ -95,6 +95,18 @@ const { labelProps, inputProps, errorMessage, errorMessageProps, isChecked } =
       opacity: 0.5;
       cursor: not-allowed;
       background-color: var(--color-border);
+
+      .control svg {
+        color: var(--color-text);
+      }
+
+      &:hover {
+        border-color: var(--color-border);
+      }
+    }
+
+    &:has([readonly]) {
+      opacity: 0.3;
     }
   }
 }
