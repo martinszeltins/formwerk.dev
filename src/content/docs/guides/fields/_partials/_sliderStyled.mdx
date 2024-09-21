@@ -1,0 +1,81 @@
+```vue collapse={33-77}
+<script setup lang="ts">
+import { useSlider, type SliderProps } from '@formwerk/core';
+
+import Thumb from './Thumb.vue';
+
+const props = defineProps<SliderProps>();
+
+const {
+  trackProps,
+  groupProps,
+  labelProps,
+  errorMessage,
+  errorMessageProps,
+  useThumbMetadata,
+} = useSlider(props);
+
+const thumbData = useThumbMetadata(0);
+</script>
+
+<template>
+  <div class="slider" v-bind="groupProps">
+    <div v-bind="labelProps" class="slider-label">{{ label }}</div>
+    <div v-bind="trackProps" class="track">
+      <Thumb />
+    </div>
+
+    <div v-if="errorMessage" v-bind="errorMessageProps" class="error">
+      {{ errorMessage }}
+    </div>
+  </div>
+</template>
+
+<style scoped>
+.slider {
+  --color-text: #333;
+  --color-error: #f00;
+  display: flex;
+  align-items: center;
+  gap: 6px 14px;
+  flex-wrap: wrap;
+
+  .slider-label {
+    margin-bottom: 0.25rem;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--color-text);
+  }
+
+  .track {
+    display: flex;
+    align-items: center;
+    width: 150px;
+    height: 6px;
+    background-color: #78716c;
+    border-radius: 6px;
+
+    &::before {
+      content: '';
+      width: calc(v-bind('thumbData.percent') * 100%);
+      background-color: #059669;
+      border-radius: 6px;
+      height: 6px;
+    }
+  }
+
+  .error {
+    display: none;
+    font-size: 13px;
+    color: #f00;
+    width: 100%;
+  }
+
+  &:has([aria-invalid='true']) {
+    .error {
+      display: block;
+    }
+  }
+}
+</style>
+```

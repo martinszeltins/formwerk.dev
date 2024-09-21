@@ -88,7 +88,7 @@ const key = computed(() => {
   }
 
   .key-text {
-    @apply text-[13px] font-medium;
+    @apply whitespace-nowrap text-[13px] font-medium;
   }
 
   .notch {
