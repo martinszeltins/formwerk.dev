@@ -18,11 +18,17 @@ const { optionProps } = useOption(props);
   --color-border: #9ca3af;
   user-select: none;
   padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 14px;
   border: 1px solid transparent;
   transition:
     background-color 0.2s,
     color 0.2s,
     border-color 0.2s;
+
+  &:hover {
+    background-color: #a7f3d0;
+  }
 
   &[aria-selected='true'],
   &[aria-checked='true'] {
@@ -30,13 +36,14 @@ const { optionProps } = useOption(props);
     color: #fff;
   }
 
-  &:hover {
-    background-color: #a7f3d0;
-  }
-
   &:focus {
     outline: none;
     border: 1px solid var(--color-border);
+  }
+
+  &[aria-disabled='true'] {
+    opacity: 0.5;
+    cursor: not-allowed;
   }
 }
 </style>
