@@ -12,3 +12,7 @@
     --sl-content-width: 50rem;
   }
 }
+
+tr > td:first-child {
+  white-space: nowrap;
+}

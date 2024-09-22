@@ -1,0 +1,42 @@
+```vue
+<template>
+  <div v-bind="groupProps" class="option-group">
+    <div v-bind="labelProps" class="label">{{ label }}</div>
+
+    <div class="options">
+      <!-- Options will be slotted here -->
+      <slot />
+    </div>
+  </div>
+</template>
+
+<script setup lang="ts">
+import { type OptionGroupProps, useOptionGroup } from '@formwerk/core';
+
+const props = defineProps<OptionGroupProps>();
+
+const { labelProps, groupProps } = useOptionGroup(props);
+</script>
+
+<style scoped>
+.option-group {
+  --color-bg: #022c22;
+
+  .label {
+    background-color: var(--color-bg);
+    color: #fff;
+    padding: 4px 8px;
+    user-select: none;
+    position: sticky;
+    top: 0;
+  }
+
+  .options {
+    padding: 4px;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+}
+</style>
+```

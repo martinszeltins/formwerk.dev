@@ -9,12 +9,20 @@
         <div
           class="flex w-full items-center justify-center rounded-md border border-zinc-600 bg-zinc-900 px-4 py-1.5 font-medium text-zinc-400"
         >
-          <AnatomyPart text="Selected Option" position="bottom">
+          <AnatomyPart text="Selected value" position="left" class="w-min">
             Value
           </AnatomyPart>
 
           <PhCaretDown class="ml-auto" />
         </div>
+      </AnatomyPart>
+
+      <AnatomyPart
+        text="Description or Error Message"
+        position="bottom"
+        class="w-min whitespace-nowrap"
+      >
+        <span class="mt-1 text-sm">Help text</span>
       </AnatomyPart>
     </div>
 

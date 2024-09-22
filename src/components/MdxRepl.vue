@@ -1,7 +1,10 @@
 <template>
   <div
     ref="replContainer"
-    class="not-content mt-8 flex flex-col space-y-0 overflow-hidden rounded-md"
+    class="preview-container not-content mt-8 flex flex-col space-y-0 overflow-hidden rounded-md"
+    :style="{
+      '--preview-size': previewSize === 'lg' ? '300px' : '100%',
+    }"
   >
     <div v-if="tabs.length > 1" class="flex items-center">
       <button
@@ -84,6 +87,7 @@ const props = defineProps<{
   importMaps?: Record<string, string>;
   customCode?: string;
   activeFile?: string;
+  previewSize?: 'md' | 'lg';
 }>();
 
 const fileIcons: Record<string, Component> = {
@@ -214,3 +218,11 @@ function useSlotFiles() {
   return { files, tabs, activeFile };
 }
 </script>
+
+<style lang="postcss" scoped>
+.preview-container {
+  &:deep(.iframe-container) {
+    height: var(--preview-size, 100%);
+  }
+}
+</style>

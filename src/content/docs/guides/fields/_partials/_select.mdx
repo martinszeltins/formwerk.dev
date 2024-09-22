@@ -1,0 +1,61 @@
+```vue
+<script setup lang="ts">
+import { useSelect, type SelectProps } from '@formwerk/core';
+
+const props = defineProps<SelectProps>();
+
+const {
+  triggerProps,
+  labelProps,
+  errorMessageProps,
+  isTouched,
+  errorMessage,
+  fieldValue,
+  popupProps,
+} = useSelect(props);
+</script>
+
+<template>
+  <div class="select">
+    <div v-bind="labelProps">{{ label }}</div>
+
+    <div v-bind="triggerProps" class="trigger">
+      {{ fieldValue || 'Pick a value' }}
+
+      <span>⬇️</span>
+    </div>
+
+    <div v-bind="popupProps" popover class="listbox">
+      <slot />
+    </div>
+
+    <div v-if="errorMessage" v-bind="errorMessageProps">
+      {{ errorMessage }}
+    </div>
+  </div>
+</template>
+
+<style scoped>
+.select {
+  display: flex;
+  flex-direction: column;
+  width: max-content;
+}
+
+.trigger {
+  border: 1px solid #e5e7eb;
+  padding: 0.5rem;
+  border-radius: 0.375rem;
+  user-select: none;
+}
+
+.listbox {
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  max-height: 80vh;
+  box-shadow:
+    0 4px 6px -1px rgba(0, 0, 0, 0.1),
+    0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+</style>
+```
