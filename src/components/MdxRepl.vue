@@ -3,7 +3,7 @@
     ref="replContainer"
     class="preview-container not-content mt-8 flex flex-col space-y-0 overflow-hidden rounded-md"
     :style="{
-      '--preview-size': previewSize === 'lg' ? '300px' : '180px',
+      '--preview-size': sizes[props.previewSize || 'md'],
     }"
   >
     <div v-if="tabs.length > 1" class="flex items-center">
@@ -89,6 +89,12 @@ const props = defineProps<{
   activeFile?: string;
   previewSize?: 'md' | 'lg';
 }>();
+
+const sizes = {
+  sm: '150px',
+  md: '180px',
+  lg: '300px',
+};
 
 const fileIcons: Record<string, Component> = {
   vue: markRaw(VueIcon),
