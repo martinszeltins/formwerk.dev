@@ -3,7 +3,7 @@
     ref="replContainer"
     class="preview-container not-content mt-8 flex flex-col space-y-0 overflow-hidden rounded-md"
     :style="{
-      '--preview-size': previewSize === 'lg' ? '300px' : '100%',
+      '--preview-size': previewSize === 'lg' ? '300px' : '180px',
     }"
   >
     <div v-if="tabs.length > 1" class="flex items-center">

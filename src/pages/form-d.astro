@@ -1,0 +1,21 @@
+---
+import StarlightPage from '@astrojs/starlight/components/StarlightPage.astro';
+---
+
+<StarlightPage frontmatter={{ title: 'Submitted Data' }}>
+  <p>
+    You Reached this page via a form submission, typically your backend should
+    handle this. Anyways, here is your submitted data:
+  </p>
+
+  <pre></pre>
+</StarlightPage>
+
+<script>
+  const pre = document.querySelector('pre');
+  const urlParams = new URLSearchParams(window.location.search);
+
+  if (pre) {
+    pre.textContent = JSON.stringify(Object.fromEntries(urlParams), null, 2);
+  }
+</script>

@@ -14,8 +14,8 @@ const { labelProps, inputProps, errorMessage, errorMessageProps, isChecked } =
       <div class="control">
         <svg
           xmlns="http://www.w3.org/2000/svg"
-          width="18"
-          height="18"
+          width="22"
+          height="22"
           fill="currentColor"
           viewBox="0 0 256 256"
         >
@@ -55,17 +55,10 @@ const { labelProps, inputProps, errorMessage, errorMessageProps, isChecked } =
     gap: 4px;
     width: max-content;
     align-items: center;
-    border-radius: 8px;
-    padding: 0.5rem 1rem;
     user-select: none;
-    border: 2px solid var(--color-border);
     font-size: 14px;
     cursor: pointer;
     font-weight: 500;
-    transition:
-      background-color 0.15s,
-      color 0.15s,
-      border-color 0.15s;
 
     .control {
       display: flex;
@@ -78,11 +71,15 @@ const { labelProps, inputProps, errorMessage, errorMessageProps, isChecked } =
     }
 
     &:hover {
-      border-color: var(--color-text);
+      svg {
+        color: var(--color-text);
+      }
     }
 
     &:has(:focus) {
-      border-color: var(--color-focus);
+      svg {
+        color: var(--color-focus);
+      }
     }
 
     &:has(:checked) {
@@ -94,7 +91,6 @@ const { labelProps, inputProps, errorMessage, errorMessageProps, isChecked } =
     &:has(:disabled) {
       opacity: 0.5;
       cursor: not-allowed;
-      background-color: var(--color-border);
 
       .control svg {
         color: var(--color-text);
@@ -106,7 +102,9 @@ const { labelProps, inputProps, errorMessage, errorMessageProps, isChecked } =
     }
 
     &:has([readonly]) {
-      opacity: 0.3;
+      .control svg {
+        opacity: 0.3;
+      }
     }
   }
 }

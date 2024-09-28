@@ -1,6 +1,546 @@
 ---
 title: Forms
-description: A guide in my new Starlight docs site.
+description: Learn how to build forms in your application with Formwerk.
 sidebar:
   order: 1
 ---
+
+import { Aside } from '@astrojs/starlight/components';
+import MdxRepl from '@components/MdxRepl.vue';
+import Kbd from '@components/KeyboardKey.vue';
+
+import TextFieldPartial from '../fields/_partials/_styledTextField.mdx';
+import CheckboxPartial from '../fields/_partials/_checkboxStyled.mdx';
+
+Forms allow users to fill and submit data to your application, sometimes they are given feedback along the way to help them achieve that.
+
+Assuming you've followed the other guides and have created a few input components, you can now use them to build a form. Formwerk builds on the native `form` element but it is not required.
+
+## useForm
+
+You will be using the `useForm` composable to create a form context in the current component. This effectively marks the component as a form, meaning you can only use `useForm` once per component.
+
+This is the most basic form you can create with Formwerk:
+
+```ts
+import { useForm } from '@formwerk/core';
+
+const { handleSubmit } = useForm();
+
+const onSubmit = handleSubmit((data) => {
+  console.log(data);
+});
+```
+
+It doesn't look like much, but already a lot is being done for you behind the scenes. The `useForm` composable creates a reactive form context that does the following among other things:
+
+- Tracks and collects the values of all input fields within the form.
+- Tracks the validity of each field and the overall form validity.
+- Provides a `handleSubmit` function that you can use to submit the form.
+
+Here is an example with some input fields we already created from the previous guides:
+
+<MdxRepl preview-size="lg" client:load>
+
+<div slot="!TextField.vue">
+  <TextFieldPartial />
+</div>
+
+<div slot="!Checkbox.vue">
+  <CheckboxPartial />
+</div>
+
+<div slot="App.vue">
+
+```vue
+<script setup lang="ts">
+import { useForm } from '@formwerk/core';
+import TextField from './TextField.vue';
+import Checkbox from './Checkbox.vue';
+
+const { handleSubmit } = useForm();
+
+const onSubmit = handleSubmit((data) => {
+  alert(JSON.stringify(data.toJSON(), null, 2));
+});
+</script>
+
+<template>
+  <form @submit="onSubmit" novalidate>
+    <TextField name="email" label="Email" type="email" required />
+    <TextField name="password" label="Password" type="password" required />
+
+    <Checkbox label="Remember me" name="rememberMe" />
+
+    <button type="submit">Submit</button>
+  </form>
+</template>
+```
+
+</div>
+
+</MdxRepl>
+
+## Controlled Fields
+
+You may have noticed that we passed `name` prop to the input fields in the previous example. This is because Formwerk uses the `name` prop to identify the fields in the form and uses it to build the form data object that will eventually be submitted.
+
+Passing `name` prop to the field marks it as "controlled", as in it is being tracked by the form and contributes its state and value to the form data object.
+
+Now if you want to do the opposite, which is to not have the field be tracked by the form, then you can simply skip passing the `name` prop. This matches the behavior of `FormData` objects and native form submission behavior.
+
+Here is an example where a non-controlled field can be useful, in this example we toggle the visibility of the `billingAddress` field based on the value of the `sameAsShipping` field but we don't want to submit the latter.
+
+<MdxRepl preview-size="lg" client:load>
+
+<div slot="!TextField.vue">
+  <TextFieldPartial />
+</div>
+
+<div slot="!Checkbox.vue">
+  <CheckboxPartial />
+</div>
+
+<div slot="App.vue">
+
+```vue
+<script setup lang="ts">
+import { ref } from 'vue';
+import { useForm } from '@formwerk/core';
+import TextField from './TextField.vue';
+import Checkbox from './Checkbox.vue';
+
+const { handleSubmit } = useForm();
+const isSameAsBilling = ref(false);
+
+const onSubmit = handleSubmit((data) => {
+  const json = data.toJSON();
+  if (isSameAsBilling.value) {
+    json.billingAddress = json.shippingAddress;
+  }
+
+  alert(JSON.stringify(json, null, 2));
+});
+</script>
+
+<template>
+  <form @submit="onSubmit" novalidate>
+    <TextField name="shippingAddress" label="Shipping Address" required />
+
+    <TextField
+      v-if="!isSameAsBilling"
+      name="billingAddress"
+      label="Billing Address"
+      required
+    />
+    <Checkbox label="Same as shipping" v-model="isSameAsBilling" />
+
+    <button type="submit">Submit</button>
+  </form>
+</template>
+```
+
+</div>
+
+</MdxRepl>
+
+## Nested Fields
+
+Formwerk supports nested fields by using the `.` character in the `name` prop. This allows you to create nested objects in the form data object to structure your data however you need. Having numeric path names will result in arrays being created instead of objects.
+
+Here is an example with both nested fields and arrays:
+
+<MdxRepl preview-size="lg" client:load>
+
+<div slot="!TextField.vue">
+  <TextFieldPartial />
+</div>
+
+<div slot="!Checkbox.vue">
+  <CheckboxPartial />
+</div>
+
+<div slot="App.vue">
+
+```vue
+<script setup lang="ts">
+import { useForm } from '@formwerk/core';
+import TextField from './TextField.vue';
+import Checkbox from './Checkbox.vue';
+
+const { handleSubmit } = useForm();
+
+const onSubmit = handleSubmit((data) => {
+  alert(JSON.stringify(data.toJSON(), null, 2));
+});
+</script>
+
+<template>
+  <form @submit="onSubmit" novalidate>
+    <TextField name="socials.github" label="GitHub " type="url" required />
+    <TextField name="socials.twitter" label="Twitter " type="url" required />
+    <TextField name="socials.discord" label="Discord" type="url" required />
+
+    <TextField name="customLinks.0" label="Custom link 1" type="url" />
+    <TextField name="customLinks.1" label="Custom Link 2" type="url" />
+
+    <button type="submit">Submit</button>
+  </form>
+</template>
+```
+
+</div>
+
+</MdxRepl>
+
+## Submitting Forms
+
+You noticed that the values of the form are collected and passed for you in the `data` object in the previous examples.
+
+### handleSubmit
+
+The previous examples used the `handleSubmit` function to submit the form, this function doesn't require you to use a `form` element nor it requires you to use it with a `submit` event. You can use it with any event or even call it directly.
+
+The `handleSubmit` function takes a callback function that will be called with the `data` object when the form is submitted. The callback is run only if the form is valid, otherwise, it does nothing.
+
+Here is an example where we just call the submission handler directly:
+
+<MdxRepl client:load>
+
+<div slot="!TextField.vue">
+  <TextFieldPartial />
+</div>
+
+<div slot="!Checkbox.vue">
+  <CheckboxPartial />
+</div>
+
+<div slot="App.vue">
+
+```vue
+<script setup lang="ts">
+import { useForm } from '@formwerk/core';
+import TextField from './TextField.vue';
+import Checkbox from './Checkbox.vue';
+
+const { handleSubmit } = useForm();
+
+const onSubmit = handleSubmit((data) => {
+  alert(JSON.stringify(data.toJSON(), null, 2));
+});
+
+function onClick() {
+  onSubmit();
+}
+</script>
+
+<template>
+  <TextField name="field" label="Your field" value="Press 👇" />
+
+  <button @click="onClick">Press me</button>
+</template>
+```
+
+</div>
+
+</MdxRepl>
+
+#### toJSON
+
+The most common way to get the form data is to call the `toJSON` method on the `data` object. This method returns a plain JavaScript object with the form data as you've seen in the previous examples.
+
+```ts
+import { useForm } from '@formwerk/core';
+
+const { handleSubmit } = useForm();
+
+const onSubmit = handleSubmit((data) => {
+  data.toJSON(); // { email: '...', password: '...', rememberMe: true }
+});
+```
+
+#### toFormData
+
+However, if you need to submit the form data as a [`FormData`](https://developer.mozilla.org/en-US/docs/Web/API/FormData) object, you can call the `toFormData` method instead.
+
+This method returns a `FormData` object that you can use to submit the form data to traditional form endpoints or APIs. It becomes especially useful when submitting files since they cannot be transported in JSON.
+
+```ts
+import { useForm } from '@formwerk/core';
+
+const { handleSubmit } = useForm();
+
+const onSubmit = handleSubmit((data) => {
+  data.toFormData(); // FormData
+});
+```
+
+### formProps
+
+If you prefer to not handle submissions with JavaScript and instead want to rely on native form submissions which is common with non-JS server-rendered applications like Rails (Ruby) or Laravel (PHP) applications. In those cases you would be using Vue.js as a progressive enhancement for adding interactivity to these applications.
+
+In such cases, you can use the `formProps` object that is returned by the `useForm` composable to bind the form props to the `form` element and it will enhance the native submission cycle with the same features as with the `handleSubmit` function.
+
+When you submit a form bound to `formProps` object:
+
+1. The form submit event will be prevented.
+2. The form data will be collected and validated.
+3. If invalid, the form will not be submitted and the flow ends.
+4. If valid, the form will be submitted using the native form submission cycle.
+
+Here is an example of how to use `formProps`, the example will submit the data to another page that will list the submitted values. Typically your Backend endpoint would be handling the form submission.
+
+<MdxRepl client:load>
+
+<div slot="!TextField.vue">
+  <TextFieldPartial />
+</div>
+
+<div slot="!Checkbox.vue">
+  <CheckboxPartial />
+</div>
+
+<div slot="App.vue">
+
+```vue
+<script setup lang="ts">
+import { useForm } from '@formwerk/core';
+import TextField from './TextField.vue';
+import Checkbox from './Checkbox.vue';
+
+const { formProps } = useForm();
+</script>
+
+<template>
+  <form v-bind="formProps" target="_blank" action="/form-d">
+    <TextField name="email" label="Email" type="email" required />
+    <TextField name="password" label="Password" type="password" required />
+    <Checkbox label="Remember me" name="rememberMe" />
+
+    <button type="submit">Submit</button>
+  </form>
+</template>
+```
+
+</div>
+
+</MdxRepl>
+
+<Aside>
+
+By default, native form submissions only collect the values of `input`, `select`, and `textarea` elements. However, Formwerk works behind the scenes to collect the values of custom input components and makes sure they are included in the form data object that will be submitted natively.
+
+</Aside>
+
+### isSubmitting
+
+You can check submission status with the `isSubmitting` property. This property is `true` when the form is being submitted and `false` otherwise. This is useful when you want to show a loading spinner or disable the submit button while the form is being submitted with an async handler.
+
+<MdxRepl client:load>
+
+<div slot="!TextField.vue">
+  <TextFieldPartial />
+</div>
+
+<div slot="!Checkbox.vue">
+  <CheckboxPartial />
+</div>
+
+<div slot="App.vue">
+
+```vue
+<script setup lang="ts">
+import { useForm } from '@formwerk/core';
+import TextField from './TextField.vue';
+
+const { handleSubmit, isSubmitting } = useForm();
+
+const onSubmit = handleSubmit(async (data) => {
+  await new Promise((resolve) => setTimeout(resolve, 2000));
+
+  alert(JSON.stringify(data.toJSON(), null, 2));
+});
+</script>
+
+<template>
+  <form @submit="onSubmit" novalidate>
+    <TextField name="email" label="Email" type="email" required />
+    <TextField name="password" label="Password" type="password" required />
+
+    <button :disabled="isSubmitting" type="submit">Submit</button>
+  </form>
+</template>
+```
+
+</div>
+
+</MdxRepl>
+
+## Validation
+
+As you've seen from field guides, many fields can be validated with either HTML constraints via attributes like `required`, `min`, `max`, etc. or with custom Typed schema objects.
+
+### HTML Constraints
+
+HTML constraints are always field-level. They are useful for dynamic fields, but at the same time they more accessible to users which is why it is recommended to use them whenever possible for basic validations.
+
+For advanced cases, you can use Typed Schemas which can be both field-level or form-level.
+
+If you want to completely disable HTML constraints for the form, you can pass `disableHtmlValidation` option to `useForm`:
+
+```ts
+import { useForm } from '@formwerk/core';
+
+useForm({
+  disableHtmlValidation: true,
+});
+```
+
+### Form-level Validation with Typed Schema
+
+But you can also provide a form-level Typed schema to `useForm` to validate the entire form as a whole. Form-level schemas are useful for forms where the fields are known beforehand.
+
+Here is an example of a form with a typed schema:
+
+<MdxRepl preview-size="lg" client:load>
+
+<div slot="!TextField.vue">
+  <TextFieldPartial />
+</div>
+
+<div slot="App.vue">
+
+```vue
+<script setup lang="ts">
+import { useForm } from '@formwerk/core';
+import TextField from './TextField.vue';
+import { defineSchema } from '@formwerk/schema-zod';
+import { z } from 'zod';
+
+const { handleSubmit } = useForm({
+  schema: defineSchema(
+    z.object({
+      email: z.string().email(),
+      password: z.string().min(8),
+    }),
+  ),
+});
+
+const onSubmit = handleSubmit((data) => {
+  alert(JSON.stringify(data.toJSON(), null, 2));
+});
+</script>
+
+<template>
+  <form @submit="onSubmit" novalidate>
+    <TextField name="email" label="Email" />
+    <TextField name="password" label="Password" type="password" />
+
+    <button type="submit">Submit</button>
+  </form>
+</template>
+```
+
+</div>
+
+</MdxRepl>
+
+### Mixing validation sources
+
+Let's say you have mix of validations in place. You have a field with some HTML constraints, and a schema that validates that field at the same time. Let's throw in a form-level schema that validates the form including that field.
+
+That field now has three sources of validation, how does that work?
+
+Formwerk prioritizes the validation sources in the following order:
+
+1. HTML Constraints are checked first, only if they are valid continue to the next step.
+2. Field-level Typed Schema is checked next, only if it is valid continue to the next step.
+3. Form-level Typed Schema is checked last.
+
+This keeps the validation process consistent and predictable, at the same time it is also efficient as you won't have to re-validate the whole form if a field-level validation fails for that field. You can think of it as a merged validation approach, but it is more of a cascading validation behavior where it cascades upwards to the form level.
+
+The only think you need to be careful of is to not have conflicting validations between the different sources, this can cause the field to never be valid.
+
+Here is an example for a field with all validation sources:
+
+<MdxRepl  client:load>
+
+<div slot="!TextField.vue">
+  <TextFieldPartial />
+</div>
+
+<div slot="App.vue">
+
+```vue
+<script setup lang="ts">
+import { useForm } from '@formwerk/core';
+import TextField from './TextField.vue';
+import { defineSchema } from '@formwerk/schema-zod';
+import { z } from 'zod';
+
+const { handleSubmit } = useForm({
+  schema: defineSchema(
+    z.object({
+      field: z.string().max(8),
+    }),
+  ),
+});
+
+const onSubmit = handleSubmit((data) => {
+  alert(JSON.stringify(data.toJSON(), null, 2));
+});
+</script>
+
+<template>
+  <form @submit="onSubmit" novalidate>
+    <TextField name="field" label="Field" min-length="3" required />
+
+    <button type="submit">Submit</button>
+  </form>
+</template>
+```
+
+</div>
+
+</MdxRepl>
+
+You can even have a fourth source of the validation with [Form Groups](/docs/guides/forms/form-groups).
+
+## API
+
+### Props
+
+These are the properties that can be passed to the `useForm` composable.
+
+| Name                  | Type                             | Description                                   |
+| --------------------- | -------------------------------- | --------------------------------------------- |
+| id                    | `string`                         | The unique identifier for the form.           |
+| initialValues         | `MaybeGetter<MaybeAsync<TForm>>` | The initial values of the form fields.        |
+| initialTouched        | `TouchedSchema<TForm>`           | The initial touched state of the form fields. |
+| schema                | `TypedSchema<TForm, TOutput>`    | The schema used for form validation.          |
+| disableHtmlValidation | `boolean`                        | Flag to disable HTML validation for the form. |
+
+### Returns
+
+These are the properties in the object returned by the `useForm` composable.
+
+| Name            | Type                                                | Description                                           |
+| --------------- | --------------------------------------------------- | ----------------------------------------------------- |
+| values          | `Record<string, any>`                               | The current values of the form.                       |
+| isSubmitting    | `boolean`                                           | Indicates if the form is currently submitting.        |
+| isTouched       | `boolean`                                           | Indicates if any field in the form has been touched.  |
+| isDirty         | `boolean`                                           | Indicates if any field in the form has been modified. |
+| isValid         | `boolean`                                           | Indicates if the form is valid.                       |
+| setFieldValue   | `(path: string, value: any) => void`                | Sets the value of a specific field.                   |
+| getFieldValue   | `(path: string) => any`                             | Gets the value of a specific field.                   |
+| isFieldTouched  | `(path: string) => any`                             | Checks if a specific field has been touched.          |
+| setFieldTouched | `(path: string, touched: boolean) => void`          | Sets the touched state of a specific field.           |
+| setFieldErrors  | `(path: string, errors: Arrayable<string>) => void` | Sets the errors for a specific field.                 |
+| setValues       | `(values: Record<string, any>) => void`             | Sets the values of multiple fields.                   |
+| getError        | `(path: string) => string \| undefined`             | Gets the error for a specific field.                  |
+| displayError    | `(path: string) => string \| undefined`             | Displays the error for a specific field.              |
+| getErrors       | `(path: string) => string \| undefined`             | Gets all errors in the form.                          |
+| formProps       | `Object`                                            | The properties to bound to the form element.          |
+| handleSubmit    | `(cb: (data) => void) => Promise<void>`             | Handles form submission.                              |
+| reset           | `(state: ResetState) => Promise<void>`              | Resets the form state.                                |
+| validate        | `() => Promise<FormValidationResult>`               | Validates the form.                                   |
