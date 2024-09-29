@@ -5,7 +5,7 @@ sidebar:
   order: 1
 ---
 
-import { Aside } from '@astrojs/starlight/components';
+import { Aside, Tabs, TabItem } from '@astrojs/starlight/components';
 import MdxRepl from '@components/MdxRepl.vue';
 import Kbd from '@components/KeyboardKey.vue';
 
@@ -211,17 +211,12 @@ Here is an example where we just call the submission handler directly:
   <TextFieldPartial />
 </div>
 
-<div slot="!Checkbox.vue">
-  <CheckboxPartial />
-</div>
-
 <div slot="App.vue">
 
 ```vue
 <script setup lang="ts">
 import { useForm } from '@formwerk/core';
 import TextField from './TextField.vue';
-import Checkbox from './Checkbox.vue';
 
 const { handleSubmit } = useForm();
 
@@ -342,10 +337,6 @@ You can check submission status with the `isSubmitting` property. This property 
   <TextFieldPartial />
 </div>
 
-<div slot="!Checkbox.vue">
-  <CheckboxPartial />
-</div>
-
 <div slot="App.vue">
 
 ```vue
@@ -375,6 +366,100 @@ const onSubmit = handleSubmit(async (data) => {
 </div>
 
 </MdxRepl>
+
+## Touched Fields
+
+Forms tracks the touched state of each field in the form. A field is considered touched when the user interacts with it, which means if they have focused and blurred the field at least once. In addition to blurring, whenever the form is submitted, all fields are marked as touched.
+
+The form also tracks the overall touched state of the form, which is `true` if any field in the form has been touched.
+
+Each field composable returns an `isTouched` property, `useForm` exposes its own `isTouched` property that you can use to check if the form has been interacted with, it also exposes `isFieldTouched` to query the touched state of a field.
+
+<MdxRepl client:load>
+
+<div slot="!TextField.vue">
+  <TextFieldPartial />
+</div>
+
+<div slot="App.vue">
+
+```vue
+<script setup lang="ts">
+import { useForm } from '@formwerk/core';
+import TextField from './TextField.vue';
+
+const { handleSubmit, isTouched, isFieldTouched } = useForm();
+
+const onSubmit = handleSubmit((data) => {
+  console.log('All fields should be touched now');
+});
+</script>
+
+<template>
+  <form @submit="onSubmit" novalidate>
+    <TextField name="email" label="Email" type="email" />
+    <TextField name="password" label="Password" type="password" />
+
+    <pre>Email Touched: {{ isFieldTouched('email') }}</pre>
+    <pre>Password Touched: {{ isFieldTouched('password') }}</pre>
+    <pre>Form Touched: {{ isTouched }}</pre>
+
+    <button type="submit">Submit</button>
+  </form>
+</template>
+```
+
+</div>
+
+</MdxRepl>
+
+You can set the touched state of a field manually with `setFieldTouched` function.
+
+```ts
+import { useForm } from '@formwerk/core';
+
+const { setFieldTouched } = useForm();
+
+function onFieldBlur() {
+  setFieldTouched('email', true);
+}
+```
+
+## Dirty Fields
+
+Forms also track the dirty state of each field in the form. A field is considered dirty when its value has changed from the initial value. The form also tracks the overall dirty state of the form, which is `true` if any field in the form has been modified.
+
+<MdxRepl client:load>
+
+<div slot="!TextField.vue">
+  <TextFieldPartial />
+</div>
+
+<div slot="App.vue">
+
+```vue
+<script setup lang="ts">
+import { useForm } from '@formwerk/core';
+import TextField from './TextField.vue';
+
+const { isDirty, isFieldDirty } = useForm();
+</script>
+
+<template>
+  <TextField name="email" label="Email" type="email" />
+  <TextField name="password" label="Password" type="password" />
+
+  <pre>Email Dirty: {{ isFieldDirty('email') }}</pre>
+  <pre>Password Dirty: {{ isFieldDirty('password') }}</pre>
+  <pre>Form Dirty: {{ isDirty }}</pre>
+</template>
+```
+
+</div>
+
+</MdxRepl>
+
+The dirty state is computed, there is no way to set it manually but you can reset the form to its initial values or a new set of values to influence the dirty state.
 
 ## Validation
 
@@ -445,6 +530,8 @@ const onSubmit = handleSubmit((data) => {
 
 </MdxRepl>
 
+For more information on Typed Schemas, check [this guide](/guides/forms/typed-schema).
+
 ### Mixing validation sources
 
 Let's say you have mix of validations in place. You have a field with some HTML constraints, and a schema that validates that field at the same time. Let's throw in a form-level schema that validates the form including that field.
@@ -506,6 +593,302 @@ const onSubmit = handleSubmit((data) => {
 
 You can even have a fourth source of the validation with [Form Groups](/docs/guides/forms/form-groups).
 
+## Displaying Errors
+
+If you have followed the field guides, you know that fields are responsible for displaying their own errors. But what if you want to display the form errors in a single place, or maybe you just need access to errors to perform some custom logic?
+
+There are three ways to access errors with `useForm`:
+
+- `getError` to get the error of a specific field.
+- `getErrors` to get all errors in the form grouped by field.
+- `displayError` to display the error of a specific field if it has been touched.
+
+<Tabs>
+
+<TabItem label="getError()">
+
+The `getError` function returns the error of a specific field. If the field has no error, it returns `undefined`.
+
+<MdxRepl  client:load>
+
+<div slot="!TextField.vue">
+  <TextFieldPartial />
+</div>
+
+<div slot="App.vue">
+
+```vue
+<script setup lang="ts">
+import { useForm } from '@formwerk/core';
+import TextField from './TextField.vue';
+import { defineSchema } from '@formwerk/schema-zod';
+import { z } from 'zod';
+
+const { handleSubmit, getError } = useForm({
+  schema: defineSchema(
+    z.object({
+      url: z.string().url().max(8),
+      email: z.string().email(),
+    }),
+  ),
+});
+</script>
+
+<template>
+  <TextField name="url" label="URL" required />
+  <TextField name="email" label="Email" required />
+
+  <ul>
+    <li>URL Error: {{ getError('url') }}</li>
+    <li>Email Error: {{ getError('email') }}</li>
+  </ul>
+</template>
+```
+
+</div>
+
+</MdxRepl>
+
+</TabItem>
+
+<TabItem label="getErrors()">
+
+The `getErrors` function returns all errors in the form as an array of error groups, each group contains a field error messages.
+
+<MdxRepl  client:load>
+
+<div slot="!TextField.vue">
+  <TextFieldPartial />
+</div>
+
+<div slot="App.vue">
+
+```vue
+<script setup lang="ts">
+import { useForm } from '@formwerk/core';
+import TextField from './TextField.vue';
+import { defineSchema } from '@formwerk/schema-zod';
+import { z } from 'zod';
+
+const { handleSubmit, getErrors } = useForm({
+  schema: defineSchema(
+    z.object({
+      url: z.string().url().max(8),
+      email: z.string().email(),
+    }),
+  ),
+});
+</script>
+
+<template>
+  <TextField name="url" label="URL" required />
+  <TextField name="email" label="Email" required />
+
+  <ul>
+    <li v-for="error in getErrors()">{{ error.path }}: {{ error.messages }}</li>
+  </ul>
+</template>
+```
+
+</div>
+
+</MdxRepl>
+
+</TabItem>
+
+<TabItem label="displayError()">
+
+The `displayError` function is similar to `getError` but it only displays the error if the field has been touched. This is useful when you want to show errors only after the user has interacted with the field.
+
+You can alternatively use CSS with `:user-invalid` pseudo-class to show errors only when the field is invalid and has been interacted with. More info on that in the [Styling guide](/guides/extras/styling).
+
+<MdxRepl  client:load>
+
+<div slot="!TextField.vue">
+  <TextFieldPartial />
+</div>
+
+<div slot="App.vue">
+
+```vue
+<script setup lang="ts">
+import { useForm } from '@formwerk/core';
+import TextField from './TextField.vue';
+import { defineSchema } from '@formwerk/schema-zod';
+import { z } from 'zod';
+
+const { handleSubmit, displayError } = useForm({
+  schema: defineSchema(
+    z.object({
+      url: z.string().url().max(8),
+      email: z.string().email(),
+    }),
+  ),
+});
+</script>
+
+<template>
+  <TextField name="url" label="URL" required />
+  <TextField name="email" label="Email" required />
+
+  <ul>
+    <li>URL Error: {{ displayError('url') }}</li>
+    <li>Email Error: {{ displayError('email') }}</li>
+  </ul>
+</template>
+```
+
+</div>
+
+</MdxRepl>
+
+</TabItem>
+
+</Tabs>
+
+## Resetting Forms
+
+Form state can be reset with `reset` function. Calling this function will reset the current values back to the initial values, revert the touched state for all fields back to `false`, and clear any custom errors.
+
+<MdxRepl client:load>
+
+<div slot="!TextField.vue">
+  <TextFieldPartial />
+</div>
+
+<div slot="!Checkbox.vue">
+  <CheckboxPartial />
+</div>
+
+<div slot="App.vue">
+
+```vue
+<script setup lang="ts">
+import { useForm } from '@formwerk/core';
+import TextField from './TextField.vue';
+import Checkbox from './Checkbox.vue';
+
+const { handleSubmit, reset } = useForm();
+
+const onSubmit = handleSubmit((data) => {
+  alert(JSON.stringify(data.toJSON(), null, 2));
+});
+
+function onResetClick() {
+  reset();
+}
+</script>
+
+<template>
+  <form @submit="onSubmit" novalidate>
+    <TextField name="email" label="Email" type="email" required />
+    <TextField name="password" label="Password" type="password" required />
+
+    <Checkbox label="Remember me" name="rememberMe" />
+
+    <button type="submit">Submit</button>
+    <button type="button" @click="onResetClick">Reset</button>
+  </form>
+</template>
+```
+
+</div>
+
+</MdxRepl>
+
+Notice that even tho we called reset, the errors are still displayed. By default, reset re-validates the form afterwards. This is to ensure that the validation state of the fields match their actual validity.
+
+You should consider using `isTouched` or `displayError` to show errors only when the field has been interacted with which would eliminate this caveat. Alternatively, you can disable this behavior by passing `revalidate: false` to the `reset` function.
+
+```ts
+import { useForm } from '@formwerk/core';
+
+const { reset } = useForm();
+
+function onReset() {
+  reset({ revalidate: false });
+}
+```
+
+You can also reset the form to a specific state by passing a `ResetState` object to the `reset` function. This object can contain the following properties:
+
+- values: The new form values.
+- touched: The new touched state for each field.
+
+<MdxRepl client:load>
+
+<div slot="!TextField.vue">
+  <TextFieldPartial />
+</div>
+
+<div slot="!Checkbox.vue">
+  <CheckboxPartial />
+</div>
+
+<div slot="App.vue">
+
+```vue
+<script setup lang="ts">
+import { useForm } from '@formwerk/core';
+import TextField from './TextField.vue';
+
+const { handleSubmit, reset } = useForm();
+
+const onSubmit = handleSubmit((data) => {
+  alert(JSON.stringify(data.toJSON(), null, 2));
+});
+
+function onResetClick() {
+  reset({
+    values: {
+      email: 'hello@formwerk.dev',
+      password: 'p@$$w0rd',
+    },
+    touched: {
+      email: true,
+      password: false,
+    },
+  });
+}
+</script>
+
+<template>
+  <TextField name="email" label="Email" type="email" required />
+  <TextField name="password" label="Password" type="password" required />
+
+  <button @click="onResetClick">Reset</button>
+</template>
+```
+
+</div>
+
+</MdxRepl>
+
+<Aside>
+
+Whenever you call `reset` with a custom state, that new state becomes the initial state of the form. This means that the next time you call `reset` without any arguments, the form will be reset to that custom state.
+
+</Aside>
+
+Lastly, the value setting behavior is by default uses a `replace` strategy. This means that the values are replaced with the new values, any unspecified values will be considered `undefined`.
+
+If you want to merge the new values with the existing initial values, you can pass `behavior: 'merge'` to the `reset` function as the second argument.
+
+```ts
+import { useForm } from '@formwerk/core';
+
+const { reset } = useForm();
+
+function onReset() {
+  reset(
+    {
+      // values and stuff...
+    },
+    { behavior: 'merge' },
+  );
+}
+```
+
 ## API
 
 ### Props
@@ -533,7 +916,8 @@ These are the properties in the object returned by the `useForm` composable.
 | isValid         | `boolean`                                           | Indicates if the form is valid.                       |
 | setFieldValue   | `(path: string, value: any) => void`                | Sets the value of a specific field.                   |
 | getFieldValue   | `(path: string) => any`                             | Gets the value of a specific field.                   |
-| isFieldTouched  | `(path: string) => any`                             | Checks if a specific field has been touched.          |
+| isFieldTouched  | `(path: string) => boolean`                         | Checks if a specific field has been touched.          |
+| isFieldDirty    | `(path: string) => boolean`                         | Checks if a specific field's value has been modified. |
 | setFieldTouched | `(path: string, touched: boolean) => void`          | Sets the touched state of a specific field.           |
 | setFieldErrors  | `(path: string, errors: Arrayable<string>) => void` | Sets the errors for a specific field.                 |
 | setValues       | `(values: Record<string, any>) => void`             | Sets the values of multiple fields.                   |
