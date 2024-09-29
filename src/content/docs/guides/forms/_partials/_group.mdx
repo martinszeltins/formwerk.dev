@@ -1,0 +1,17 @@
+```vue
+<template>
+  <div v-bind="groupProps">
+    <h3 v-bind="labelProps">{{ label }}</h3>
+
+    <slot />
+  </div>
+</template>
+
+<script setup lang="ts">
+import { type FormGroupProps, useFormGroup } from '@formwerk/core';
+
+const props = defineProps<FormGroupProps>();
+
+const { labelProps, groupProps } = useFormGroup(props);
+</script>
+```

@@ -1,6 +1,315 @@
 ---
-title: Form Group
-description: A guide in my new Starlight docs site.
+title: Form Groups
+description: Learn how to grouping fields and slice forms into smaller parts
 sidebar:
   order: 2
 ---
+
+import { Aside, Tabs, TabItem } from '@astrojs/starlight/components';
+
+import MdxRepl from '@components/MdxRepl.vue';
+
+import Kbd from '@components/KeyboardKey.vue';
+
+import TextFieldPartial from '../fields/_partials/_styledTextField.mdx';
+import CheckboxPartial from '../fields/_partials/_checkboxStyled.mdx';
+import FieldsetPartial from './_partials/_fieldset.mdx';
+import GroupPartial from './_partials/_group.mdx';
+
+Form groups are a way to structure related fields in a form. They allow you to group fields together and slice forms into smaller parts. This can be useful for organizing forms with many fields, or for creating reusable group components that may be added to multiple forms.
+
+That's their main purpose, to slice forms into manageable parts. They are not nested forms, they do not submit data on their own, they are just a way to group fields together in a parent form.
+
+## Creating a Form Group
+
+To create a form group, you can use the `useFormGroup` composable. Just like fields, the `useFormGroup` composable returns values that should be bound to the anatomy elements.
+
+Typically, you need to create a `FormGroup` component that you can use to structure your form fields. You can use `fieldset` as a base element for your `FormGroup` component or any other element that you prefer.
+
+Form groups require a `name` prop which will be used to nest the fields values in the form data. In the next examples, fill out the data and submit the form to see how the form data are structured.
+
+### With a fieldset element
+
+<MdxRepl preview-size="lg" client:load>
+
+<div slot="!TextField.vue">
+  <TextFieldPartial />
+</div>
+
+<div slot="FormGroup.vue">
+  <FieldsetPartial />
+</div>
+
+<div slot="App.vue">
+
+```vue
+<script setup lang="ts">
+import { useForm } from '@formwerk/core';
+import TextField from './TextField.vue';
+import FormGroup from './FormGroup.vue';
+
+const { handleSubmit } = useForm();
+
+const onSubmit = handleSubmit((data) => {
+  alert(JSON.stringify(data.toJSON(), null, 2));
+});
+</script>
+
+<template>
+  <form @submit="onSubmit" novalidate>
+    <TextField name="email" label="Email" type="email" required />
+
+    <FormGroup name="shipping" label="Shipping information">
+      <TextField name="address" label="Address" required />
+      <TextField name="city" label="City" required />
+      <TextField name="zip" label="ZIP" required />
+    </FormGroup>
+
+    <button type="submit">Submit</button>
+  </form>
+</template>
+```
+
+</div>
+
+</MdxRepl>
+
+Naturally, styling is entirely up to you. This can be much easier with another HTML elements like `div` as shown in the next section.
+
+### With any HTML element
+
+You can use any HTML element to create a form group. Here's an example using a `div` element:
+
+<MdxRepl preview-size="lg" client:load>
+
+<div slot="!TextField.vue">
+  <TextFieldPartial />
+</div>
+
+<div slot="FormGroup.vue">
+  <GroupPartial />
+</div>
+
+<div slot="App.vue">
+
+```vue
+<script setup lang="ts">
+import { useForm } from '@formwerk/core';
+import TextField from './TextField.vue';
+import FormGroup from './FormGroup.vue';
+
+const { handleSubmit } = useForm();
+
+const onSubmit = handleSubmit((data) => {
+  alert(JSON.stringify(data.toJSON(), null, 2));
+});
+</script>
+
+<template>
+  <form @submit="onSubmit" novalidate>
+    <TextField name="email" label="Email" type="email" required />
+
+    <FormGroup name="shipping" label="Shipping information">
+      <TextField name="address" label="Address" required />
+      <TextField name="city" label="City" required />
+      <TextField name="zip" label="ZIP" required />
+    </FormGroup>
+
+    <button type="submit">Submit</button>
+  </form>
+</template>
+```
+
+</div>
+
+</MdxRepl>
+
+## Validation
+
+The form guide mentioned briefly that groups can have their own validation Typed schema just like forms do. They do not override the parent form schema, they are just an extension of it.
+
+Formwerk prioritizes the validation sources in the following order:
+
+1. HTML Constraints are checked first, only if they are valid continue to the next step.
+2. Field-level Typed Schema is checked next, only if it is valid continue to the next step.
+3. Group-level Typed Schema is checked next, only if it is valid continue to the next step.
+4. Form-level Typed Schema is checked last.
+
+<MdxRepl preview-size="lg" client:load>
+
+<div slot="!TextField.vue">
+  <TextFieldPartial />
+</div>
+
+<div slot="!FormGroup.vue">
+  <GroupPartial />
+</div>
+
+<div slot="App.vue">
+
+```vue
+<script setup lang="ts">
+import { useForm } from '@formwerk/core';
+import TextField from './TextField.vue';
+import FormGroup from './FormGroup.vue';
+import { defineSchema } from '@formwerk/schema-zod';
+import { z } from 'zod';
+
+const shippingSchema = defineSchema(
+  z.object({
+    address: z.string().min(5),
+    city: z.string().min(3),
+    zip: z.string().length(5),
+  }),
+);
+
+const schema = defineSchema(
+  z.object({
+    email: z.string().email(),
+  }),
+);
+
+const { handleSubmit } = useForm({
+  schema,
+});
+
+const onSubmit = handleSubmit((data) => {
+  alert(JSON.stringify(data.toJSON(), null, 2));
+});
+</script>
+
+<template>
+  <form @submit="onSubmit" novalidate>
+    <TextField name="email" label="Email" />
+
+    <FormGroup
+      name="shipping"
+      label="Shipping information"
+      :schema="shippingSchema"
+    >
+      <TextField name="address" label="Address" />
+      <TextField name="city" label="City" />
+      <TextField name="zip" label="ZIP" />
+    </FormGroup>
+
+    <button type="submit">Submit</button>
+  </form>
+</template>
+```
+
+</div>
+
+</MdxRepl>
+
+<Aside>
+
+Even tho the group can have its own validation schema, it only acts as a liaison between the fields and the form schema. The form still tracks the fields, their validity and their values.
+
+</Aside>
+
+## Group state
+
+The group tracks and aggregates the fields state that are part of it. The follow states are an aggregation of the fields that are part of the group:
+
+| Name        | Type    | Description                                                                 |
+| ----------- | ------- | --------------------------------------------------------------------------- |
+| `isDirty`   | Boolean | Indicates whether any field within the group has been modified.             |
+| `isValid`   | Boolean | Indicates whether all fields within the group pass their validation checks. |
+| `isTouched` | Boolean | Indicates whether any field within the group has been interacted with.      |
+
+It also exposes the following getters and functions:
+
+| Name           | Type                                  | Description                                                                     |
+| -------------- | ------------------------------------- | ------------------------------------------------------------------------------- |
+| `getErrors`    | () => TypedError[]                    | Returns all errors within the group.                                            |
+| `getValues`    | () => Record\<string, any>            | Returns all values within the group.                                            |
+| `getError`     | (name: string) => string \| undefined | Returns the error for a given field within the group.                           |
+| `displayError` | (name: string) => string \| undefined | Displays the error for a given field within the group if the field was touched. |
+| `validate`     | () => Promise                         | Validates all fields within the group.                                          |
+
+## Inline Group Component
+
+For convenience, the `useFormGroup` returns a renderless component that you can use to create an inline group component.
+
+This can be useful for creating multiple groups within the same component or for creating re-usable slices of forms later on.
+
+<MdxRepl preview-size="lg" client:load>
+
+<div slot="!TextField.vue">
+  <TextFieldPartial />
+</div>
+
+<div slot="forms.ts">
+
+```ts
+import { useFormGroup } from '@formwerk/core';
+import { defineSchema } from '@formwerk/schema-zod';
+import { z } from 'zod';
+
+const { FormGroup: ShippingGroup } = useFormGroup({
+  label: 'Shipping address',
+  name: 'shipping',
+  schema: defineSchema(
+    z.object({
+      address: z.string().min(5),
+      city: z.string().min(3),
+      zip: z.string().length(5),
+    }),
+  ),
+});
+
+const { FormGroup: BillingGroup } = useFormGroup({
+  label: 'Billing address',
+  name: 'billing',
+  schema: defineSchema(
+    z.object({
+      address: z.string().min(5),
+      city: z.string().min(3),
+      zip: z.string().length(5),
+    }),
+  ),
+});
+
+export { ShippingGroup, BillingGroup };
+```
+
+</div>
+
+<div slot="App.vue">
+
+```vue
+<script setup lang="ts">
+import { useForm } from '@formwerk/core';
+import TextField from './TextField.vue';
+
+import { ShippingGroup, BillingGroup } from './forms';
+
+const { handleSubmit } = useForm();
+
+const onSubmit = handleSubmit((data) => {
+  alert(JSON.stringify(data.toJSON(), null, 2));
+});
+</script>
+
+<template>
+  <form @submit="onSubmit" novalidate>
+    <ShippingGroup>
+      <TextField name="address" label="Address" />
+      <TextField name="city" label="City" />
+      <TextField name="zip" label="ZIP" />
+    </ShippingGroup>
+
+    <BillingGroup>
+      <TextField name="address" label="Address" />
+      <TextField name="city" label="City" />
+      <TextField name="zip" label="ZIP" />
+    </BillingGroup>
+
+    <button type="submit">Submit</button>
+  </form>
+</template>
+```
+
+</div>
+
+</MdxRepl>
