@@ -78,7 +78,9 @@ Naturally, styling is entirely up to you. This can be much easier with another H
 
 ### With any HTML element
 
-You can use any HTML element to create a form group. Here's an example using a `div` element:
+You can use any HTML element to create a form group. Formwerk's `useFormGroup` bindings automatically change based on the element that is bound to it to ensure users get a consistent experience regardless of what element you choose to use.
+
+Here's an example using a `div` element:
 
 <MdxRepl preview-size="lg" client:load>
 
@@ -130,10 +132,10 @@ The form guide mentioned briefly that groups can have their own validation Typed
 
 Formwerk prioritizes the validation sources in the following order:
 
-1. HTML Constraints are checked first, only if they are valid continue to the next step.
-2. Field-level Typed Schema is checked next, only if it is valid continue to the next step.
-3. Group-level Typed Schema is checked next, only if it is valid continue to the next step.
-4. Form-level Typed Schema is checked last.
+1. **HTML Constraints** are checked first, only if they are valid continue to the next step.
+2. **Field-level** Typed Schema is checked next, only if it is valid continue to the next step.
+3. **Group-level** Typed Schema is checked next, only if it is valid continue to the next step.
+4. **Form-level** Typed Schema is checked last.
 
 <MdxRepl preview-size="lg" client:load>
 
@@ -227,11 +229,11 @@ It also exposes the following getters and functions:
 | `displayError` | (name: string) => string \| undefined | Displays the error for a given field within the group if the field was touched. |
 | `validate`     | () => Promise                         | Validates all fields within the group.                                          |
 
-## Inline Group Component
+## Group Names and Nested Paths
 
-For convenience, the `useFormGroup` returns a renderless component that you can use to create an inline group component.
+A group can accept a `name` prop which will prefix all the field names nested under it with that same name.
 
-This can be useful for creating multiple groups within the same component or for creating re-usable slices of forms later on.
+This means also when submitting the form, the data will be nested under the group name.
 
 <MdxRepl preview-size="lg" client:load>
 
@@ -239,40 +241,8 @@ This can be useful for creating multiple groups within the same component or for
   <TextFieldPartial />
 </div>
 
-<div slot="forms.ts">
-
-```ts
-import { useFormGroup } from '@formwerk/core';
-import { defineSchema } from '@formwerk/schema-zod';
-import { z } from 'zod';
-
-const { FormGroup: ShippingGroup } = useFormGroup({
-  label: 'Shipping address',
-  name: 'shipping',
-  schema: defineSchema(
-    z.object({
-      address: z.string().min(5),
-      city: z.string().min(3),
-      zip: z.string().length(5),
-    }),
-  ),
-});
-
-const { FormGroup: BillingGroup } = useFormGroup({
-  label: 'Billing address',
-  name: 'billing',
-  schema: defineSchema(
-    z.object({
-      address: z.string().min(5),
-      city: z.string().min(3),
-      zip: z.string().length(5),
-    }),
-  ),
-});
-
-export { ShippingGroup, BillingGroup };
-```
-
+<div slot="!FormGroup.vue">
+  <GroupPartial />
 </div>
 
 <div slot="App.vue">
@@ -281,8 +251,7 @@ export { ShippingGroup, BillingGroup };
 <script setup lang="ts">
 import { useForm } from '@formwerk/core';
 import TextField from './TextField.vue';
-
-import { ShippingGroup, BillingGroup } from './forms';
+import FormGroup from './FormGroup.vue';
 
 const { handleSubmit } = useForm();
 
@@ -293,17 +262,15 @@ const onSubmit = handleSubmit((data) => {
 
 <template>
   <form @submit="onSubmit" novalidate>
-    <ShippingGroup>
-      <TextField name="address" label="Address" />
-      <TextField name="city" label="City" />
-      <TextField name="zip" label="ZIP" />
-    </ShippingGroup>
+    <TextField name="field" label="Not Nested" />
 
-    <BillingGroup>
-      <TextField name="address" label="Address" />
-      <TextField name="city" label="City" />
-      <TextField name="zip" label="ZIP" />
-    </BillingGroup>
+    <FormGroup name="group-1" label="Group 1">
+      <TextField name="field" label="Field 1 - Group 1" />
+    </FormGroup>
+
+    <FormGroup name="group-2" label="Group 2">
+      <TextField name="field" label="Field 1 - Group 2" />
+    </FormGroup>
 
     <button type="submit">Submit</button>
   </form>
@@ -313,3 +280,31 @@ const onSubmit = handleSubmit((data) => {
 </div>
 
 </MdxRepl>
+
+## API
+
+### Props
+
+These are the properties that can be passed to the `useFormGroup` composable.
+
+| Name                  | Type                     | Description                                                                   |
+| --------------------- | ------------------------ | ----------------------------------------------------------------------------- |
+| name                  | `string` (optional)      | The name of the form group, if provided field names will be prefixed with it. |
+| label                 | `string`                 | The label for the form group.                                                 |
+| schema                | `TypedSchema` (optional) | The validation schema for the form group.                                     |
+| disableHtmlValidation | `boolean` (optional)     | Whether to disable HTML5 validation for fields within the form group.         |
+
+### Returns
+
+| Name           | Type                                    | Description                                                                |
+| -------------- | --------------------------------------- | -------------------------------------------------------------------------- |
+| `labelProps`   | `Object`                                | Props to be spread on the label element.                                   |
+| `groupProps`   | `Object`                                | Props to be spread on the group container element.                         |
+| `isDirty`      | `ComputedRef<boolean>`                  | Whether any field in the group has been modified.                          |
+| `isValid`      | `ComputedRef<boolean>`                  | Whether all fields in the group are valid.                                 |
+| `isTouched`    | `ComputedRef<boolean>`                  | Whether any field in the group has been touched.                           |
+| `getErrors`    | `() => TypedError[]`                    | Function to get all errors in the group.                                   |
+| `getValues`    | `() => Record<string, any>`             | Function to get all values in the group.                                   |
+| `getError`     | `(name: string) => string \| undefined` | Function to get the error for a specific field in the group.               |
+| `displayError` | `(name: string) => string \| undefined` | Function to display the error for a specific field if it has been touched. |
+| `validate`     | `() => Promise<void>`                   | Function to validate all fields in the group.                              |

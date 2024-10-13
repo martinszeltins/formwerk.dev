@@ -1,0 +1,110 @@
+---
+title: Form Repeaters
+description: Learn how to create a form repeater
+sidebar:
+  order: 3
+---
+
+import { Aside, Tabs, TabItem } from '@astrojs/starlight/components';
+
+import AnatomyCanvas from '@components/AnatomyCanvas.vue';
+import AnatomyRepeater from '@components/AnatomyRepeater.vue';
+
+import MdxRepl from '@components/MdxRepl.vue';
+
+Form repeaters or also known as field arrays are a way to create a list of fields that may repeat multiple times in a form. This is useful for creating forms that collect a dynamic number of items like a list of emails, a list of addresses, it can also be used for a group of fields that fill an object's information.
+
+## Features
+
+- Add new items.
+- Remove items.
+- Swap items.
+- Auto-name prefixing for nested fields.
+- Min and Max item count enforcement.
+- Accessibility for add/remove and move buttons are automatically managed.
+
+## Anatomy
+
+<AnatomyCanvas>
+  <AnatomyRepeater />
+</AnatomyCanvas>
+
+## Creating a Form Repeater
+
+To create a form repeater, you can use the `useFormRepeater` composable. This composable returns values that should be bound to the anatomy elements.
+
+Typically, you need to create a `FormRepeater` component that you can use to structure your form fields. There is no specific element that you need to use at this time.
+
+```vue
+<script setup lang="ts">
+import { useFormRepeater, FormRepeaterProps } from '@formwerk/core';
+
+const props = defineProps<FormRepeaterProps>();
+
+const { Repeat, addButtonProps } = useFormRepeater(props);
+</script>
+
+<template>
+  <Repeat
+    v-slot="{
+      index,
+      removeButtonProps,
+      moveUpButtonProps,
+      moveDownButtonProps,
+    }"
+  >
+    <h3>#{{ index + 1 }}</h3>
+
+    <slot />
+
+    <button v-bind="moveUpButtonProps">Move up</button>
+    <button v-bind="moveDownButtonProps">Move down</button>
+    <button v-bind="removeButtonProps">Remove</button>
+  </Repeat>
+
+  <button v-bind="addButtonProps">Add</button>
+</template>
+```
+
+Note that the `Repeat` component used here is a component that is returned by the `useFormRepeater` composable. This component is a wrapper that is used to manage the list of items in the repeater so you don't have to.
+
+All you need to do is to add the part of the form that should be repeated within the `Repeat` component slot. Since we are creating a re-usable `FormRepeater` component, we want to allow the consumer of this component to pass the form fields that should be repeated, so we use a `slot` element to do that.
+
+The `Repeat` default slot props contains the following properties:
+
+- `index`: The index of the item in the repeater.
+- `removeButtonProps`: The props for the remove button.
+- `moveUpButtonProps`: The props for the move up button.
+- `moveDownButtonProps`: The props for the move down button.
+
+## Example
+
+Here is a fully styled example that makes use of some of the fields we created in the field guides.
+
+## Usage
+
+### Min and Max Items
+
+You can enforce a minimum and maximum number of items in a repeater by passing the `min` and `max` props. The remove and add buttons will be disabled when the minimum or maximum number of items is reached.
+
+### Field path prefixing
+
+Repeaters require a `name` prop to know which part of the form they are going to repeat. Any fields nested within a repeater will have a name that is prefixed with the repeater's name and the index of the item. This is done automatically for you.
+
+#### Unnamed Fields
+
+As you've learned previously in the [form guide](/guides/forms/form), not having a name prop on the field will make it an uncontrolled field. This is also true for repeaters, however if you pass an empty string as the field name, the field would still be controlled and will set its value to iteration path directly.
+
+## API
+
+### Props
+
+These are the properties that can be passed to the `useFormRepeater` composable.
+
+### Returns
+
+These are the properties in the object returned by the `useFormRepeater` composable.
+
+### `<Repeat />` Slot Props
+
+These are the properties passed to the default slot of the `Repeat` component.
