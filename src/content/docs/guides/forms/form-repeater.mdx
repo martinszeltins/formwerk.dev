@@ -12,6 +12,10 @@ import AnatomyRepeater from '@components/AnatomyRepeater.vue';
 
 import MdxRepl from '@components/MdxRepl.vue';
 
+import RepeaterPartial from './_partials/_repeater.mdx';
+import TextFieldPartial from '../fields/_partials/_styledTextField.mdx';
+import CheckboxPartial from '../fields/_partials/_checkboxStyled.mdx';
+
 Form repeaters or also known as field arrays are a way to create a list of fields that may repeat multiple times in a form. This is useful for creating forms that collect a dynamic number of items like a list of emails, a list of addresses, it can also be used for a group of fields that fill an object's information.
 
 ## Features
@@ -81,19 +85,157 @@ The `Repeat` default slot props contains the following properties:
 
 Here is a fully styled example that makes use of some of the fields we created in the field guides.
 
+<MdxRepl preview-size="lg" client:load>
+
+<div slot="!TextField.vue">
+  <TextFieldPartial />
+</div>
+
+<div slot="!Checkbox.vue">
+  <CheckboxPartial />
+</div>
+
+<div slot="FormRepeater.vue">
+  <RepeaterPartial />
+</div>
+
+<div slot="App.vue">
+
+```vue
+<script setup lang="ts">
+import { useForm } from '@formwerk/core';
+import TextField from './TextField.vue';
+import Checkbox from './Checkbox.vue';
+import FormRepeater from './FormRepeater.vue';
+
+const { handleSubmit } = useForm();
+
+const onSubmit = handleSubmit((data) => {
+  alert(JSON.stringify(data.toJSON(), null, 2));
+});
+</script>
+
+<template>
+  <form @submit="onSubmit" novalidate>
+    <FormRepeater name="users">
+      <TextField name="email" label="Email Address" required type="email" />
+      <Checkbox name="isAdmin" label="is Admin" />
+    </FormRepeater>
+
+    <button type="submit">Submit</button>
+  </form>
+</template>
+```
+
+</div>
+
+</MdxRepl>
+
 ## Usage
 
 ### Min and Max Items
 
 You can enforce a minimum and maximum number of items in a repeater by passing the `min` and `max` props. The remove and add buttons will be disabled when the minimum or maximum number of items is reached.
 
+The repeater will also automatically add items to match the minimum number of items when the form is first rendered.
+
+<MdxRepl preview-size="lg" client:load>
+
+<div slot="!TextField.vue">
+  <TextFieldPartial />
+</div>
+
+<div slot="!Checkbox.vue">
+  <CheckboxPartial />
+</div>
+
+<div slot="!FormRepeater.vue">
+  <RepeaterPartial />
+</div>
+
+<div slot="App.vue">
+
+```vue
+<script setup lang="ts">
+import { useForm } from '@formwerk/core';
+import TextField from './TextField.vue';
+import Checkbox from './Checkbox.vue';
+import FormRepeater from './FormRepeater.vue';
+
+const { handleSubmit } = useForm();
+
+const onSubmit = handleSubmit((data) => {
+  alert(JSON.stringify(data.toJSON(), null, 2));
+});
+</script>
+
+<template>
+  <form @submit="onSubmit" novalidate>
+    <FormRepeater name="users" min="1" max="3">
+      <TextField name="email" label="Email Address" required type="email" />
+      <Checkbox name="isAdmin" label="is Admin" />
+    </FormRepeater>
+
+    <button type="submit">Submit</button>
+  </form>
+</template>
+```
+
+</div>
+
+</MdxRepl>
+
 ### Field path prefixing
 
 Repeaters require a `name` prop to know which part of the form they are going to repeat. Any fields nested within a repeater will have a name that is prefixed with the repeater's name and the index of the item. This is done automatically for you.
 
+You can observe this by submitting the previous examples.
+
 #### Unnamed Fields
 
 As you've learned previously in the [form guide](/guides/forms/form), not having a name prop on the field will make it an uncontrolled field. This is also true for repeaters, however if you pass an empty string as the field name, the field would still be controlled and will set its value to iteration path directly.
+
+Try adding new items to the following example and fill out the email fields. Notice how the values are set on the array indices directly.
+
+<MdxRepl preview-size="lg" client:load>
+
+<div slot="!TextField.vue">
+  <TextFieldPartial />
+</div>
+
+<div slot="!Checkbox.vue">
+  <CheckboxPartial />
+</div>
+
+<div slot="!FormRepeater.vue">
+  <RepeaterPartial />
+</div>
+
+<div slot="App.vue">
+
+```vue
+<script setup lang="ts">
+import { useForm } from '@formwerk/core';
+import TextField from './TextField.vue';
+import FormRepeater from './FormRepeater.vue';
+
+const { values } = useForm();
+</script>
+
+<template>
+  <FormRepeater name="emails" min="1">
+    <TextField name="" label="Email Address" required type="email" />
+  </FormRepeater>
+
+  <pre>{{ values }}</pre>
+</template>
+```
+
+</div>
+
+</MdxRepl>
+
+If you need a field to be uncontrolled, avoid passing a name prop to the field.
 
 ## API
 
@@ -101,10 +243,38 @@ As you've learned previously in the [form guide](/guides/forms/form), not having
 
 These are the properties that can be passed to the `useFormRepeater` composable.
 
+| Name                | Type                   | Description                                          |
+| ------------------- | ---------------------- | ---------------------------------------------------- |
+| name                | `string`               | The name of the repeater field.                      |
+| min                 | `Numberish` (optional) | The minimum number of items allowed in the repeater. |
+| max                 | `Numberish` (optional) | The maximum number of items allowed in the repeater. |
+| addButtonLabel      | `string` (optional)    | Custom label for the add button.                     |
+| removeButtonLabel   | `string` (optional)    | Custom label for the remove button.                  |
+| moveUpButtonLabel   | `string` (optional)    | Custom label for the move up button.                 |
+| moveDownButtonLabel | `string` (optional)    | Custom label for the move down button.               |
+
 ### Returns
 
 These are the properties in the object returned by the `useFormRepeater` composable.
 
+| Name           | Type                                 | Description                                                  |
+| -------------- | ------------------------------------ | ------------------------------------------------------------ |
+| addButtonProps | `Object`                             | Props to be spread on the add button element.                |
+| add            | `() => void`                         | Function to add a new item to the repeater.                  |
+| swap           | `(from: number, to: number) => void` | Function to swap the positions of two items in the repeater. |
+| remove         | `(index: number) => void`            | Function to remove an item from the repeater.                |
+| move           | `(from: number, to: number) => void` | Function to move an item to a new position in the repeater.  |
+| insert         | `(index: number) => void`            | Function to insert a new item at a specific index.           |
+| Repeat         | `Component`                          | Component used to render repeated items.                     |
+
 ### `<Repeat />` Slot Props
 
 These are the properties passed to the default slot of the `Repeat` component.
+
+| Name                | Type                         | Description                                         |
+| ------------------- | ---------------------------- | --------------------------------------------------- |
+| index               | `number`                     | The index of the current repeated item.             |
+| path                | `string`                     | The path to the current repeated item.              |
+| moveDownButtonProps | `FormRepeaterButtonDomProps` | Props to be spread on the move down button element. |
+| moveUpButtonProps   | `FormRepeaterButtonDomProps` | Props to be spread on the move up button element.   |
+| removeButtonProps   | `FormRepeaterButtonDomProps` | Props to be spread on the remove button element.    |

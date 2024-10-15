@@ -24,8 +24,8 @@ importers:
         specifier: ^4.5.2
         version: 4.5.2(astro@4.16.2(@types/node@22.7.5)(rollup@4.24.0)(typescript@5.6.3))(rollup@4.24.0)(vite@5.4.8(@types/node@22.7.5))(vue@3.5.12(typescript@5.6.3))
       '@formwerk/core':
-        specifier: ^0.1.17
-        version: 0.1.17(typescript@5.6.3)
+        specifier: ^0.1.18
+        version: 0.1.18(typescript@5.6.3)
       '@iconify-json/vscode-icons':
         specifier: ^1.2.2
         version: 1.2.2
@@ -668,8 +668,8 @@ packages:
   '@expressive-code/plugin-text-markers@0.35.6':
     resolution: {integrity: sha512-/k9eWVZSCs+uEKHR++22Uu6eIbHWEciVHbIuD8frT8DlqTtHYaaiwHPncO6KFWnGDz5i/gL7oyl6XmOi/E6GVg==}
 
-  '@formwerk/core@0.1.17':
-    resolution: {integrity: sha512-/gro3JU+II3wLHALMQN1RF/aOQj0lVCcxQ415nfQIgMWswZUl+4aEVThwSUVgHPJLu8gfB8tCqmQ+0Ah+qjcqw==}
+  '@formwerk/core@0.1.18':
+    resolution: {integrity: sha512-xwYDvq4xb7OIf662aPMemr6uWlvrvoD7JCX/NwTVhDWkI95LGUXQmEDuH0by+xfITnHYwppThYNyN9uqjdJm/A==}
 
   '@humanfs/core@0.19.0':
     resolution: {integrity: sha512-2cbWIHbZVEweE853g8jymffCA+NCMiuqeECeBBLm8dg2oFdjuGJhgN4UAbI+6v0CKbbhvtXA4qV8YR5Ji86nmw==}
@@ -4477,7 +4477,7 @@ snapshots:
     dependencies:
       '@expressive-code/core': 0.35.6
 
-  '@formwerk/core@0.1.17(typescript@5.6.3)':
+  '@formwerk/core@0.1.18(typescript@5.6.3)':
     dependencies:
       klona: 2.0.6
       type-fest: 4.26.1
