@@ -1,6 +1,6 @@
 <template>
-  <div class="flex flex-col">
-    <AnatomyPart text="Repeat Group" position="left">
+  <div class="flex flex-col gap-4">
+    <AnatomyPart text="Iteration #1" position="left">
       <div
         class="flex flex-col gap-4 rounded-md border border-dashed border-zinc-600 p-6"
       >
@@ -29,7 +29,13 @@
             <PhTrash class="text-zinc-400" />
           </AnatomyPart>
         </div>
+      </div>
+    </AnatomyPart>
 
+    <AnatomyPart text="Iteration #2" position="left">
+      <div
+        class="flex flex-col gap-4 rounded-md border border-dashed border-zinc-600 p-6"
+      >
         <div class="flex items-center gap-2">
           <div
             class="flex w-max items-center whitespace-nowrap rounded-md border border-zinc-600 bg-zinc-900 px-4 py-1.5 pr-40 font-medium text-zinc-400"
@@ -52,7 +58,7 @@
       </div>
     </AnatomyPart>
 
-    <AnatomyPart text="Add item button" position="left" class="mt-4">
+    <AnatomyPart text="Add item button" position="left">
       <button
         type="button"
         class="flex w-32 items-center gap-1 rounded-md bg-zinc-900 px-4 py-2 text-left text-sm font-medium text-zinc-400"

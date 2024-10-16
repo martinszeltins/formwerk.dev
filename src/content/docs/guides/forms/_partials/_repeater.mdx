@@ -1,18 +1,23 @@
-```vue collapse={63-147}
+```vue collapse={68-160}
 <script setup lang="ts">
 import { useFormRepeater, type FormRepeaterProps } from '@formwerk/core';
 
 const props = defineProps<FormRepeaterProps>();
 
-const { Repeat, addButtonProps } = useFormRepeater(props);
+const { items, addButtonProps, Iteration } = useFormRepeater(props);
 </script>
 
 <template>
   <div class="repeater-container">
-    <Repeat
-      v-slot="{ removeButtonProps, moveUpButtonProps, moveDownButtonProps }"
-    >
-      <div class="repeater-item">
+    <TransitionGroup name="list">
+      <Iteration
+        v-for="(key, index) in items"
+        :index="index"
+        :key="key"
+        as="div"
+        class="repeater-item"
+        v-slot="{ removeButtonProps, moveUpButtonProps, moveDownButtonProps }"
+      >
         <div class="repeater-item-content">
           <slot />
         </div>
@@ -54,21 +59,27 @@ const { Repeat, addButtonProps } = useFormRepeater(props);
             </svg>
           </button>
         </div>
-      </div>
-    </Repeat>
+      </Iteration>
+    </TransitionGroup>
 
-    <button v-bind="addButtonProps" class="add-button">Add</button>
+    <button v-bind="addButtonProps" class="add-button">Add item</button>
   </div>
 </template>
 
 <style scoped>
 .add-button {
   margin-top: 1rem;
-  padding: 4px;
+  padding: 4px 8px;
   border-radius: 6px;
+  border: none;
   background-color: #059669;
   color: #fff;
   width: max-content;
+
+  &:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+  }
 }
 
 .repeater-container {
@@ -130,19 +141,19 @@ const { Repeat, addButtonProps } = useFormRepeater(props);
   }
 }
 
-.repeater-list-move,
-.repeater-list-enter-active,
-.repeater-list-leave-active {
+.list-move,
+.list-enter-active,
+.list-leave-active {
   transition: all 0.5s ease;
 }
 
-.repeater-list-enter-from,
-.repeater-list-leave-to {
+.list-enter-from,
+.list-leave-to {
   opacity: 0;
   transform: translateX(30px);
 }
 
-.repeater-list-leave-active {
+.list-leave-active {
   position: absolute;
 }
 </style>

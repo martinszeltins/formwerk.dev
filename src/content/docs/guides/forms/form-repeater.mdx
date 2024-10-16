@@ -35,9 +35,33 @@ Form repeaters or also known as field arrays are a way to create a list of field
 
 ## Creating a Form Repeater
 
-To create a form repeater, you can use the `useFormRepeater` composable. This composable returns values that should be bound to the anatomy elements.
+To create a form repeater, you can use the `useFormRepeater` composable.
 
-Typically, you need to create a `FormRepeater` component that you can use to structure your form fields. There is no specific element that you need to use at this time.
+Typically, you need to create a `FormRepeater` component that you can use to structure your form fields. There is no specific element that you need to use at this time as this is considered a utility container.
+
+At its simplest, the `useFormRepeater` composable returns the items you need to render the repeater.
+
+```ts
+import { useFormRepeater, FormRepeaterProps } from '@formwerk/core';
+
+const props = defineProps<FormRepeaterProps>();
+
+const { items, Iteration } = useFormRepeater(props);
+```
+
+Note that the `Iteration` component used here is a component that is returned by the `useFormRepeater` composable. This component is a wrapper that is used to render each item in the repeater in a managed way.
+
+Under the hood the `Iteration` component prefixes the nested fields with the repeater's name and the index of the item.
+
+The `Iteration` default slot props contains the following properties:
+
+- `removeButtonProps`: The props for the remove button.
+- `moveUpButtonProps`: The props for the move up button.
+- `moveDownButtonProps`: The props for the move down button.
+
+The `items` array is a readonly array of strings that represent the keys of the items in the repeater. These are unique identifiers for each item in the repeater and you should not attempt to set them manually.
+
+Putting it all together, you get a simple example like this:
 
 ```vue
 <script setup lang="ts">
@@ -45,13 +69,15 @@ import { useFormRepeater, FormRepeaterProps } from '@formwerk/core';
 
 const props = defineProps<FormRepeaterProps>();
 
-const { Repeat, addButtonProps } = useFormRepeater(props);
+const { items, Iteration, addButtonProps } = useFormRepeater(props);
 </script>
 
 <template>
-  <Repeat
+  <Iteration
+    v-for="(key, index) in items"
+    :key="key"
+    :index="index"
     v-slot="{
-      index,
       removeButtonProps,
       moveUpButtonProps,
       moveDownButtonProps,
@@ -70,20 +96,9 @@ const { Repeat, addButtonProps } = useFormRepeater(props);
 </template>
 ```
 
-Note that the `Repeat` component used here is a component that is returned by the `useFormRepeater` composable. This component is a wrapper that is used to manage the list of items in the repeater so you don't have to.
-
-All you need to do is to add the part of the form that should be repeated within the `Repeat` component slot. Since we are creating a re-usable `FormRepeater` component, we want to allow the consumer of this component to pass the form fields that should be repeated, so we use a `slot` element to do that.
-
-The `Repeat` default slot props contains the following properties:
-
-- `index`: The index of the item in the repeater.
-- `removeButtonProps`: The props for the remove button.
-- `moveUpButtonProps`: The props for the move up button.
-- `moveDownButtonProps`: The props for the move down button.
-
 ## Example
 
-Here is a fully styled example that makes use of some of the fields we created in the field guides.
+Here is a fully styled example that makes use of some of the fields we created in the field guides. We also integrate a `TransitionGroup` from Vue to animate the entering and leaving of the repeater items. Which is why we are not abstracting the looping aspect of the repeater, this gives you the flexibility to use any animation library/tool you like.
 
 <MdxRepl preview-size="lg" client:load>
 
@@ -257,24 +272,31 @@ These are the properties that can be passed to the `useFormRepeater` composable.
 
 These are the properties in the object returned by the `useFormRepeater` composable.
 
-| Name           | Type                                 | Description                                                  |
-| -------------- | ------------------------------------ | ------------------------------------------------------------ |
-| addButtonProps | `Object`                             | Props to be spread on the add button element.                |
-| add            | `() => void`                         | Function to add a new item to the repeater.                  |
-| swap           | `(from: number, to: number) => void` | Function to swap the positions of two items in the repeater. |
-| remove         | `(index: number) => void`            | Function to remove an item from the repeater.                |
-| move           | `(from: number, to: number) => void` | Function to move an item to a new position in the repeater.  |
-| insert         | `(index: number) => void`            | Function to insert a new item at a specific index.           |
-| Repeat         | `Component`                          | Component used to render repeated items.                     |
+| Name           | Type                                 | Description                                                                   |
+| -------------- | ------------------------------------ | ----------------------------------------------------------------------------- |
+| addButtonProps | `Object`                             | Props to be spread on the add button element.                                 |
+| add            | `() => void`                         | Function to add a new item to the repeater.                                   |
+| swap           | `(from: number, to: number) => void` | Function to swap the positions of two items in the repeater.                  |
+| remove         | `(index: number) => void`            | Function to remove an item from the repeater.                                 |
+| move           | `(from: number, to: number) => void` | Function to move an item to a new position in the repeater.                   |
+| insert         | `(index: number) => void`            | Function to insert a new item at a specific index.                            |
+| items          | `readonly string[]`                  | Readonly array of strings representing the keys of the items in the repeater. |
+| Iteration      | `Component`                          | Component used to render repeated items.                                      |
 
-### `<Repeat />` Slot Props
+### `<Iteration />`
+
+#### Props
+
+| Name  | Type     | Description                                               |
+| ----- | -------- | --------------------------------------------------------- |
+| index | `number` | The index of the current repeated item. This is required. |
+
+#### Slot Props
 
 These are the properties passed to the default slot of the `Repeat` component.
 
 | Name                | Type                         | Description                                         |
 | ------------------- | ---------------------------- | --------------------------------------------------- |
-| index               | `number`                     | The index of the current repeated item.             |
-| path                | `string`                     | The path to the current repeated item.              |
 | moveDownButtonProps | `FormRepeaterButtonDomProps` | Props to be spread on the move down button element. |
 | moveUpButtonProps   | `FormRepeaterButtonDomProps` | Props to be spread on the move up button element.   |
 | removeButtonProps   | `FormRepeaterButtonDomProps` | Props to be spread on the remove button element.    |
