@@ -889,6 +889,45 @@ function onReset() {
 }
 ```
 
+## Form Types
+
+Forms supports typing your form values with TypeScript. This is done through a couple of generic type parameters.
+
+The `useForm` composable signature is typed as:
+
+```ts
+function useForm<
+  TForm extends FormObject = FormObject,
+  TOutput extends FormObject = TForm,
+>();
+```
+
+Let's break down the generic type parameters:
+
+- `TForm`: The type of the form input values, these represent the current values of the form fields without any validation or transformations applied. We also refer to those as "input" types.
+- `TOutput`: The type of the form output values, these represent the values that would be submitted. That means validation and transformations have already been applied.
+
+The distinction between input and output types is important because it helps you avoid re-checking values that have already been validated in runtime to satisfy TypeScript.
+
+So you can type a form like this:
+
+```ts
+const { values, handleSubmit } = useForm<
+  { email?: string },
+  { email: string }
+>();
+
+values; // { email?: string | undefined }
+
+const onSubmit = handleSubmit((data) => {
+  data.toJSON(); // { email: string }
+});
+```
+
+By providing types, the submit function understands that the `email` field would be present and will be a non-nullable string when the form submits.
+
+Providing types manually is fine for simple forms but quickly becomes cumbersome for more complex forms with many fields. This is why you should consider using [Typed Schema](/guides/forms/validation#typed-schema-validation) to define form schemas that the form will infer the types from automatically.
+
 ## API
 
 ### Props
