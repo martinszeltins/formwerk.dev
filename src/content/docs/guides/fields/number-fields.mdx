@@ -10,6 +10,7 @@ import AnatomyCanvas from '@components/AnatomyCanvas.vue';
 import AnatomyNumberField from '@components/AnatomyNumberField.vue';
 import MdxRepl from '@components/MdxRepl.vue';
 import Kbd from '@components/KeyboardKey.vue';
+import MouseWheel from '@components/MouseWheel.vue';
 
 import StyledNumberFieldPartial from './_partials/_numberFieldStyled.mdx';
 import NumberFieldPartial from './_partials/_numberField.mdx';
@@ -39,14 +40,16 @@ Formwerk tries to address all these issues and more by utilizing the `Intl.Numbe
 - Support for `v-model` binding.
 - Supported Keyboard features:
 
-| Key                                        | Description                                                          |
-| ------------------------------------------ | -------------------------------------------------------------------- |
-| <Kbd code="ArrowUp" label="Arrow Up" />    | increment the value by the step amount.                              |
-| <Kbd code="ArrowDown" label="Arrow Down"/> | decrement the value by the step amount.                              |
-| <Kbd code="PageUp" label="Page Up" />      | increment the value by larger multiple of the step amount.           |
-| <Kbd code="PageDown" label="Page Down" />  | decrement the value by larger multiple of the step amount.           |
-| <Kbd code="Home" />                        | set the value to the min value if provided, otherwise has no effect. |
-| <Kbd code="End" />                         | set the value to the max value if provided, otherwise has no effect. |
+| Key                                            | Description                                                          |
+| ---------------------------------------------- | -------------------------------------------------------------------- |
+| <Kbd code="ArrowUp" label="Arrow Up" />        | increment the value by the step amount.                              |
+| <Kbd code="ArrowDown" label="Arrow Down"/>     | decrement the value by the step amount.                              |
+| <Kbd code="PageUp" label="Page Up" />          | increment the value by larger multiple of the step amount.           |
+| <Kbd code="PageDown" label="Page Down" />      | decrement the value by larger multiple of the step amount.           |
+| <Kbd code="Home" />                            | set the value to the min value if provided, otherwise has no effect. |
+| <Kbd code="End" />                             | set the value to the max value if provided, otherwise has no effect. |
+| <MouseWheel class="size-6" direction="up" />   | increment the value by the step amount.                              |
+| <MouseWheel class="size-6" direction="down" /> | decrement the value by the step amount.                              |
 
 ## Anatomy
 
@@ -422,26 +425,27 @@ There is a lot more to directionality and localization, for more info check out 
 
 These are the properties that can be passed to the `useNumberField` composable.
 
-| Name                    | Type                        | Description                               |
-| ----------------------- | --------------------------- | ----------------------------------------- |
-| `label`                 | `string`                    | The label for the number field.           |
-| `locale`                | `string?`                   | The locale to use for formatting.         |
-| `modelValue`            | `number?`                   | The v-model value for the number field.   |
-| `description`           | `string?`                   | Description text for the number field.    |
-| `incrementLabel`        | `string?`                   | Label for the increment button.           |
-| `decrementLabel`        | `string?`                   | Label for the decrement button.           |
-| `name`                  | `string?`                   | The name attribute for the input element. |
-| `value`                 | `Numberish?`                | The initial value of the number field.    |
-| `min`                   | `Numberish?`                | The minimum allowed value.                |
-| `max`                   | `Numberish?`                | The maximum allowed value.                |
-| `step`                  | `Numberish?`                | The step value for increments/decrements. |
-| `placeholder`           | `string?`                   | Placeholder text for the input.           |
-| `required`              | `boolean?`                  | Whether the field is required.            |
-| `readonly`              | `boolean?`                  | Whether the field is read-only.           |
-| `disabled`              | `boolean?`                  | Whether the field is disabled.            |
-| `formatOptions`         | `Intl.NumberFormatOptions?` | Options for number formatting.            |
-| `schema`                | `TypedSchema<number>?`      | Schema for validation.                    |
-| `disableHtmlValidation` | `boolean?`                  | Whether to disable HTML5 validation.      |
+| Name                    | Type                        | Description                                 |
+| ----------------------- | --------------------------- | ------------------------------------------- |
+| `label`                 | `string`                    | The label for the number field.             |
+| `locale`                | `string?`                   | The locale to use for formatting.           |
+| `modelValue`            | `number?`                   | The v-model value for the number field.     |
+| `description`           | `string?`                   | Description text for the number field.      |
+| `incrementLabel`        | `string?`                   | Label for the increment button.             |
+| `decrementLabel`        | `string?`                   | Label for the decrement button.             |
+| `name`                  | `string?`                   | The name attribute for the input element.   |
+| `value`                 | `Numberish?`                | The initial value of the number field.      |
+| `min`                   | `Numberish?`                | The minimum allowed value.                  |
+| `max`                   | `Numberish?`                | The maximum allowed value.                  |
+| `step`                  | `Numberish?`                | The step value for increments/decrements.   |
+| `placeholder`           | `string?`                   | Placeholder text for the input.             |
+| `required`              | `boolean?`                  | Whether the field is required.              |
+| `readonly`              | `boolean?`                  | Whether the field is read-only.             |
+| `disabled`              | `boolean?`                  | Whether the field is disabled.              |
+| `formatOptions`         | `Intl.NumberFormatOptions?` | Options for number formatting.              |
+| `schema`                | `TypedSchema<number>?`      | Schema for validation.                      |
+| `disableWheel`          | `boolean?`                  | Whether to disable the wheel event handler. |
+| `disableHtmlValidation` | `boolean?`                  | Whether to disable HTML5 validation.        |
 
 <Aside>
   Most of the props above can be passed as `Ref<T>` or `() => T` and the reactivity will be handled for you.
