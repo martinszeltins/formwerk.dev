@@ -72,7 +72,7 @@ To get started with Zod, you need to install the `@formwerk/zod` package as well
   </TabItem>
 </Tabs>
 
-The `@formwerk/schema-zod` package exposes a `defineSchema` function that you have to use to define your schema. This function takes a zod schema and returns a typed schema object that formwerk components can understand.
+The `@formwerk/schema-zod` package exposes a `defineSchema` function that you have to use to define your schema. This function takes a zod schema and returns a typed schema object that Formwerk components can understand.
 
 ```ts
 import { defineSchema } from '@formwerk/schema-zod';
@@ -126,7 +126,7 @@ To get started with Yup, you need to install the `@formwerk/schema-yup` package 
   </TabItem>
 </Tabs>
 
-The `@formwerk/schema-yup` package exposes a `defineSchema` function that you have to use to define your schema. This function takes a zod schema and returns a typed schema object that formwerk components can understand.
+The `@formwerk/schema-yup` package exposes a `defineSchema` function that you have to use to define your schema. This function takes a zod schema and returns a typed schema object that Formwerk components can understand.
 
 ```ts
 import { defineSchema } from '@formwerk/schema-yup';
@@ -157,7 +157,7 @@ const schema = defineSchema(
 
 As you have probably have noticed in the field guides, Formwerk unifies the typed schema with the HTML constraint validation API.
 
-Under the hood, if using a typed schema, formwerk takes the errors and sets them on the field's `validationMessage` property. That means you can make use of pseudo classes like `:invalid` and `:valid` in CSS to style your fields regardless of the validation system you use. We made use of this a few times in the styled examples.
+Under the hood, if using a typed schema, Formwerk takes the errors and sets them on the field's `validationMessage` property. That means you can make use of pseudo classes like `:invalid` and `:valid` in CSS to style your fields regardless of the validation system you use. We made use of this a few times in the styled examples.
 
 ### Form Types
 
@@ -231,7 +231,7 @@ at this moment you can't change the default validation events.
 
 Now that you know you will always have errors available, you can decide when to display them.
 
-All formwerk components exposes a few properties that can help you with error display:
+All Formwerk components exposes a few properties that can help you with error display:
 
 - `errors`: An array of all error messages if the field is invalid.
 - `errorMessage`: The error message if the field is invalid. Always the first element of the `errors` array.

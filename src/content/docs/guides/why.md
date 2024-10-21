@@ -49,7 +49,7 @@ Formwerk is also for UI library developers who want to offer a solid offering of
 Formwerk is not for:
 
 - Those who use existing UI libraries.
-- Those who are looking to prototype fast. Building with formwerk is fast, but not as fast as using a UI library.
+- Those who are looking to prototype fast. Building with Formwerk is fast, but not as fast as using a UI library.
 
 ## Why not ....?
 
