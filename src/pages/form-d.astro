@@ -1,8 +1,10 @@
 ---
 import StarlightPage from '@astrojs/starlight/components/StarlightPage.astro';
+
+const frontmatter = { title: 'Submitted Data' };
 ---
 
-<StarlightPage frontmatter={{ title: 'Submitted Data' }}>
+<StarlightPage frontmatter={frontmatter}>
   <p>
     You Reached this page via a form submission, typically your backend should
     handle this. Anyways, here is your submitted data:

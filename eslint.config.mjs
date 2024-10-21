@@ -27,6 +27,6 @@ export default tseslint.config(
     },
   },
   {
-    ignores: ['dist/*', '.astro/*'],
+    ignores: ['dist/*', '.astro/*', 'src/pages/form-d.astro'],
   },
 );
