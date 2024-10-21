@@ -1,6 +1,210 @@
 ---
 title: Styling
-description: A guide in my new Starlight docs site.
+description: Best practices for styling Formwerk components.
 sidebar:
   order: 1
 ---
+
+import { Aside } from '@astrojs/starlight/components';
+
+import TextFieldPartial from '../fields/_partials/_textField.mdx';
+
+import MdxRepl from '@components/MdxRepl.vue';
+
+Formwerk doesn't ship with any CSS or HTML structure, it only provides the logic or the "soul" of the components. This means you can style it with your own CSS or use a CSS framework like Tailwind CSS.
+
+Each composable field guide showed you a styled example, so we won't repeat them here. But we will cover some best practices for styling Formwerk components.
+
+## Pseudo Classes
+
+A crucial part of Formwerk's validation system is it uses the native HTML5 constraint validation API and ensures a consistent validity state even if you are using a Typed validation schema. This means you can make use of pseudo classes like `:invalid` and `:valid` in CSS to style your fields regardless of the validation system you use.
+
+For many cases, this can allow you to control when to show or hide error messages without any JavaScript or conditional rendering.
+
+### `:invalid` and `:valid`
+
+The [`:invalid`](https://developer.mozilla.org/en-US/docs/Web/CSS/:invalid) and [`:valid`](https://developer.mozilla.org/en-US/docs/Web/CSS/:valid) pseudo classes are applied to the input element when the field is in an invalid or valid state.
+
+Usually you do not want to use these pseudo classes as they are too "aggressive". The `:user-invalid` and `:user-valid` pseudo classes are more subtle and only apply when the user has interacted with the field.
+
+Here is an example, notice how the style are already applied to the fields even before you have interacted with them.
+
+<MdxRepl client:load>
+
+<div slot="!TextField.vue">
+  <TextFieldPartial />
+</div>
+
+<div slot="App.vue">
+
+```vue
+<script setup lang="ts">
+import TextField from './TextField.vue';
+</script>
+
+<template>
+  <TextField label="Email" required type="email" />
+  <TextField label="Password" required type="password" min-length="8" />
+</template>
+
+<style>
+*:invalid {
+  border-color: red;
+}
+
+*:valid {
+  border-color: green;
+}
+</style>
+```
+
+</div>
+
+</MdxRepl>
+
+### `:user-invalid` and `:user-valid`
+
+The [`:user-invalid`](https://developer.mozilla.org/en-US/docs/Web/CSS/:user-invalid) and [`:user-valid`](https://developer.mozilla.org/en-US/docs/Web/CSS/:user-valid) pseudo classes are applied to the input element when the field is in an invalid or valid state after the user has interacted with the field. The criteria for "interaction" is determined by each browser but usually it is either of:
+
+- User changed the value of the field.
+- User submitted the form.
+
+Here is an example making use of these pseudo classes, notice that the styles are only applied after you have interacted with the field.
+
+<MdxRepl client:load>
+
+<div slot="!TextField.vue">
+  <TextFieldPartial />
+</div>
+
+<div slot="App.vue">
+
+```vue
+<script setup lang="ts">
+import TextField from './TextField.vue';
+</script>
+
+<template>
+  <TextField label="Email" required type="email" />
+  <TextField label="Password" required type="password" min-length="8" />
+</template>
+
+<style>
+*:user-invalid {
+  border-color: red;
+}
+
+*:user-valid {
+  border-color: green;
+}
+</style>
+```
+
+</div>
+
+</MdxRepl>
+
+### :disabled
+
+The [`:disabled`](https://developer.mozilla.org/en-US/docs/Web/CSS/:disabled) pseudo class is applied to the input element when the field is disabled. This only works for components that use the HTML's `input` as a base element.
+
+For non-input base elements you can use the `aria-disabled` attribute to target the field.
+
+<MdxRepl client:load>
+
+<div slot="!TextField.vue">
+  <TextFieldPartial />
+</div>
+
+<div slot="App.vue">
+
+```vue
+<script setup lang="ts">
+import TextField from './TextField.vue';
+</script>
+
+<template>
+  <TextField label="Email" type="email" disabled />
+  <TextField label="Password" required type="password" min-length="8" />
+</template>
+
+<style>
+*:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+</style>
+```
+
+</div>
+
+</MdxRepl>
+
+### `:focus`
+
+The [`:focus`](https://developer.mozilla.org/en-US/docs/Web/CSS/:focus) pseudo class is applied to an element when it is focused. Formwerk manages the focus state for a lot of components, so this pseudo class is useful to style the focused element.
+
+Other than highlighting the focused inputs, this can be critically important in a few other cases:
+
+- Highlighting the focused `option` element in a `Select` component when navigating with the keyboard.
+- Highlighting focused checkboxes and radio button items.
+- Highlighting focused slider knobs.
+
+## Aria Attributes
+
+Formwerk components automatically generate the necessary `aria-*` attributes to ensure accessibility. You can take advantage of these attributes to style your fields based on their accessibility state.
+
+These are the common aria attributes that Formwerk makes use of that you can style with:
+
+| Attribute          | Description                                                                                                                                                                                                    |
+| ------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `aria-required`    | Indicates whether the element is required to fill out or not. Applied if the base element is NOT an `input`.                                                                                                   |
+| `aria-disabled`    | Indicates whether the element is disabled or not. Applied if the base element is NOT an `input`.                                                                                                               |
+| `aria-invalid`     | Indicates whether the element is invalid or not. Applied always.                                                                                                                                               |
+| `aria-selected`    | Indicates whether the element is selected or not. Used for option components in a single selection `Select` fields.                                                                                            |
+| `aria-checked`     | Indicates whether the element is checked or not. For checkboxes and radios, applied if the base element is NOT an `input`. Also used for switches and option components in multiple selection `Select` fields. |
+| `aria-orientation` | Indicates the orientation of the element. Commonly applied on sliders.                                                                                                                                         |
+| `aria-expanded`    | Indicates whether the element is expanded or not. Commonly applied in `Select` fields.                                                                                                                         |
+
+## `has()` selector
+
+The `:has()` CSS pseudo class allows you to style an element based on whether it has a child element that matches a certain condition. This can eliminate a lot of unnecessary dynamic classes or JavaScript to conditionally style fields.
+
+Here is an example that makes use of the `:has()` pseudo class to style the label of a field based on whether the field is required. The asterisk (`*`) is added to the label when the field is required.
+
+<MdxRepl client:load>
+
+<div slot="!TextField.vue">
+  <TextFieldPartial />
+</div>
+
+<div slot="App.vue">
+
+```vue
+<script setup lang="ts">
+import TextField from './TextField.vue';
+</script>
+
+<template>
+  <TextField label="Email" required type="email" class="Field" />
+  <TextField label="Password" required type="password" class="Field" />
+  <TextField label="Name" class="Field" />
+</template>
+
+<style>
+.Field:has(:required) {
+  label {
+    &::after {
+      content: ' *';
+      color: red;
+    }
+  }
+}
+</style>
+```
+
+</div>
+
+</MdxRepl>
+
+Similarly you can do the same with any aria attributes or pseudo classes that would be applied to the field.
