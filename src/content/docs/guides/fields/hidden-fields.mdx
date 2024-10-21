@@ -1,0 +1,169 @@
+---
+title: Hidden Fields
+description: Learn how to use hidden fields in Formwerk.
+sidebar:
+  order: 9
+---
+
+<script src="https://cdn.jsdelivr.net/npm/@live-codes/browser-compilers@0.15.1/dist/vue-compiler-sfc/vue-compiler-sfc.js"></script>
+
+import { Tabs, TabItem, Aside } from '@astrojs/starlight/components';
+import AnatomyCanvas from '@components/AnatomyCanvas.vue';
+import AnatomyHiddenField from '@components/AnatomyHiddenField.vue';
+import MdxRepl from '@components/MdxRepl.vue';
+
+Hidden fields let you include data that cannot be seen or modified by users when a form is submitted. A good example is a CSRF token or an ID for the content being submitted.
+
+As such they do not have most of the features of other fields.
+
+## Features
+
+- Offers a `useHiddenField` composable and a renderless `HiddenField` component.
+
+## Anatomy
+
+<AnatomyCanvas>
+  <AnatomyHiddenField />
+</AnatomyCanvas>
+
+## Hidden Field Component
+
+Unlike other fields, you can use the `HiddenField` component to create a hidden field without having to create your own components. This is because we view the hidden field as a utility field for declaring values declaratively.
+
+```vue
+<script setup lang="ts">
+import { HiddenField } from '@formwerk/core';
+</script>
+
+<template>
+  <HiddenField name="csrfToken" :value="csrfToken" />
+</template>
+```
+
+Alternatively, you can use the `useHiddenField` composable to create a custom hidden field component.
+
+```vue
+<script setup lang="ts">
+import { useHiddenField, type HiddenFieldProps } from '@formwerk/core';
+
+const props = defineProps<HiddenFieldProps>();
+</script>
+
+<template>
+  <input type="hidden" :name="name" :value="value" />
+</template>
+```
+
+In order to show you how hidden fields work, we will have to use a `form` in the following example. We will try to keep it as simple as possible, but you can check the [form guide](/guides/forms/) for more information.
+
+<MdxRepl client:load>
+
+<div slot="App.vue">
+
+```vue
+<script setup lang="ts">
+import { HiddenField, useForm } from '@formwerk/core';
+
+const { handleSubmit } = useForm({});
+
+const onSubmit = handleSubmit((data) => {
+  alert(JSON.stringify(data.toJSON(), null, 2));
+});
+</script>
+
+<template>
+  <form @submit="onSubmit">
+    <HiddenField name="csrfToken" value="abc123xyz789" />
+
+    <button type="submit">Submit</button>
+  </form>
+</template>
+```
+
+</div>
+
+</MdxRepl>
+
+## Validation
+
+Hidden fields do not support validation although their [API](#api) supports showing any possible error messages that the form might have for the field. The main reason for this is that hidden fields are ... well, hidden. That means the user cannot interact with them and as such you should make sure they always have valid values otherwise it will be confusing to the user.
+
+## Usage
+
+### Disabled
+
+Marking a hidden field as disabled will make it non-submittable. Meaning its value will not be included in the form data when the form is submitted.
+
+<MdxRepl client:load>
+
+<div slot="App.vue">
+
+```vue
+<script setup lang="ts">
+import { HiddenField, useForm } from '@formwerk/core';
+
+const { handleSubmit } = useForm({});
+
+const onSubmit = handleSubmit((data) => {
+  alert(JSON.stringify(data.toJSON(), null, 2));
+});
+</script>
+
+<template>
+  <form @submit="onSubmit">
+    <HiddenField name="csrfToken" value="abc123xyz789" />
+    <HiddenField name="disabled" value="disabled-field" disabled />
+
+    <button type="submit">Submit</button>
+  </form>
+</template>
+```
+
+</div>
+
+</MdxRepl>
+
+## API
+
+### useHiddenField
+
+#### Props
+
+These are the properties that can be passed to the `useHiddenField` composable.
+
+| Name       | Type      | Description                                |
+| ---------- | --------- | ------------------------------------------ |
+| `name`     | `string`  | The name attribute for the input element.  |
+| `value`    | `any`     | The value attribute for the input element. |
+| `disabled` | `boolean` | Whether the field is disabled.             |
+
+<Aside>
+  All the props above can be passed as `Ref<T>` or `() => T` and the reactivity will be handled for you.
+</Aside>
+
+#### Returns
+
+These are the properties in the object returned by the `useHiddenField` composable.
+
+| Name           | Type                               | Description                                                         |
+| -------------- | ---------------------------------- | ------------------------------------------------------------------- |
+| `displayError` | `() => string \| undefined`        | A getter to display the error message if touched.                   |
+| `errorMessage` | `string \| undefined`              | The validation message.                                             |
+| `errors`       | `string[]`                         | The field's error messages.                                         |
+| `fieldValue`   | `string \| undefined`              | The current value of the field.                                     |
+| `isDirty`      | `boolean`                          | Whether the field value has changed.                                |
+| `isTouched`    | `boolean`                          | Whether the field is touched.                                       |
+| `isValid`      | `boolean`                          | Whether the field has error messages.                               |
+| `setErrors`    | `(msg: Arrayable<string>) => void` | Sets the error messages for the field and sets the `isValid` state. |
+| `setTouched`   | `(touched: boolean) => void`       | Sets the `isTouched` state.                                         |
+| `setValue`     | `(value: number) => void`          | Sets the field's current value.                                     |
+
+### HiddenField Component
+
+#### Props
+
+| Name       | Type      | Description                                |
+| ---------- | --------- | ------------------------------------------ |
+| `name`     | `string`  | The name attribute for the input element.  |
+| `value`    | `any`     | The value attribute for the input element. |
+| `disabled` | `boolean` | Whether the field is disabled.             |
