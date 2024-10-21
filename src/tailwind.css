@@ -16,3 +16,9 @@
 tr > td:first-child {
   white-space: nowrap;
 }
+
+iframe {
+  width: 100%;
+  min-height: 500px;
+  border: none;
+}
