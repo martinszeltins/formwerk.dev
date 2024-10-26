@@ -4,3 +4,110 @@ description: A guide in my new Starlight docs site.
 sidebar:
   order: 3
 ---
+
+Formwerk composables treat internationalization as a first class concern. It's not just about translating the labels and messages. It's mainly about catering to specifics of each locale audience and giving them the best experience possible.
+
+If you didn't work with internationalization before, you might be surprised how the web still misses the mark in many cases. Here are a few examples:
+
+- The `input[type="number"]` only accepts latin numerals. This causes issues for those with non-latin locales and keyboard layouts.
+- Some keyboard layouts lack the semantically correct commas, and decimal separators, yet users use identical symbols that usually fails validation.
+- Most keyboard shortcuts, especially left/right arrow keys do not respect the directionality of the locale.
+- The HTML5 constrained validation API generates messages in the browser's default language, not the website's.
+
+Formwerk composables take all of this into account and more. In this page we'll go over the details of how Formwerk handles internationalization and how you can benefit from it.
+
+## Not an i18n library
+
+Formwerk is not an i18n library. It does not provide a way to translate the labels and messages. You should use a dedicated i18n library in tandem with Formwerk like [vue-i18n](https://vue-i18n.intlify.dev/).
+
+## Locale
+
+Formwerk exposes a `locale` configuration option that you can set with the `configure` function.
+
+```ts
+import { configure } from '@formwerk/core';
+
+configure({
+  locale: 'en-US',
+});
+```
+
+The default locale is `en-US`.
+
+## Locale auto-detection
+
+By default Formwerk will auto-detect the locale using the html tag's `lang` attribute. It will not use the browser's locale since it may be different from the user's preferred language or the website's target audience.
+
+There is no need to disable this feature since it detects the locale right when Formwerk is imported. So if you set the locale with the `configure` function, it will always respect that setting.
+
+The auto-detection is not available in some environments like server-side rendering (SSR). In those cases you'll need to set the locale manually with the `configure` function.
+
+## Directionality
+
+Formwerk determines the directionality of the locale currently set. It does so using the [Intl.Locale](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/Locale) API.
+
+This directionality is used to determine the default `dir` property of Formwerk components. You can always override it with the `dir` prop on each composable or you can turn the auto-detection off with the `detectDirection` option.
+
+```ts
+import { configure } from '@formwerk/core';
+
+configure({
+  detectDirection: false,
+});
+```
+
+## Usage with Vue i18n
+
+Formwerk composables can be used in conjunction with [vue-i18n](https://vue-i18n.intlify.dev/). Usually it is a good idea to set the locale in the app's main file or entry point where you initialize vue-i18n.
+
+Formwerk accepts a reactive locale value and will automatically update the directionality whenever the locale changes.
+
+```ts
+import { createI18n } from 'vue-i18n';
+import { configure } from '@formwerk/core';
+
+const i18n = createI18n({
+  locale: 'en-US',
+});
+
+configure({
+  // Reactive if legacy: false in vue-i18n options
+  locale: i18n.global.locale,
+});
+```
+
+## Usage with Nuxt i18n
+
+Since there is no `html` tag in SSR environments, Formwerk will not be able to auto-detect the locale. You'll need to set it manually with the `configure` function.
+
+For Nuxt, you would be using [Nuxt i18n](https://i18n.nuxtjs.org/) module. It is recommended to set the locale in a [plugin](https://nuxt.com/docs/guide/directory-structure/plugins) to ensure it happens before Formwerk is used anywhere.
+
+### Using the locale ref
+
+Like with Vue i18n, Formwerk will automatically update the directionality whenever the locale changes if you pass a reactive locale value. So you only have one source of truth to manage.
+
+```ts
+import { configure } from '@formwerk/core';
+
+export default defineNuxtPlugin((nuxtApp) => {
+  configure({
+    locale: nuxtApp.$i18n.locale,
+  });
+});
+```
+
+### Using Nuxt Hooks
+
+Alternatively, you can listen to the `i18n:localeSwitched` hook to update the locale and directionality whenever the locale changes with `setLocale` [returned from `useI18n`](https://i18n.nuxtjs.org/docs/guide/lang-switcher).
+
+```ts
+import { configure } from '@formwerk/core';
+
+export default defineNuxtPlugin((nuxtApp) => {
+  nuxtApp.hook('i18n:localeSwitched', ({ newLocale }) => {
+    configure({
+      locale: newLocale,
+    });
+  });
+});
+```

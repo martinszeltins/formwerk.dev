@@ -13,21 +13,6 @@ Formwerk is designed to work with server side rendering. It does not rely on any
 
 Formwerk builds on top of `useId` function exposed by Vue.js `>= v3.5.0` to generate unique IDs for labels and inputs. This is why Vue.js `v3.5.0` is the minimum required version for Formwerk.
 
-## SSR and i18n
-
-Since Formwerk cannot detect the site locale on the server, you should explicitly set the locale with the `configure` function.
-
-```ts
-// In Nuxt module or Plugin
-import { configure } from '@formwerk/core';
-
-configure({
-  locale: 'en-US',
-});
-```
-
-This configuration will affect the default `dir` properties of all Formwerk components and might change the numerals used in number fields.
-
 ## Nuxt Example
 
 Formwerk works fully out of the box with Nuxt, import and use the composables in your Nuxt pages or components.
