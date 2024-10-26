@@ -41,6 +41,20 @@ However you need to keep in mind some caveats around this:
 
 Given these caveats and the limited capabilities for advanced cases. Forces many apps today prefer to use a schema based validation library like Zod or Yup which is also supported by Formwerk.
 
+### Disabling HTML5 Validation
+
+In some cases, you may need to disable HTML validation messages, one common reason is [language mismatch between the browser and the website](/guides/extras/i18n#html-validation-language-mismatch).
+
+You can disable HTML5 validation by setting `disableHtmlValidation` to `true`. This option exist as a prop on fields, forms, form groups or as a global configuration with the `configure` function.
+
+```ts
+import { configure } from '@formwerk/core';
+
+configure({
+  disableHtmlValidation: true,
+});
+```
+
 ## Typed Schema Validation
 
 Formwerk borrows the concept of typed schema validation from [VeeValidate](https://vee-validate.logaretm.com/v4/). Typed Schema is an abstraction that allows you to define validation rules that is library-agnostic and more importantly, type-safe.

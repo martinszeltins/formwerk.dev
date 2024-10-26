@@ -18,11 +18,13 @@ Formwerk composables take all of this into account and more. In this page we'll 
 
 ## Not an i18n library
 
-Formwerk is not an i18n library. It does not provide a way to translate the labels and messages. You should use a dedicated i18n library in tandem with Formwerk like [vue-i18n](https://vue-i18n.intlify.dev/).
+Formwerk is not an i18n library. It does not provide a way to translate the labels and messages. But it does its best to offer the best experience it can with Vue's ecosystem.
 
-## Locale
+You can use a dedicated i18n library in tandem with Formwerk like [vue-i18n](https://vue-i18n.intlify.dev/).
 
-Formwerk exposes a `locale` configuration option that you can set with the `configure` function.
+## Locale Config
+
+Formwerk exposes a `locale` configuration option that you can set with the `configure` function. This is the main option Formwerk uses to determine locale and [directionality](#directionality).
 
 ```ts
 import { configure } from '@formwerk/core';
@@ -34,7 +36,7 @@ configure({
 
 The default locale is `en-US`.
 
-## Locale auto-detection
+### Locale auto-detection
 
 By default Formwerk will auto-detect the locale using the html tag's `lang` attribute. It will not use the browser's locale since it may be different from the user's preferred language or the website's target audience.
 
@@ -46,7 +48,7 @@ The auto-detection is not available in some environments like server-side render
 
 Formwerk determines the directionality of the locale currently set. It does so using the [Intl.Locale](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/Locale) API.
 
-This directionality is used to determine the default `dir` property of Formwerk components. You can always override it with the `dir` prop on each composable or you can turn the auto-detection off with the `detectDirection` option.
+This determines the default `dir` property of Formwerk components. You can always override it with the `dir` prop on each composable or you can turn the auto-detection off with the `detectDirection` option.
 
 ```ts
 import { configure } from '@formwerk/core';
@@ -56,11 +58,13 @@ configure({
 });
 ```
 
+Not all composables react to the direction change, it is up to you to style them accordingly. But the functionality of some components may change as result, especially components that utilize the arrow keys (e.g: sliders).
+
 ## Usage with Vue i18n
 
-Formwerk composables can be used in conjunction with [vue-i18n](https://vue-i18n.intlify.dev/). Usually it is a good idea to set the locale in the app's main file or entry point where you initialize vue-i18n.
+Formwerk can be used with [vue-i18n](https://vue-i18n.intlify.dev/). Usually it is a good idea to set the locale in the app's main file or entry point where you initialize vue-i18n.
 
-Formwerk accepts a reactive locale value and will automatically update the directionality whenever the locale changes.
+Formwerk accepts a reactive locale value and will automatically update the direction whenever the locale changes.
 
 ```ts
 import { createI18n } from 'vue-i18n';
@@ -111,3 +115,13 @@ export default defineNuxtPlugin((nuxtApp) => {
   });
 });
 ```
+
+## HTML Validation Language Mismatch
+
+HTML5 validation messages are generated in the browser's default language, not the website's. This means that if the user's browser is set to a different language than the website's target audience, the validation messages will be in the wrong language.
+
+Unfortunately, there is no way to change the language of the validation messages after they are generated and there is no sufficient JS API to influence the message text. We are considering either building a tiny i18n layer just for this or rely on 3rd party to do it.
+
+For now, the recommended workaround is to disable HTML5 validation messages generation and rely on [Typed schemas](/guides/forms/validation#typed-schema-validation) to provide the validation messages.
+
+You still will be able to pass the `required` and other HTML validation attributes but they will not affect the validity or the messages once disabled.
