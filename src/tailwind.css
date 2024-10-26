@@ -50,3 +50,9 @@ iframe {
     max-width: 45rem;
   }
 }
+
+.site-title {
+  img {
+    height: calc(var(--sl-nav-height) - 42px);
+  }
+}

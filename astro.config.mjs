@@ -27,7 +27,12 @@ export default defineConfig({
   },
   integrations: [
     starlight({
-      title: 'My Docs',
+      title: 'Docs',
+      logo: {
+        src: './src/assets/logo.svg',
+        alt: 'Formwerk',
+        replacesTitle: true,
+      },
       expressiveCode: {
         plugins: [pluginCollapsibleSections()],
       },
