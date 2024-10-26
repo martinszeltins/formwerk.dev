@@ -9,44 +9,67 @@ import PreviewCard from '@components/PreviewCard.vue';
 
 <div class="grid grid-cols-[repeat(auto-fit,minmax(200px,1fr))] gap-4">
   <PreviewCard
-    title="Text Field"
+    client:idle
+    title="Text Fields"
     description="Allows user to enter plain text."
     link="/guides/fields/text-fields/"
+    src="/thumbs/text.mp4"
   />
   <PreviewCard
+    client:idle
     title="Search Fields"
     description="Allows user to enter a search query, submit it or clear it."
     link="/guides/fields/search-fields/"
+    src="/thumbs/search.mp4"
   />
   <PreviewCard
-    title="Number Field"
-    description="Allows user to enter, increment or decrement a number value."
+    client:idle
+    title="Number Fields"
+    description="Allows user to enter, increment or decrement a number value with formatting options."
     link="/guides/fields/number-fields/"
+    src="/thumbs/number.mp4"
   />
   <PreviewCard
-    title="Switch"
+    client:idle
+    title="Switches"
     description="Allows user to toggle between two states."
     link="/guides/fields/switches/"
+    src="/thumbs/switch.mp4"
   />
   <PreviewCard
+    client:idle
     title="Radio Buttons"
     description="Allows user to select a single item from a group of options."
     link="/guides/fields/radios/"
+    src="/thumbs/radio.mp4"
   />
   <PreviewCard
-    title="Checkbox"
+    client:idle
+    title="Checkboxes"
     description="Allows user to select one or more items from a group of options."
     link="/guides/fields/checkboxes/"
+    src="/thumbs/checkboxes.mp4"
   />
   <PreviewCard
+    client:idle
     title="Select Fields"
-    description="Allows user display a collapsible list of options that they can search, navigate and select one or more items from."
+    description="Allows user display a collapsible list of options that they can search and select one or more items from."
     link="/guides/fields/selects/"
+    src="/thumbs/select.mp4"
   />
   <PreviewCard
-    title="Slider"
+    client:idle
+    title="Sliders"
     description="Allows user to select one or more values from a range of values."
     link="/guides/fields/sliders/"
+    src="/thumbs/slider.mp4"
+  />
+  <PreviewCard
+    client:idle
+    title="Hidden Fields"
+    description="Useful for tokens, IDs, and other values that are only relevant to the server."
+    link="/guides/fields/hidden-fields/"
+    src="/thumbs/hidden.mp4"
   />
 </div>
 
@@ -54,13 +77,21 @@ import PreviewCard from '@components/PreviewCard.vue';
 
 <div class="grid grid-cols-[repeat(auto-fit,minmax(200px,1fr))] gap-4">
   <PreviewCard
+    client:idle
     title="Forms"
     description="Allows user to validate and submit data to the server."
     link="/guides/forms/"
   />
   <PreviewCard
+    client:idle
     title="Form Groups"
     description="Allows user to group related fields together."
     link="/guides/forms/form-groups/"
+  />
+  <PreviewCard
+    client:idle
+    title="Form Repeaters"
+    description="Allows user to group related fields together."
+    link="/guides/forms/form-repeater/"
   />
 </div>

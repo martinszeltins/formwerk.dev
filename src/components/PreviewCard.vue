@@ -2,8 +2,20 @@
   <a
     class="not-content flex flex-col overflow-hidden rounded-lg bg-zinc-500 shadow-sm transition-colors duration-200 dark:bg-zinc-800 dark:shadow-none"
     :href="link"
+    @mouseenter="onEnter"
+    @mouseleave="onLeave"
   >
-    <div class="h-40 bg-zinc-300 dark:bg-zinc-700"></div>
+    <div class="h-40 bg-gray-300">
+      <video
+        ref="videoEl"
+        loop
+        muted
+        :src="src"
+        role="presentation"
+        :poster="src?.replace('.mp4', '.webp')"
+        class="h-full w-full object-cover"
+      />
+    </div>
 
     <div class="p-4">
       <p class="text-base font-bold text-white">{{ title }}</p>
@@ -15,12 +27,24 @@
 </template>
 
 <script setup lang="ts">
+import { ref } from 'vue';
+
 const props = defineProps<{
   title: string;
   description: string;
-  image: string;
+  src?: string;
   link: string;
 }>();
+
+const videoEl = ref<HTMLVideoElement | null>(null);
+
+const onEnter = () => {
+  videoEl.value?.play();
+};
+
+const onLeave = () => {
+  videoEl.value?.pause();
+};
 </script>
 
 <style lang="postcss" scoped>
