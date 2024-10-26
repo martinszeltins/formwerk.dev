@@ -102,7 +102,7 @@ const {
     position: relative;
     background: #fff;
     border: 1px solid #e5e7eb;
-    max-height: 60vh;
+    max-height: 40vh;
     opacity: 0;
     border-radius: 6px;
     margin: 0;
@@ -124,6 +124,11 @@ const {
     position-anchor: --trigger;
     inset-area: bottom span-right;
     position-area: bottom span-right;
+
+    scrollbar-width: thin;
+    overflow-y: auto;
+    overflow-y: overlay;
+    scrollbar-color: rgb(192 192 185) transparent;
   }
 
   .hint,

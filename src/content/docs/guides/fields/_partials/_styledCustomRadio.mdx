@@ -15,15 +15,16 @@ const { labelProps, inputProps } = useRadio(props);
 
 <style scoped>
 .radio-item {
+  --color-primary: #10b981;
   --color-text: #333;
   --color-hint: #666;
   --color-border: #ccc;
-  --color-focus: #0056b3;
+  --color-focus: var(--color-primary);
   --color-error: #f00;
-  --color-valid: #059669;
   --color-hover: #eee;
 
   display: inline-flex;
+  outline: none;
   align-items: center;
   border-radius: 99999px;
   padding: 0.5rem 1rem;
@@ -36,13 +37,12 @@ const { labelProps, inputProps } = useRadio(props);
     background-color 0.15s,
     color 0.15s;
 
-  &:has(:focus) {
+  &:focus {
     border: 1px solid var(--color-focus);
   }
 
   &[aria-checked='true'] {
-    background-color: var(--color-focus);
-    color: #fff;
+    background-color: var(--color-primary);
   }
 
   &[aria-disabled='true'] {

@@ -22,3 +22,47 @@ iframe {
   min-height: 500px;
   border: none;
 }
+
+html,
+body {
+  height: 100%;
+  overflow: hidden;
+}
+
+.page {
+  @apply h-full overflow-hidden;
+}
+
+.main-frame,
+.sidebar-pane {
+  scrollbar-width: thin;
+  overflow-y: auto;
+  overflow-y: overlay;
+  scrollbar-color: rgb(63 63 70) transparent;
+}
+
+.main-frame {
+  @apply h-full overflow-y-auto pt-0;
+
+  margin-top: calc(var(--sl-nav-height) + var(--sl-mobile-toc-height));
+}
+
+.right-sidebar-container {
+  width: 24rem;
+}
+
+.main-pane {
+  width: 100% !important;
+  --sl-content-margin-inline: 20px 0 !important;
+  --sl-content-width: 50rem;
+}
+
+.sl-markdown-content {
+  p {
+    max-width: 45rem;
+  }
+
+  li {
+    max-width: 45rem;
+  }
+}

@@ -43,10 +43,11 @@ const { labelProps, inputProps, errorMessage, errorMessageProps, isChecked } =
 
 <style scoped>
 .checkbox-item {
+  --color-primary: #10b981;
   --color-text: #333;
   --color-hint: #666;
   --color-border: #ccc;
-  --color-focus: #059669;
+  --color-focus: var(--color-primary);
   --color-error: #f00;
   --color-hover: #eee;
 

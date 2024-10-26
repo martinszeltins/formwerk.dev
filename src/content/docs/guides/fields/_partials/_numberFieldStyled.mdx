@@ -1,4 +1,4 @@
-```vue collapse={39-167}
+```vue collapse={40-167}
 <script setup lang="ts">
 import { type NumberFieldProps, useNumberField } from '@formwerk/core';
 
@@ -38,101 +38,97 @@ const {
   </div>
 </template>
 
-<style>
-:root {
+<style scoped>
+.field {
+  --color-primary: #10b981;
   --color-text: #333;
   --color-hint: #666;
   --color-border: #ccc;
-  --color-focus: #007bff;
   --color-error: #f00;
-  --color-valid: #059669;
   --color-hover: #eee;
-}
-</style>
+  --color-focus: var(--color-primary);
 
-<style scoped>
-label {
-  color: var(--color-text);
-  display: block;
-  margin-bottom: 0.25rem;
-  font-size: 14px;
-  font-weight: 500;
-}
-
-.hint {
-  color: var(--color-hint);
-  font-size: 13px;
-  opacity: 0;
-  transition: opacity 0.3s ease;
-}
-
-.hint,
-.error {
-  margin-top: 0.25rem;
-}
-
-.input-wrapper {
-  color: var(--color-text);
-  display: flex;
-  align-items: stretch;
-  font-size: 13px;
-  width: max-content;
-  border: 1px solid var(--color-border);
-  border-radius: 6px;
-  transition: border-color 0.3s ease;
-  overflow: hidden;
-
-  &:focus-within {
-    outline: none;
-    border-color: var(--color-focus);
-    box-shadow: 0 0 0 1px var(--color-focus);
-  }
-
-  input {
-    appearance: none;
-    border: none;
-    outline: none;
-    padding: 0.5rem 0.6rem;
-    background-color: transparent;
-    font-size: 14px;
-  }
-}
-
-.spinbutton {
-  margin-left: auto;
-  display: flex;
-  flex-direction: column;
-  align-items: starlight;
-  justify-content: center;
-  border-left: 1px solid var(--color-border);
-  width: 2rem;
-
-  button {
-    background-color: transparent;
-    border: none;
-    outline: none;
-    padding: 2px 0.25rem;
-    margin: 0;
+  label {
     color: var(--color-text);
-    font-size: 15px;
-    cursor: pointer;
-    &:hover {
-      background-color: var(--color-hover);
+    display: block;
+    margin-bottom: 0.25rem;
+    font-size: 14px;
+    font-weight: 500;
+  }
+
+  .hint {
+    color: var(--color-hint);
+    font-size: 13px;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+
+  .hint,
+  .error {
+    margin-top: 0.25rem;
+  }
+
+  .input-wrapper {
+    color: var(--color-text);
+    display: flex;
+    align-items: stretch;
+    font-size: 13px;
+    width: max-content;
+    border: 1px solid var(--color-border);
+    border-radius: 6px;
+    transition: border-color 0.3s ease;
+    overflow: hidden;
+
+    &:focus-within {
+      outline: none;
+      border-color: var(--color-focus);
+      box-shadow: 0 0 0 1px var(--color-focus);
+    }
+
+    input {
+      appearance: none;
+      border: none;
+      outline: none;
+      padding: 0.5rem 0.6rem;
+      background-color: transparent;
+      font-size: 14px;
     }
   }
 
-  button + button {
-    border-top: 1px solid var(--color-border);
+  .spinbutton {
+    margin-left: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: starlight;
+    justify-content: center;
+    border-left: 1px solid var(--color-border);
+    width: 2rem;
+
+    button {
+      background-color: transparent;
+      border: none;
+      outline: none;
+      padding: 2px 0.25rem;
+      margin: 0;
+      color: var(--color-text);
+      font-size: 15px;
+      cursor: pointer;
+      &:hover {
+        background-color: var(--color-hover);
+      }
+    }
+
+    button + button {
+      border-top: 1px solid var(--color-border);
+    }
   }
-}
 
-.error {
-  color: var(--color-error);
-  display: none;
-  font-size: 13px;
-}
+  .error {
+    color: var(--color-error);
+    display: none;
+    font-size: 13px;
+  }
 
-.field {
   &:has(:focus) {
     .hint {
       opacity: 1;
@@ -141,26 +137,15 @@ label {
 
   &.is-touched {
     &:has(:invalid) {
+      --color-border: var(--color-error);
+      --color-focus: var(--color-error);
+
       .error {
         display: block;
       }
 
       .hint {
         display: none;
-      }
-
-      .input-wrapper {
-        border-color: var(--color-error);
-      }
-    }
-
-    &:has(:valid) {
-      .error {
-        display: none;
-      }
-
-      .input-wrapper {
-        border-color: var(--color-valid);
       }
     }
   }

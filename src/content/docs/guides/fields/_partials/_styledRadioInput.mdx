@@ -17,12 +17,12 @@ const { labelProps, inputProps } = useRadio(props);
 
 <style scoped>
 .radio-item {
+  --color-primary: #10b981;
   --color-text: #333;
   --color-hint: #666;
   --color-border: #ccc;
-  --color-focus: #0056b3;
+  --color-focus: var(--color-primary);
   --color-error: #f00;
-  --color-valid: #059669;
   --color-hover: #eee;
 
   display: inline-flex;
@@ -45,7 +45,6 @@ const { labelProps, inputProps } = useRadio(props);
 
   &:has(:checked) {
     background-color: var(--color-focus);
-    color: #fff;
   }
 
   &:has(:disabled) {

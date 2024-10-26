@@ -1,4 +1,4 @@
-```vue collapse={45-160}
+```vue collapse={53-164}
 <script setup lang="ts">
 import { type SearchFieldProps, useSearchField } from '@formwerk/core';
 
@@ -18,12 +18,20 @@ const {
   <div class="search-field" :class="{ 'is-blank': !fieldValue }">
     <label v-bind="labelProps">{{ label }}</label>
     <div class="input-wrapper">
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        fill="#808080"
+        viewBox="0 0 256 256"
+      >
+        <path
+          d="M229.66,218.34l-50.07-50.06a88.11,88.11,0,1,0-11.31,11.31l50.06,50.07a8,8,0,0,0,11.32-11.32ZM40,112a72,72,0,1,1,72,72A72.08,72.08,0,0,1,40,112Z"
+        ></path>
+      </svg>
+
       <input v-bind="inputProps" type="text" />
       <button class="clear-btn" v-bind="clearBtnProps">
         <svg
           xmlns="http://www.w3.org/2000/svg"
-          width="32"
-          height="32"
           fill="currentColor"
           viewBox="0 0 256 256"
         >
@@ -45,12 +53,12 @@ const {
 
 <style scoped>
 .search-field {
+  --color-primary: #10b981;
   --color-text: #333;
   --color-hint: #666;
   --color-border: #ccc;
-  --color-focus: #0056b3;
+  --color-focus: var(--color-primary);
   --color-error: #f00;
-  --color-valid: #059669;
   --color-hover: #eee;
 
   label {
@@ -85,8 +93,8 @@ const {
     width: max-content;
     padding: 0.4rem;
     font-size: 13px;
-    color: #333;
-    border: 1px solid #ccc;
+    color: var(--color-text);
+    border: 1px solid var(--color-border);
     border-radius: 6px;
     transition: border-color 0.3s ease;
 
@@ -114,12 +122,12 @@ const {
     justify-content: center;
     color: var(--color-text);
     cursor: pointer;
+  }
 
-    svg {
-      width: 1.25rem;
-      height: 1.25rem;
-      pointer-events: none;
-    }
+  svg {
+    width: 1.25rem;
+    height: 1.25rem;
+    pointer-events: none;
   }
 
   &:has(:focus) {
@@ -129,26 +137,15 @@ const {
   }
 
   &:has(:user-invalid) {
+    --border-color: var(--color-error);
+    --color-focus: var(--color-error);
+
     .error {
       display: block;
     }
 
     .hint {
       display: none;
-    }
-
-    input {
-      border-color: #f00;
-    }
-  }
-
-  &:has(:user-valid) {
-    .error {
-      display: none;
-    }
-
-    input {
-      border-color: #059669;
     }
   }
 
