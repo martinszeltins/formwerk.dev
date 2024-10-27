@@ -14,7 +14,7 @@ import { compileModulesForPreview } from './moduleCompiler';
 import { injectKeyProps } from './types';
 import Message from './Message.vue';
 
-const props = defineProps<{ show: boolean; ssr: boolean }>();
+const props = defineProps<{ show: boolean; ssr: boolean; height: number }>();
 
 const { store, clearConsole, theme, previewTheme, previewOptions } =
   inject(injectKeyProps)!;
@@ -99,7 +99,9 @@ function createSandbox() {
     .replace(
       /<!--PREVIEW-OPTIONS-PLACEHOLDER-HTML-->/,
       previewOptions.value?.placeholderHTML || '',
-    );
+    )
+    .replace(/--HEIGHT--/, props.height.toString());
+
   sandbox.srcdoc = sandboxSrc;
   container.value?.appendChild(sandbox);
 

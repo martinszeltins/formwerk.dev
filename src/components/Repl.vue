@@ -16,6 +16,7 @@ const props = withDefaults(defineProps<Props>(), {
   clearConsole: false,
   layoutReverse: false,
   ssr: false,
+  height: 100,
   layout: 'horizontal',
   previewOptions: () => ({}),
   editorOptions: () => ({}),
@@ -33,5 +34,5 @@ defineExpose({ reload, previewRef });
 </script>
 
 <template>
-  <Preview :ssr="false" :show="true" />
+  <Preview :ssr="false" :show="true" :height="height" />
 </template>

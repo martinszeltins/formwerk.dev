@@ -17,6 +17,7 @@ export interface Props {
   theme?: 'dark' | 'light';
   previewTheme?: boolean;
   store?: Store;
+  height?: number;
   autoResize?: boolean;
   autoSave?: boolean; // auto save and compile, default to true, if false, user need to press ctrl + s to save and compile
   showCompileOutput?: boolean;

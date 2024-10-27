@@ -3,7 +3,7 @@
     ref="replContainer"
     class="preview-container not-content mt-8 flex flex-col space-y-0 overflow-hidden rounded-md"
     :style="{
-      '--preview-size': sizes[props.previewSize || 'md'],
+      '--preview-size': `${sizes[props.previewSize || 'md']}px`,
     }"
   >
     <div v-if="tabs.length > 1" class="flex items-center">
@@ -41,6 +41,7 @@
     <Repl
       ref="replRef"
       :store="store"
+      :height="sizes[props.previewSize || 'md']"
       :show-ts-config="false"
       :showCompileOutput="false"
       :ssr="false"
@@ -91,9 +92,9 @@ const props = defineProps<{
 }>();
 
 const sizes = {
-  sm: '150px',
-  md: '180px',
-  lg: '300px',
+  sm: 150,
+  md: 180,
+  lg: 300,
 };
 
 const fileIcons: Record<string, Component> = {
