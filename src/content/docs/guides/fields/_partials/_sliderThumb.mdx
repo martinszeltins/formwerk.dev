@@ -1,15 +1,8 @@
-```vue
+```vue collapse={15-58}
 <template>
-  <svg
-    v-bind="thumbProps"
-    xmlns="http://www.w3.org/2000/svg"
-    width="22"
-    height="22"
-    fill="#10b981"
-    viewBox="0 0 256 256"
-  >
-    <path d="M232,128A104,104,0,1,1,128,24,104.13,104.13,0,0,1,232,128Z"></path>
-  </svg>
+  <div v-bind="thumbProps" class="thumb">
+    <div class="tooltip">{{ currentValue }}</div>
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -17,6 +10,50 @@ import { useSliderThumb, type SliderThumbProps } from '@formwerk/core';
 
 const props = defineProps<SliderThumbProps>();
 
-const { thumbProps } = useSliderThumb(props);
+const { thumbProps, currentValue } = useSliderThumb(props);
 </script>
+
+<style scoped>
+.thumb {
+  background: #10b981;
+  width: 18px;
+  height: 18px;
+  border-radius: 999999px;
+
+  &:hover {
+    background: #16a34a;
+  }
+
+  .tooltip {
+    position: absolute;
+    border-radius: 6px;
+    display: none;
+    font-size: 14px;
+    color: #fff;
+    background: #10b981;
+    left: 50%;
+    top: 100%;
+    translate: -50% 10%;
+    padding: 6px;
+  }
+
+  &:focus,
+  &:active {
+    outline: none;
+    background: #047857;
+
+    .tooltip {
+      display: block;
+    }
+  }
+
+  &[aria-orientation='vertical'] {
+    .tooltip {
+      left: 100%;
+      top: 50%;
+      translate: 10% -50%;
+    }
+  }
+}
+</style>
 ```

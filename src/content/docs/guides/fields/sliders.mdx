@@ -13,9 +13,6 @@ import Kbd from '@components/KeyboardKey.vue';
 
 import SliderThumb from './_partials/_sliderThumb.mdx';
 import Slider from './_partials/_slider.mdx';
-import SliderOriented from './_partials/_sliderOriented.mdx';
-import SliderThumbStyled from './_partials/_sliderThumbStyled.mdx';
-import SliderStyled from './_partials/_sliderStyled.mdx';
 import SliderMultiple from './_partials/_sliderMultiple.mdx';
 
 > A slider is an input where the user selects a value from within a given range. Sliders typically have a slider thumb that can be moved along a bar, rail, or track to change the value of the slider.
@@ -136,64 +133,6 @@ const schema = defineSchema(z.number('Required').min(30).max(80));
 <template>
   <Slider label="Volume" :schema="schema" />
 </template>
-```
-
-</div>
-
-</MdxRepl>
-
-## Styling
-
-You probably have noticed that the `trackProps` and `thumbProps` contain some minor styling properties, those are the bare minimum to get the slider working and they are automatically added for you.
-
-If you are interested in knowing what properties are added, here is a list:
-
-- `trackProps` style properties:
-  - `container-type`: is set to `size` or `inline-size` depending on the orientation. You should NOT override this property.
-  - `position`: is set to `relative`, you can override this to anything but `static`.
-- `thumbProps` style properties:
-  - `position`: is set to `absolute`, you should NOT override this property.
-  - `translate`: used to position the thumb, you should NOT override this property.
-  - `will-change`: is set to `translate`, you should NOT override this property.
-  - any inset position properties like `top`, `left`, `right`, `bottom` are set to `0`, you should NOT override these properties.
-
-We were very careful to not add any easily overridden properties to the `trackProps` and `thumbProps` to avoid any conflicts with your custom styles.
-
-Other than all of that you can use any styling solution you want, whether it's [TailwindCSS](https://tailwindcss.com/), or plain CSS.
-
-Here is an example of how you can style the slider using plain CSS:
-
-<MdxRepl client:load>
-
-<div slot="Thumb.vue">
-  <SliderThumbStyled />
-</div>
-
-<div slot="Slider.vue">
-  <SliderStyled />
-</div>
-
-<div slot="App.vue">
-
-```vue
-<script setup lang="ts">
-import { ref } from 'vue';
-import Slider from './Slider.vue';
-import { z } from 'zod';
-import { defineSchema } from '@formwerk/schema-zod';
-
-const schema = defineSchema(z.number().min(30).max(80));
-</script>
-
-<template>
-  <Slider label="Opacity" :schema="schema" />
-</template>
-
-<style>
-body {
-  padding-top: 40px;
-}
-</style>
 ```
 
 </div>
@@ -364,7 +303,7 @@ Here is an example that uses the `[aria-orientation]` attribute that is applied 
 </div>
 
 <div slot="Slider.vue">
-  <SliderOriented />
+  <Slider />
 </div>
 
 <div slot="App.vue">
@@ -385,6 +324,33 @@ const value = ref(0);
 </div>
 
 </MdxRepl>
+
+## Styling
+
+You probably have noticed that the `trackProps` and `thumbProps` contain some minor styling properties, those are the bare minimum to get the slider working and they are automatically added for you.
+
+If you are interested in knowing what properties are added, here is a list:
+
+- `trackProps` style properties:
+  - `container-type`: is set to `size` or `inline-size` depending on the orientation. You should NOT override this property.
+  - `position`: is set to `relative`, you can override this to anything but `static`.
+- `thumbProps` style properties:
+  - `position`: is set to `absolute`, you should NOT override this property.
+  - `translate`: used to position the thumb, you should NOT override this property.
+  - `will-change`: is set to `translate`, you should NOT override this property.
+  - any inset position properties like `top`, `left`, `right`, `bottom` are set to `0`, you should NOT override these properties.
+
+We were very careful to not add any easily overridden properties to the `trackProps` and `thumbProps` to avoid any conflicts with your custom styles.
+
+Other than all of that you can use any styling solution you want, whether it's [TailwindCSS](https://tailwindcss.com/), or plain CSS.
+
+#### Thumb attributes
+
+The thumb element will receive the `aria-orientation` attribute which is the same as the slider's orientation so you can style tooltips or other UI elements according to the slider's orientation.
+
+#### Slider attributes
+
+The slider element will receive the `aria-orientation` attribute which is the prop you pass to the slider.
 
 ## API
 

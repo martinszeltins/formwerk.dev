@@ -1,4 +1,4 @@
-```vue
+```vue collapse={33-94}
 <script setup lang="ts">
 import { useSlider, type SliderProps } from '@formwerk/core';
 
@@ -10,9 +10,7 @@ const {
   trackProps,
   groupProps,
   labelProps,
-  outputProps,
   errorMessage,
-  fieldValue,
   errorMessageProps,
   useThumbMetadata,
 } = useSlider(props);
@@ -22,13 +20,12 @@ const thumbData = useThumbMetadata(0);
 
 <template>
   <div class="slider" v-bind="groupProps">
-    <div v-bind="labelProps">{{ label }}</div>
+    <div v-bind="labelProps" class="slider-label">{{ label }}</div>
     <div v-bind="trackProps" class="track">
       <Thumb />
     </div>
-    <output v-bind="outputProps">Value: {{ fieldValue }}</output>
 
-    <div v-if="errorMessage" v-bind="errorMessageProps">
+    <div v-if="errorMessage" v-bind="errorMessageProps" class="error">
       {{ errorMessage }}
     </div>
   </div>
@@ -36,14 +33,26 @@ const thumbData = useThumbMetadata(0);
 
 <style scoped>
 .slider {
+  --color-text: #333;
+  --color-error: #f00;
+  display: flex;
+  align-items: center;
+  gap: 6px 14px;
+  flex-wrap: wrap;
+
+  .slider-label {
+    margin-bottom: 0.25rem;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--color-text);
+  }
+
   .track {
     display: flex;
     align-items: center;
     width: 150px;
-    margin-top: 12px;
-    margin-bottom: 12px;
     height: 6px;
-    background-color: #78716c;
+    background-color: #a1a1aa;
     border-radius: 6px;
 
     &::before {
@@ -52,6 +61,34 @@ const thumbData = useThumbMetadata(0);
       background-color: #10b981;
       border-radius: 6px;
       height: 6px;
+    }
+  }
+
+  .error {
+    display: none;
+    font-size: 13px;
+    color: #f00;
+    width: 100%;
+  }
+
+  &:has([aria-invalid='true']) {
+    .error {
+      display: block;
+    }
+  }
+
+  &:has([aria-orientation='vertical']) {
+    .track {
+      flex-direction: column;
+      margin: 0;
+      height: 80px;
+      width: 6px;
+
+      &::before {
+        height: calc(v-bind('thumbData.percent') * 100%);
+        width: 6px;
+        margin-top: auto;
+      }
     }
   }
 }
