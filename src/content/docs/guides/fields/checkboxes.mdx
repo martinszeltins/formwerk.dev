@@ -13,11 +13,9 @@ import MdxRepl from '@components/MdxRepl.vue';
 import Kbd from '@components/KeyboardKey.vue';
 
 import CheckboxPartial from './_partials/_checkbox.mdx';
-import StyledCheckboxPartial from './_partials/_checkboxStyled.mdx';
 import CheckboxCustomPartial from './_partials/_checkboxCustom.mdx';
 import CheckboxGroupPartial from './_partials/_checkboxGroup.mdx';
 import CheckboxGroupPartialMixed from './_partials/_checkboxGroupMixed.mdx';
-import StyledCheckboxGroupPartial from './_partials/_checkboxGroupStyled.mdx';
 
 Checkboxes allow the user to toggle the field state on (ticked/checked) or off (unchecked). Checkboxes are mainly used in a couple of scenarios:
 
@@ -84,6 +82,12 @@ With that out of the way, let's see how you can build a checkbox component, ther
 
 This is how you would build a custom checkbox item component using the `useCheckbox` composable.
 
+With the native `input` being limited in terms of styling, you can consider hiding it visually and instead use a custom element in its place. Note that while the element is visually hidden, it will still be announced by assistive technologies. Alternatively, you can use any element as a base instead.
+
+The `.sr-only` class is used to hide the `input` element from the visual layout but keep it accessible to assistive technologies. You should have a similar class in your styling solution or framework as this use-case is very common.
+
+Another thing to note is we've placed the `input` element inside a `label` element to ensure that the checkbox is still focusable and that clicking on the label also toggles the checkbox.
+
 <MdxRepl client:load>
 
 <div slot="Checkbox.vue">
@@ -103,7 +107,7 @@ const isChecked = ref(false);
 <template>
   <Checkbox label="Terms" v-model="isChecked" />
 
-  isChecked {{ isChecked }}
+  checked: {{ isChecked }}
 </template>
 ```
 
@@ -134,7 +138,7 @@ const isChecked = ref(false);
 <template>
   <Checkbox label="Terms" v-model="isChecked" />
 
-  isChecked {{ isChecked }}
+  checked: {{ isChecked }}
 </template>
 ```
 
@@ -295,58 +299,6 @@ const singleSchema = defineSchema(z.literal(true, 'Required'));
 
 </MdxRepl>
 
-## Styling
-
-With the native `input` being limited in terms of styling, you can consider hiding it visually and instead use a custom element in its place. Note that while the element is visually hidden, it will still be announced by assistive technologies. Alternatively, you can use any element as a base instead.
-
-The `.sr-only` class is used to hide the `input` element from the visual layout but keep it accessible to assistive technologies. You should have a similar class in your styling solution or framework as this use-case is very common.
-
-Another thing to note is we've placed the `input` element inside a `label` element to ensure that the checkbox is still focusable and that clicking on the label also toggles the checkbox.
-
-<MdxRepl client:load>
-
-<div slot="Checkbox.vue">
-  <StyledCheckboxPartial />
-</div>
-
-<div slot="CheckboxGroup.vue">
-  <StyledCheckboxGroupPartial />
-</div>
-
-<div slot="App.vue">
-
-```vue
-<script setup lang="ts">
-import Checkbox from './Checkbox.vue';
-import CheckboxGroup from './CheckboxGroup.vue';
-import { z } from 'zod';
-import { defineSchema } from '@formwerk/schema-zod';
-
-const schema = defineSchema(
-  z
-    .array(z.string())
-    .min(1, 'Please select a drink')
-    .max(2, 'You can only select up to 2 drinks'),
-);
-</script>
-
-<template>
-  <CheckboxGroup
-    label="Select a drink"
-    description="Select up to 2 drinks"
-    :schema="schema"
-  >
-    <Checkbox label="Tea 🍵" value="🍵" />
-    <Checkbox label="Coffee ☕️" value="☕️" />
-    <Checkbox label="Milk 🥛" value="🥛" />
-  </CheckboxGroup>
-</template>
-```
-
-</div>
-
-</MdxRepl>
-
 ## Usage
 
 ### Disabled
@@ -356,11 +308,11 @@ You can disable individual checkboxes or the whole group with the `disabled` pro
 <MdxRepl client:load>
 
 <div slot="!CheckboxGroup.vue">
-  <StyledCheckboxGroupPartial />
+  <CheckboxGroupPartial />
 </div>
 
 <div slot="!Checkbox.vue">
-  <StyledCheckboxPartial />
+  <CheckboxPartial />
 </div>
 
 <div slot="App.vue">
@@ -400,11 +352,11 @@ Only available on the group and group-less checkboxes. The `readonly` prop preve
 <MdxRepl client:load>
 
 <div slot="!CheckboxGroup.vue">
-  <StyledCheckboxGroupPartial />
+  <CheckboxGroupPartial />
 </div>
 
 <div slot="!Checkbox.vue">
-  <StyledCheckboxPartial />
+  <CheckboxPartial />
 </div>
 
 <div slot="App.vue">

@@ -16,10 +16,6 @@ import OptionPartial from './_partials/_option.mdx';
 import OptionGroupPartial from './_partials/_optionGroup.mdx';
 import SelectPartial from './_partials/_select.mdx';
 
-import OptionPartialStyled from './_partials/_optionStyled.mdx';
-import OptionGroupPartialStyled from './_partials/_optionGroupStyled.mdx';
-import SelectPartialStyled from './_partials/_selectStyled.mdx';
-
 Select fields are very common form fields. They allow the user to select one or more options from a list of options.
 
 The native `select` element does a lot in terms of interactivity and accessibility. However, it leaves a lot to be desired in terms of styling and customization. Formwerk tries to address that by providing the same accessability and interactive behaviors to your custom select component so you don't have to compromise for the sake of styling.
@@ -141,8 +137,6 @@ import OptionItem from './OptionItem.vue';
 
 </MdxRepl>
 
-We kept styling to a minimum, but we will take it up a notch or in the [styling section](#styling) below.
-
 ### Building an Option Group Component
 
 Building an option group component is similar to building an option component. You will use `useOptionGroup` to create the component.
@@ -250,73 +244,6 @@ const schema = defineSchema(
 
 </MdxRepl>
 
-## Styling
-
-Styling a select field can be tricky because of all the moving parts.
-
-Aside from polishing the styles of the previous components. We also solved the popup positioning by using the [CSS anchor positioning](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_anchor_positioning), alternatively you can use [floating-ui](https://floating-ui.com/) or similar positioning libraries to position your popup.
-
-<MdxRepl preview-size="lg" client:load>
-
-<div slot="OptionItem.vue">
-  <OptionPartialStyled />
-</div>
-
-<div slot="OptionGroup.vue">
-  <OptionGroupPartialStyled />
-</div>
-
-<div slot="SelectField.vue">
-  <SelectPartialStyled />
-</div>
-
-<div slot="App.vue">
-
-```vue
-<script setup lang="ts">
-import { z } from 'zod';
-import { defineSchema } from '@formwerk/schema-zod';
-import SelectField from './SelectField.vue';
-import OptionGroup from './OptionGroup.vue';
-import OptionItem from './OptionItem.vue';
-
-const schema = defineSchema(z.string().min(1, 'Please select a country'));
-
-const groups = [
-  { label: 'Africa', options: ['Egypt', 'Nigeria', 'Ghana', 'Kenya'] },
-  { label: 'Asia', options: ['China', 'India', 'Japan'] },
-  { label: 'Europe', options: ['France', 'Germany', 'Italy'] },
-  { label: 'North America', options: ['Canada', 'Mexico', 'United States'] },
-  { label: 'South America', options: ['Argentina', 'Brazil', 'Chile'] },
-];
-</script>
-
-<template>
-  <SelectField
-    label="Shipping country"
-    :schema="schema"
-    description="Delivery usually within 5-7 business days"
-  >
-    <OptionGroup
-      v-for="group in groups"
-      :key="group.label"
-      :label="group.label"
-    >
-      <OptionItem
-        v-for="country in group.options"
-        :key="country"
-        :label="country"
-        :value="country"
-      />
-    </OptionGroup>
-  </SelectField>
-</template>
-```
-
-</div>
-
-</MdxRepl>
-
 ## Usage
 
 ### Multiple Select
@@ -326,15 +253,15 @@ The `useSelect` composable accepts a `multiple` prop, it adjusts behaviors to wh
 <MdxRepl preview-size="lg" client:load>
 
 <div slot="!OptionItem.vue">
-  <OptionPartialStyled />
+  <OptionPartial />
 </div>
 
 <div slot="!OptionGroup.vue">
-  <OptionGroupPartialStyled />
+  <OptionGroupPartial />
 </div>
 
 <div slot="!SelectField.vue">
-  <SelectPartialStyled />
+  <SelectPartial />
 </div>
 
 <div slot="App.vue">
@@ -385,15 +312,15 @@ If you need to prevent the user from interacting with the field while still allo
 <MdxRepl client:load>
 
 <div slot="!OptionItem.vue">
-  <OptionPartialStyled />
+  <OptionPartial />
 </div>
 
 <div slot="!OptionGroup.vue">
-  <OptionGroupPartialStyled />
+  <OptionGroupPartial />
 </div>
 
 <div slot="!SelectField.vue">
-  <SelectPartialStyled />
+  <SelectPartial />
 </div>
 
 <div slot="App.vue">
@@ -423,15 +350,15 @@ You can also mark individual options as disabled by passing a `disabled` prop to
 <MdxRepl client:load>
 
 <div slot="!OptionItem.vue">
-  <OptionPartialStyled />
+  <OptionPartial />
 </div>
 
 <div slot="!OptionGroup.vue">
-  <OptionGroupPartialStyled />
+  <OptionGroupPartial />
 </div>
 
 <div slot="!SelectField.vue">
-  <SelectPartialStyled />
+  <SelectPartial />
 </div>
 
 <div slot="App.vue">
@@ -463,15 +390,15 @@ Readonly fields are validated and submitted, but they do not accept user input. 
 <MdxRepl client:load>
 
 <div slot="!OptionItem.vue">
-  <OptionPartialStyled />
+  <OptionPartial />
 </div>
 
 <div slot="!OptionGroup.vue">
-  <OptionGroupPartialStyled />
+  <OptionGroupPartial />
 </div>
 
 <div slot="!SelectField.vue">
-  <SelectPartialStyled />
+  <SelectPartial />
 </div>
 
 <div slot="App.vue">
@@ -495,6 +422,26 @@ import OptionItem from './OptionItem.vue';
 </div>
 
 </MdxRepl>
+
+## Styling
+
+When styling the select field, you need to be aware of the following...
+
+#### Option attributes
+
+When an option is selected, it will receive the `aria-selected="true"` attribute if the select field is a single choice select.
+
+If the select field is a multi-choice select, the selected options will receive the `aria-checked="true"` attribute instead.
+
+#### Trigger attributes
+
+The trigger element will receive the `aria-expanded` attribute. So you can style the trigger according to the popover state if needed.
+
+#### Popover Attributes
+
+The popover (listbox) element will receive the `aria-activedescendant` attribute when an option is focused that corresponds to the id of the focused option.
+
+Furthermore, the popover element will receive the `aria-multiselectable` attribute if the select field is a multi-choice select.
 
 ## API
 

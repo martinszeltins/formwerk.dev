@@ -1,19 +1,116 @@
-```vue
+```vue collapse={35-130}
 <script setup lang="ts">
 import { type CheckboxProps, useCheckbox } from '@formwerk/core';
 
 const props = defineProps<CheckboxProps>();
 
-const { labelProps, inputProps, isChecked } = useCheckbox(props);
+const { labelProps, inputProps, errorMessage, errorMessageProps, isChecked } =
+  useCheckbox(props);
 </script>
 
 <template>
-  <div>
-    <span v-bind="inputProps">
-      {{ isChecked ? '✅' : '⬛️' }}
-    </span>
+  <div class="checkbox-item">
+    <div v-bind="inputProps" class="checkbox-input">
+      <div class="checkbox-square">
+        <svg
+          v-if="isChecked"
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 256 256"
+          class="fill-emerald-500"
+        >
+          <path
+            d="M232.49,80.49l-128,128a12,12,0,0,1-17,0l-56-56a12,12,0,1,1,17-17L96,183,215.51,63.51a12,12,0,0,1,17,17Z"
+          ></path>
+        </svg>
+      </div>
 
-    <span v-bind="labelProps">{{ label }}</span>
+      <div v-bind="labelProps">{{ label }}</div>
+    </div>
+
+    <div v-if="errorMessage" v-bind="errorMessageProps" class="error">
+      {{ errorMessage }}
+    </div>
   </div>
 </template>
+
+<style scoped>
+.checkbox-item {
+  --color-primary: #10b981;
+  --color-focus: var(--color-primary);
+  --color-white: #fff;
+  --color-gray-100: #fafafa;
+  --color-gray-400: #a1a1aa;
+  --color-error: #f00;
+
+  .checkbox-square {
+    width: 1rem;
+    height: 1rem;
+    border-radius: 0.375rem;
+    flex-shrink: 0;
+    border: 1px solid var(--color-gray-400);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--color-white);
+  }
+
+  svg {
+    width: 0.9rem;
+    height: 0.9rem;
+    fill: var(--color-white);
+  }
+
+  .checkbox-input {
+    display: inline-flex;
+    gap: 4px;
+    width: max-content;
+    align-items: center;
+    user-select: none;
+    font-size: 14px;
+    cursor: pointer;
+    font-weight: 500;
+
+    &:hover {
+    }
+
+    &:focus {
+      outline: none;
+      .checkbox-square {
+        border-color: var(--color-focus);
+        outline: 1px solid var(--color-focus);
+        background-color: var(--color-gray-100);
+      }
+    }
+
+    &[aria-checked='true'] {
+      .checkbox-square {
+        background-color: var(--color-primary);
+        border-color: var(--color-primary);
+      }
+    }
+
+    &[aria-disabled='true'] {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+  }
+
+  .error {
+    color: var(--color-error);
+    font-size: 13px;
+  }
+}
+
+/** This is a common utility CSS class, you can find it in your CSS framework of choice */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
+}
+</style>
 ```

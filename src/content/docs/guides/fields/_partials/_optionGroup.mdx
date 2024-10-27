@@ -1,13 +1,4 @@
-```vue
-<template>
-  <div v-bind="groupProps">
-    <div v-bind="labelProps" class="label">{{ label }}</div>
-
-    <!-- Options will be slotted here -->
-    <slot />
-  </div>
-</template>
-
+```vue collapse={20-39}
 <script setup lang="ts">
 import { type OptionGroupProps, useOptionGroup } from '@formwerk/core';
 
@@ -16,11 +7,34 @@ const props = defineProps<OptionGroupProps>();
 const { labelProps, groupProps } = useOptionGroup(props);
 </script>
 
+<template>
+  <div v-bind="groupProps" class="option-group">
+    <div v-bind="labelProps" class="label">{{ label }}</div>
+
+    <div class="options">
+      <!-- Options will be slotted here -->
+      <slot />
+    </div>
+  </div>
+</template>
+
 <style scoped>
-.label {
-  background-color: #022c22;
-  color: #fff;
-  padding: 0.5rem;
+.option-group {
+  .label {
+    padding: 4px 8px;
+    user-select: none;
+    position: sticky;
+    font-weight: 600;
+    background-color: #fff;
+    top: 0;
+  }
+
+  .options {
+    padding: 2px;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
 }
 </style>
 ```
