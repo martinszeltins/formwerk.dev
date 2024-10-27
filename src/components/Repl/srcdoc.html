@@ -5,6 +5,11 @@
       :root {
         --height: --HEIGHT--px;
       }
+
+      * {
+        box-sizing: border-box;
+      }
+
       html.dark {
         color-scheme: dark;
         height: var(--height);
@@ -18,14 +23,20 @@
           Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
         height: var(--height);
         width: 100%;
+        overflow: hidden;
       }
 
       #app {
         height: 100%;
         width: 100%;
+        padding: 20px;
+        overflow-y: auto;
         display: flex;
         align-items: center;
-        justify-content: center;
+        scrollbar-width: thin;
+        overflow-y: auto;
+        overflow-y: overlay;
+        scrollbar-color: rgb(161 161 170) transparent;
       }
     </style>
     <!-- PREVIEW-OPTIONS-HEAD-HTML -->
