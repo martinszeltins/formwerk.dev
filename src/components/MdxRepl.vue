@@ -1,43 +1,11 @@
 <template>
   <div
     ref="replContainer"
-    class="preview-container not-content mt-8 flex flex-col space-y-0 overflow-hidden rounded-md"
+    class="preview-container not-content mt-8 flex flex-col overflow-hidden rounded-md"
     :style="{
       '--preview-size': `${sizes[props.previewSize || 'md']}px`,
     }"
   >
-    <div v-if="tabs.length > 1" class="flex items-center">
-      <button
-        v-for="(tab, idx) in tabs"
-        :key="tab.filename"
-        type="button"
-        :hidden="tab.hidden"
-        :aria-selected="activeFile === tab.filename"
-        :class="{
-          'border-r': idx === tabs.length - 1,
-        }"
-        class="group relative flex cursor-pointer items-center gap-1 rounded-t-lg border-l border-t border-zinc-700 bg-zinc-950 px-3 py-1.5 text-sm text-zinc-500 transition-colors duration-200 aria-selected:bg-zinc-800 aria-selected:text-white"
-        @click="activeFile = tab.filename"
-      >
-        <component v-if="tab.icon" :is="tab.icon" class="size-4" />
-        {{ tab.filename }}
-
-        <div
-          class="absolute bottom-0 left-px right-0 z-10 hidden h-0.5 translate-y-px bg-zinc-800 group-aria-selected:block"
-        ></div>
-      </button>
-    </div>
-
-    <div
-      v-for="({ render, hidden }, key) in files"
-      :key="key"
-      v-show="activeFile === key"
-      :data-file-name="key"
-      :hidden="hidden"
-    >
-      <component :is="render" />
-    </div>
-
     <Repl
       ref="replRef"
       :store="store"
@@ -56,6 +24,38 @@
           : undefined
       "
     />
+
+    <div
+      v-if="tabs.length > 1"
+      class="flex items-center border-x border-t border-zinc-700 bg-zinc-950"
+    >
+      <button
+        v-for="(tab, idx) in tabs"
+        :key="tab.filename"
+        type="button"
+        :hidden="tab.hidden"
+        :aria-selected="activeFile === tab.filename"
+        class="group relative flex cursor-pointer items-center gap-1 bg-zinc-950 px-3 py-1.5 text-sm text-zinc-500 transition-colors duration-200 aria-selected:bg-zinc-800 aria-selected:text-white"
+        @click="activeFile = tab.filename"
+      >
+        <component v-if="tab.icon" :is="tab.icon" class="size-4" />
+        {{ tab.filename }}
+
+        <div
+          class="absolute bottom-0 left-px right-0 z-10 hidden h-0.5 translate-y-px bg-emerald-500 group-aria-selected:block"
+        ></div>
+      </button>
+    </div>
+
+    <div
+      v-for="({ render, hidden }, key) in files"
+      :key="key"
+      v-show="activeFile === key"
+      :data-file-name="key"
+      :hidden="hidden"
+    >
+      <component :is="render" />
+    </div>
   </div>
 </template>
 
@@ -230,6 +230,12 @@ function useSlotFiles() {
 .preview-container {
   &:deep(.iframe-container) {
     height: var(--preview-size, 100%);
+  }
+
+  &:deep(pre) {
+    border-top-width: 0;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
   }
 }
 </style>
