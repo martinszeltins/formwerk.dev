@@ -1,19 +1,80 @@
-```vue
+```vue collapse={19-85}
 <script setup lang="ts">
 import { type RadioProps, useRadio } from '@formwerk/core';
 
 const props = defineProps<RadioProps>();
 
-const { labelProps, inputProps, isChecked } = useRadio(props);
+const { labelProps, inputProps } = useRadio(props);
 </script>
 
 <template>
-  <div>
-    <span v-bind="inputProps">
-      {{ isChecked ? '🟢' : '⚫️' }}
-    </span>
+  <div class="radio-item" v-bind="inputProps">
+    <div class="radio-circle">
+      <div class="radio-circle-inner"></div>
+    </div>
 
     <span v-bind="labelProps">{{ label }}</span>
   </div>
 </template>
+
+<style scoped>
+.radio-item {
+  --color-primary: #10b981;
+  --color-text: #333;
+  --color-hint: #666;
+  --color-border: #ccc;
+  --color-focus: var(--color-primary);
+  --color-error: #f00;
+  --color-hover: #eee;
+
+  display: inline-flex;
+  width: max-content;
+  gap: 4px;
+  align-items: center;
+  user-select: none;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+
+  .radio-circle {
+    width: 1rem;
+    height: 1rem;
+    border-radius: 9999999px;
+    border: 1px solid var(--color-border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .radio-circle-inner {
+    width: 70%;
+    height: 70%;
+    border-radius: 9999999px;
+  }
+
+  &:focus {
+    .radio-circle {
+      border: 1px solid var(--color-focus);
+      outline: 1px solid var(--color-focus);
+    }
+  }
+
+  &[aria-checked='true'] {
+    .radio-circle-inner {
+      background-color: var(--color-focus);
+    }
+  }
+
+  &[aria-disabled='true'] {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  &[aria-readonly='true'] {
+    .radio-circle {
+      opacity: 0.5;
+    }
+  }
+}
+</style>
 ```

@@ -12,7 +12,6 @@ import MdxRepl from '@components/MdxRepl.vue';
 import Kbd from '@components/KeyboardKey.vue';
 import MouseWheel from '@components/MouseWheel.vue';
 
-import StyledNumberFieldPartial from './_partials/_numberFieldStyled.mdx';
 import NumberFieldPartial from './_partials/_numberField.mdx';
 
 Number fields are a common field in many forms. They include built-in validation to reject non-numerical input. Additionally, the browser may provide stepper arrows to let the user increase and decrease the value with a configurable step amount.
@@ -221,43 +220,6 @@ const schema = defineSchema(z.number().min(1).max(10));
 
 </MdxRepl>
 
-## Styling
-
-Formwerk does not come with any markup or styling, which is often the parts that make a design system unique. That means you can use any styling solution you want, whether it's [TailwindCSS](https://tailwindcss.com/), or plain CSS.
-
-This is an example of how you can style a text field using plain CSS, we take advantage of native CSS pseudo-classes to style the field when it is focused, hovered, or has an error. We require some help from the `isTouched` state returned by the `useNumberField` composable to style the field.
-
-<MdxRepl client:load>
-
-<div slot="NumberFieldStyled.vue">
-  <StyledNumberFieldPartial />
-</div>
-
-<div slot="App.vue">
-
-```vue
-<script setup lang="ts">
-import NumberField from './NumberFieldStyled.vue';
-import { z } from 'zod';
-import { defineSchema } from '@formwerk/schema-zod';
-
-const schema = defineSchema(z.number().min(0).max(10));
-</script>
-
-<template>
-  <NumberField
-    label="Amount"
-    :schema="schema"
-    value="0"
-    description="Enter a number between 1 and 10"
-  />
-</template>
-```
-
-</div>
-
-</MdxRepl>
-
 ## Usage
 
 ### Disabled
@@ -358,7 +320,7 @@ The number field also accepts a `locale` prop to change the locale of the number
 
 Actually, here are 3 fields each with a different numeral system bound to the same value, and you get the parsed value with either of them.
 
-<MdxRepl client:load>
+<MdxRepl client:load preview-size="lg">
 
 <div slot="!NumberField.vue">
   <NumberFieldPartial />

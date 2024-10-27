@@ -1,4 +1,4 @@
-```vue
+```vue collapse={20-85}
 <script setup lang="ts">
 import { type RadioProps, useRadio } from '@formwerk/core';
 
@@ -8,9 +8,79 @@ const { labelProps, inputProps } = useRadio(props);
 </script>
 
 <template>
-  <div>
-    <input v-bind="inputProps" />
-    <label v-bind="labelProps" class="ml-1">{{ label }}</label>
-  </div>
+  <label v-bind="labelProps" class="radio-item">
+    <input v-bind="inputProps" class="sr-only" />
+    <div class="radio-circle">
+      <div class="radio-circle-inner"></div>
+    </div>
+
+    {{ label }}
+  </label>
 </template>
+
+<style scoped>
+.radio-item {
+  --color-primary: #10b981;
+  --color-text: #333;
+  --color-hint: #666;
+  --color-border: #ccc;
+  --color-focus: var(--color-primary);
+  --color-error: #f00;
+  --color-hover: #eee;
+
+  display: inline-flex;
+  width: max-content;
+  gap: 4px;
+  align-items: center;
+  user-select: none;
+  font-size: 13px;
+  font-weight: 500;
+
+  .radio-circle {
+    width: 1rem;
+    height: 1rem;
+    border-radius: 9999999px;
+    border: 1px solid var(--color-border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .radio-circle-inner {
+    width: 70%;
+    height: 70%;
+    border-radius: 9999999px;
+  }
+
+  &:has(:focus) {
+    .radio-circle {
+      border: 1px solid var(--color-focus);
+      outline: 1px solid var(--color-focus);
+    }
+  }
+
+  &:has(:checked) {
+    .radio-circle-inner {
+      background-color: var(--color-focus);
+    }
+  }
+
+  &:has(:disabled) {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}
+
+/** This is a common utility CSS class, you can find it in your CSS framework of choice */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
+}
+</style>
 ```

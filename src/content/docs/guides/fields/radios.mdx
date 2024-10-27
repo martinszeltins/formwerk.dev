@@ -14,9 +14,6 @@ import Kbd from '@components/KeyboardKey.vue';
 import RadioGroupPartial from './_partials/_radioGroup.mdx';
 import RadioInputPartial from './_partials/_radioInput.mdx';
 import RadioItemPartial from './_partials/_radioItem.mdx';
-import StyledRadioInputPartial from './_partials/_styledRadioInput.mdx';
-import StyledRadioGroup from './_partials/_styledRadioGroup.mdx';
-import StyledCustomRadioPartial from './_partials/_styledCustomRadio.mdx';
 
 > A radio group is a set of checkable buttons, known as radio buttons, where no more than one of the buttons can be checked at a time. Some implementations may initialize the set with all buttons in the unchecked state in order to force the user to check one of the buttons before moving past a certain point in the workflow.
 
@@ -89,9 +86,7 @@ You can use the `useRadio` composable to build a radio component with the `input
 <MdxRepl client:load>
 
 <div slot="RadioItem.vue">
-
-<RadioInputPartial />
-
+  <RadioInputPartial />
 </div>
 
 <div slot="!RadioGroup.vue">
@@ -250,101 +245,6 @@ const schema = defineSchema(
 
 </MdxRepl>
 
-## Styling
-
-Formwerk does not come with any markup or styling, which is often the parts that make a design system unique. That means you can use any styling solution you want, whether it's [TailwindCSS](https://tailwindcss.com/), or plain CSS.
-
-In this example we will work around the styling limitations of the native `input` element by visually hiding it and wrapping it inside the `label` element to maintain its accessible behavior.
-
-<MdxRepl client:load>
-
-<div slot="RadioItem.vue">
-  <StyledRadioInputPartial />
-</div>
-
-<div slot="RadioGroup.vue">
-  <StyledRadioGroup />
-</div>
-
-<div slot="App.vue">
-
-```vue
-<script setup lang="ts">
-import { z } from 'zod';
-import { defineSchema } from '@formwerk/schema-zod';
-import RadioItem from './RadioItem.vue';
-import RadioGroup from './RadioGroup.vue';
-
-const schema = defineSchema(
-  z.string().min(1, 'Please select a drink').endsWith('☕️', 'WRONG ANSWER!'),
-);
-</script>
-
-<template>
-  <RadioGroup
-    label="Select a drink"
-    description="There is only one right answer"
-    :schema="schema"
-  >
-    <RadioItem label="Tea 🍵" value="🍵" />
-    <RadioItem label="Coffee ☕️" value="☕️" />
-    <RadioItem label="Milk 🥛" value="🥛" />
-  </RadioGroup>
-</template>
-```
-
-</div>
-
-</MdxRepl>
-
-You can alternatively use custom HTML elements as a base for the radio component without having to visually hide the `input` element. But since you won't have any of the input pseudo classes, they will instead be replaced with `aria-*` attributes.
-
-Here is the same example with custom HTML elements as a base.
-
-<MdxRepl client:load>
-
-<div slot="RadioItem.vue">
-  <StyledCustomRadioPartial />
-</div>
-
-<div slot="RadioGroup.vue">
-  <StyledRadioGroup />
-</div>
-
-<div slot="App.vue">
-
-```vue
-<script setup lang="ts">
-import { z } from 'zod';
-import { defineSchema } from '@formwerk/schema-zod';
-import RadioItem from './RadioItem.vue';
-import RadioGroup from './RadioGroup.vue';
-
-const schema = defineSchema(
-  z
-    .string()
-    .min(1, { message: 'Please select a drink' })
-    .endsWith('☕️', { message: 'WRONG ANSWER!' }),
-);
-</script>
-
-<template>
-  <RadioGroup
-    label="Select a drink"
-    description="There is only one right answer"
-    :schema="schema"
-  >
-    <RadioItem label="Tea 🍵" value="🍵" />
-    <RadioItem label="Coffee ☕️" value="☕️" />
-    <RadioItem label="Milk 🥛" value="🥛" />
-  </RadioGroup>
-</template>
-```
-
-</div>
-
-</MdxRepl>
-
 ## Usage
 
 ### Disabled
@@ -356,11 +256,11 @@ We made use of the styled radio component that we created above to make it clear
 <MdxRepl client:load>
 
 <div slot="!RadioItem.vue">
-  <StyledRadioInputPartial />
+  <RadioInputPartial />
 </div>
 
 <div slot="!RadioGroup.vue">
-  <StyledRadioGroup />
+  <RadioGroupPartial />
 </div>
 
 <div slot="App.vue">
@@ -400,11 +300,11 @@ Only available on the group, the `readonly` prop prevents the user from interact
 <MdxRepl client:load>
 
 <div slot="!RadioItem.vue">
-  <StyledRadioInputPartial />
+  <RadioInputPartial />
 </div>
 
 <div slot="!RadioGroup.vue">
-  <StyledRadioGroup />
+  <RadioGroupPartial />
 </div>
 
 <div slot="App.vue">
@@ -445,11 +345,11 @@ There is not default value assumed for the orientation, but if it is provided th
 <MdxRepl client:load>
 
 <div slot="!RadioItem.vue">
-  <StyledRadioInputPartial />
+  <RadioInputPartial />
 </div>
 
 <div slot="!RadioGroup.vue">
-  <StyledRadioGroup />
+  <RadioGroupPartial />
 </div>
 
 <div slot="App.vue">
@@ -480,11 +380,11 @@ The radio group accepts a `dir` prop that can be set to `ltr` or `rtl`. Unlike t
 <MdxRepl client:load>
 
 <div slot="!RadioItem.vue">
-  <StyledRadioInputPartial />
+  <RadioInputPartial />
 </div>
 
 <div slot="!RadioGroup.vue">
-  <StyledRadioGroup />
+  <RadioGroupPartial />
 </div>
 
 <div slot="App.vue">
@@ -496,10 +396,10 @@ import RadioGroup from './RadioGroup.vue';
 </script>
 
 <template>
-  <RadioGroup label="RTL Group" dir="rtl">
-    <RadioItem label="Radio 1" value="1" />
-    <RadioItem label="Radio 2" value="2" />
-    <RadioItem label="Radio 3" value="3" />
+  <RadioGroup label="من اليمين لليسار" dir="rtl">
+    <RadioItem label="الحقل الأول" value="1" />
+    <RadioItem label="الحقل الثاني" value="2" />
+    <RadioItem label="الحقل الثالث" value="3" />
   </RadioGroup>
 </template>
 ```
