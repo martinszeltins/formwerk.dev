@@ -12,7 +12,7 @@ import AnatomyCanvas from '@components/AnatomyCanvas.vue';
 import AnatomyTextField from '@components/AnatomyTextField.vue';
 import MdxRepl from '@components/MdxRepl.vue';
 import TextFieldPartial from './_partials/_textField.mdx';
-import StyledTextFieldPartial from './_partials/_styledTextField.mdx';
+import TextAreaPartial from './_partials/_textarea.mdx';
 
 Text fields are used to allow users to input plain text into a form.
 
@@ -87,37 +87,7 @@ Instead of using a `input[type="text"]` element, you can switch to using a `text
 <MdxRepl client:load>
 
 <div slot="TextAreaField.vue">
-```vue
-<script setup lang="ts">
-import { type TextFieldProps, useTextField } from '@formwerk/core';
-
-const props = defineProps<TextFieldProps>();
-
-const {
-inputProps,
-labelProps,
-errorMessage,
-errorMessageProps,
-descriptionProps,
-} = useTextField(props);
-
-</script>
-
-<template>
-  <div>
-    <label v-bind="labelProps">{{ label }}</label>
-    <textarea v-bind="inputProps" :style="{ display: 'block' }" />
-
-    <div v-if="errorMessage" v-bind="errorMessageProps">
-      {{ errorMessage }}
-    </div>
-    <div v-else-if="description" v-bind="descriptionProps">
-      {{ description }}
-    </div>
-
-  </div>
-</template>
-```
+  <TextAreaPartial />
 </div>
 
 <div slot="App.vue">
@@ -297,75 +267,6 @@ const schema = defineSchema(z.string().min(3).max(20));
 
 You can also disable it globally for all fields, for more information check out the [Validation](/guides/forms/validation) guide.
 
-## Styling
-
-Formwerk does not come with any markup or styling, which is often the parts that make a design system unique. That means you can use any styling solution you want, whether it's [TailwindCSS](https://tailwindcss.com/), or plain CSS.
-
-This is an example of how you can style a text field using plain CSS, we take advantage of native CSS pseudo-classes to style the field when it is focused, hovered, or has an error. No JS-state is needed to style the field.
-
-<MdxRepl client:load>
-
-<div slot="TextFieldStyled.vue">
-  <StyledTextFieldPartial />
-</div>
-
-<div slot="App.vue">
-
-```vue
-<script setup lang="ts">
-import TextField from './TextFieldStyled.vue';
-</script>
-
-<template>
-  <TextField
-    label="Email Address"
-    description="We will not share your email with anyone."
-    type="email"
-    placeholder="example@example.com"
-    required
-  />
-</template>
-```
-
-</div>
-
-</MdxRepl>
-
-Notice that in the last example we made use of the `:user-invalid` and `:user-valid` pseudo-classes to style the field which are just some of the features available in all modern browsers. With no JavaScript we managed to show the error message when appropriate.
-
-Formwerk leans into that to provide a more seamless experience for the user. In fact, even if you use Typed Schemas to validate the field, the pseudo-classes will still work. Here is a quick example with the same `TextFieldStyled` component, but this time we pass in a typed schema validation.
-
-<MdxRepl client:load>
-
-<div slot="!TextFieldStyled.vue">
-  <StyledTextFieldPartial />
-</div>
-
-<div slot="App.vue">
-
-```vue
-<script setup lang="ts">
-import { z } from 'zod';
-import { defineSchema } from '@formwerk/schema-zod';
-import TextField from './TextFieldStyled.vue';
-
-const schema = defineSchema(z.string().email());
-</script>
-
-<template>
-  <TextField
-    label="Email Address with Typed Schema"
-    :schema="schema"
-    description="We will not share your email with anyone."
-    placeholder="example@example.com"
-  />
-</template>
-```
-
-</div>
-
-</MdxRepl>
-
 ## Usage
 
 ### Disabled
@@ -440,7 +341,7 @@ import TextField from './TextField.vue';
 </script>
 
 <template>
-  <TextField label="RTL Field" dir="rtl" />
+  <TextField name="fullName" label="ما هو اسمك؟" dir="rtl" />
 </template>
 ```
 
@@ -453,6 +354,14 @@ import TextField from './TextField.vue';
 There is a lot more to directionality and localization, for more info check out the [i18n guide](/guides/extras/i18n).
 
 </Aside>
+
+## Styling
+
+Formwerk does not come with any markup or styling, which is often the part that makes a design system unique. That means you can use any styling solution you want, whether it's [TailwindCSS](https://tailwindcss.com/), or plain CSS as you have already seen.
+
+Note that we make use of the `:user-invalid` pseudo-classes to style the field and control when to show the error messages without any JavaScript. Formwerk leans into native APIs and browser features to provide a more seamless experience for the user. In fact, even if you use Typed Schemas to validate the field, the pseudo-classes will still work.
+
+For more information on styling and recommendations, check the [Styling](/guides/extras/styling) guide.
 
 ## API
 
