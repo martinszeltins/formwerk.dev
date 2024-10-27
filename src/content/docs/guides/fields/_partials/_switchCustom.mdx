@@ -1,4 +1,4 @@
-```vue collapse={41-57}
+```vue collapse={26-121}
 <script setup lang="ts">
 import { useSwitch, type SwitchProps } from '@formwerk/core';
 
@@ -9,49 +9,113 @@ const { inputProps, labelProps, isPressed, errorMessage, errorMessageProps } =
 </script>
 
 <template>
-  <div>
-    <div class="switch">
-      <svg
-        v-bind="inputProps"
-        xmlns="http://www.w3.org/2000/svg"
-        width="32"
-        height="32"
-        fill="currentColor"
-        viewBox="0 0 256 256"
-      >
-        <path
-          v-if="isPressed"
-          d="M176,56H80a72,72,0,0,0,0,144h96a72,72,0,0,0,0-144Zm0,112a40,40,0,1,1,40-40A40,40,0,0,1,176,168Z"
-        ></path>
+  <div class="switch">
+    <div class="switch-wrapper" v-bind="inputProps">
+      <div class="switch-control">
+        <div class="switch-knob"></div>
+      </div>
 
-        <path
-          v-else
-          d="M176,56H80a72,72,0,0,0,0,144h96a72,72,0,0,0,0-144ZM80,168a40,40,0,1,1,40-40A40,40,0,0,1,80,168Z"
-        ></path>
-      </svg>
-
-      <span v-bind="labelProps">
-        {{ label }}
-      </span>
+      <div class="switch-label" v-bind="labelProps">{{ label }}</div>
     </div>
 
-    <div v-if="errorMessage" v-bind="errorMessageProps">{{ errorMessage }}</div>
+    <div v-bind="errorMessageProps" class="error">
+      {{ errorMessage }}
+    </div>
   </div>
 </template>
 
 <style scoped>
 .switch {
-  font-size: 13px;
-  display: inline-flex;
-  align-items: center;
-  cursor: pointer;
-  gap: 4px;
+  --switch-bg: #57534e;
+  --switch-active-bg: #10b981;
+  --switch-readonly-bg: #a8a29e;
+  --switch-knob-color: #f5f5f4;
+  --color-text: #333;
+  --color-error: #f00;
+  --color-primary: #10b981;
+  --color-focus: var(--color-primary);
 
-  [role='switch'] {
-    color: #2c3e50;
+  .switch-label {
+    font-size: 14px;
+    user-select: none;
+  }
 
-    &[aria-checked='true'] {
-      color: #50c878;
+  .switch-control {
+    width: 3rem;
+    height: 1.5rem;
+    background-color: var(--switch-bg);
+    border-radius: 99999px;
+    transition: background-color 0.2s;
+    display: flex;
+    align-items: center;
+  }
+
+  .switch-knob {
+    border-radius: 99999px;
+    height: 1.2rem;
+    width: 1.4rem;
+    background: var(--switch-knob-color);
+    translate: 2px 0;
+    transition: translate 0.2s;
+  }
+
+  [aria-checked='true'] {
+    .switch-control {
+      background-color: var(--switch-active-bg);
+    }
+
+    .switch-knob {
+      translate: 100% 0;
+    }
+  }
+
+  .switch-wrapper {
+    display: inline-flex;
+    align-items: center;
+    cursor: pointer;
+    gap: 0.25rem;
+
+    &:focus {
+      .switch-control {
+        outline: 2px solid var(--color-primary);
+      }
+    }
+
+    [readonly='true'] {
+      .switch-control {
+        background-color: var(--switch-readonly-bg);
+      }
+    }
+
+    [disabled='true'] {
+      .switch-control {
+        opacity: 0.4;
+        cursor: not-allowed;
+      }
+    }
+  }
+
+  /** This is a common utility CSS class, you can find it in your CSS framework of choice */
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    border: 0;
+  }
+
+  .error {
+    color: var(--color-error);
+    display: none;
+    font-size: 13px;
+  }
+
+  &[aria-invalid='true'] {
+    .error {
+      display: block;
     }
   }
 }

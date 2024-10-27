@@ -13,7 +13,6 @@ import Kbd from '@components/KeyboardKey.vue';
 import MdxRepl from '@components/MdxRepl.vue';
 
 import SearchFieldPartial from './_partials/_searchField.mdx';
-import StyledSearchFieldPartial from './_partials/_styledSearchField.mdx';
 
 > input elements of type search are text fields designed for the user to enter search queries into. These are functionally identical to text inputs, but may be styled differently by the user agent.
 
@@ -67,7 +66,7 @@ const search = ref('');
 </script>
 
 <template>
-  <SearchField label="Search for something" v-model="search" />
+  <SearchField label="Keywords" placeholder="Search for..." v-model="search" />
 
   Search value: {{ search }}
 </template>
@@ -121,7 +120,8 @@ const search = ref('');
 
 <template>
   <SearchField
-    label="Search for something"
+    label="Keywords"
+    placeholder="Search for..."
     v-model="search"
     required
     min-length="3"
@@ -162,7 +162,11 @@ const schema = defineSchema(z.string().min(3).max(8));
 </script>
 
 <template>
-  <SearchField label="Typed Schema" :schema="schema" />
+  <SearchField
+    label="Typed Schema"
+    placeholder="Search for..."
+    :schema="schema"
+  />
 </template>
 ```
 
@@ -194,7 +198,12 @@ const schema = defineSchema(z.string().min(3).max(8));
 </script>
 
 <template>
-  <SearchField label="Mixed Validation" :schema="schema" required />
+  <SearchField
+    label="Mixed Validation"
+    placeholder="Search for..."
+    :schema="schema"
+    required
+  />
 </template>
 ```
 
@@ -226,6 +235,7 @@ const schema = defineSchema(z.string().min(3).max(10));
 <template>
   <SearchField
     label="HTML Validation Disabled"
+    placeholder="Search for..."
     disable-html-validation
     :schema="schema"
     required
@@ -238,43 +248,6 @@ const schema = defineSchema(z.string().min(3).max(10));
 </MdxRepl>
 
 You can also disable it globally for all fields, for more information check out the [Validation](/guides/forms/validation) guide.
-
-## Styling
-
-Formwerk does not come with any markup or styling for the search field. That means you can use any styling solution you want, whether it's [TailwindCSS](https://tailwindcss.com/), or plain CSS.
-
-This is an example of how you can style a search field using plain CSS, we take advantage of native CSS pseudo-classes to style the field when it is focused, hovered, or has an error. No JS-state is needed to style the field.
-
-<MdxRepl client:load>
-
-<div slot="SearchField.vue">
-  <StyledSearchFieldPartial />
-</div>
-
-<div slot="App.vue">
-
-```vue
-<script setup lang="ts">
-import SearchField from './SearchField.vue';
-import { z } from 'zod';
-import { defineSchema } from '@formwerk/schema-zod';
-
-const schema = defineSchema(z.string().min(3).max(10));
-</script>
-
-<template>
-  <SearchField
-    label="Search"
-    description="Are you interested in Coffee?"
-    placeholder="Search for something..."
-    :schema="schema"
-  />
-</template>
-```
-
-</div>
-
-</MdxRepl>
 
 ## Usage
 
@@ -298,7 +271,7 @@ import SearchField from './SearchField.vue';
 </script>
 
 <template>
-  <SearchField label="Disabled" disabled />
+  <SearchField label="Disabled" disabled value="Well..." />
 </template>
 ```
 
@@ -350,7 +323,7 @@ import SearchField from './SearchField.vue';
 </script>
 
 <template>
-  <SearchField label="RTL Search" dir="rtl" />
+  <SearchField label="البحث" placeholder="ابحث عن..." dir="rtl" />
 </template>
 ```
 
@@ -386,7 +359,7 @@ const onSubmit = (value: string) => {
 </script>
 
 <template>
-  <SearchField label="Search" @submit="onSubmit" />
+  <SearchField label="Search" placeholder="Search for..." @submit="onSubmit" />
 </template>
 ```
 

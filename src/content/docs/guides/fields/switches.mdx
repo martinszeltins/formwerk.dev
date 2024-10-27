@@ -14,7 +14,6 @@ import Kbd from '@components/KeyboardKey.vue';
 
 import SwitchPartial from './_partials/_switch.mdx';
 import SwitchCustomPartial from './_partials/_switchCustom.mdx';
-import StyledSwitch from './_partials/_styledSwitch.mdx';
 
 > A switch is an input widget that allows users to choose one of two values: on or off. Switches are similar to checkboxes and toggle buttons, which can also serve as binary inputs. One difference, however, is that switches can only be used for binary input.
 
@@ -255,38 +254,6 @@ const schema = defineSchema(
 
 </MdxRepl>
 
-## Styling
-
-Since you have complete control over how to style the switch component. That means you can use any styling solution you want, whether it's [TailwindCSS](https://tailwindcss.com/), or plain CSS.
-
-The previous examples already did some styling, but you can always add more to it. Here is an example with plain CSS:
-
-<MdxRepl client:load>
-
-<div slot="Switch.vue">
-  <StyledSwitch />
-</div>
-
-<div slot="App.vue">
-
-```vue
-<script setup lang="ts">
-import { z } from 'zod';
-import { defineSchema } from '@formwerk/schema-zod';
-import Switch from './Switch.vue';
-
-const schema = defineSchema(z.literal(true));
-</script>
-
-<template>
-  <Switch label="Keep on" :schema="schema" />
-</template>
-```
-
-</div>
-
-</MdxRepl>
-
 ## Usage
 
 ### Disabled
@@ -298,7 +265,7 @@ If you need to prevent the user from interacting with the field while still allo
 <MdxRepl client:load>
 
 <div slot="!Switch.vue">
-  <StyledSwitch />
+  <SwitchPartial />
 </div>
 
 <div slot="App.vue">
@@ -324,7 +291,7 @@ Readonly switches are validated and submitted, but they do not accept user input
 <MdxRepl client:load>
 
 <div slot="!Switch.vue">
-  <StyledSwitch />
+  <SwitchPartial />
 </div>
 
 <div slot="App.vue">
@@ -353,7 +320,7 @@ You can customize the `on` and `off` values of the switch component by passing t
 <MdxRepl client:load>
 
 <div slot="!Switch.vue">
-  <StyledSwitch />
+  <SwitchPartial />
 </div>
 
 <div slot="App.vue">
