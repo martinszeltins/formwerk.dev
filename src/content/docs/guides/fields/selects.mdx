@@ -106,7 +106,7 @@ Next, you will use `useSelect` to create our select component. This component wi
 
 The `useSelect` composable returns binding objects for some of the elements shown in the [anatomy](#anatomy), you will use `v-bind` to bind them to the corresponding DOM elements.
 
-<MdxRepl client:load>
+<MdxRepl client:load preview-size="lg">
 
 <div slot="SelectField.vue">
   <SelectPartial />
@@ -141,7 +141,7 @@ import OptionItem from './OptionItem.vue';
 
 Building an option group component is similar to building an option component. You will use `useOptionGroup` to create the component.
 
-<MdxRepl client:load>
+<MdxRepl client:load preview-size="lg">
 
 <div slot="OptionGroup.vue">
   <OptionGroupPartial />
@@ -204,7 +204,7 @@ In the future when customizable selects are available in the browser, Formwerk w
 
 `useSelect` supports Typed Schema validation through the `schema` prop.
 
-<MdxRepl client:load>
+<MdxRepl client:load preview-size="lg">
 
 <div slot="!SelectField.vue">
   <SelectPartial />
@@ -309,7 +309,7 @@ Use disabled to mark fields as non-interactive, disabled fields are not validate
 
 If you need to prevent the user from interacting with the field while still allowing it to submit, consider using `readonly` instead.
 
-<MdxRepl client:load>
+<MdxRepl client:load preview-size="lg">
 
 <div slot="!OptionItem.vue">
   <OptionPartial />
@@ -347,7 +347,7 @@ import OptionItem from './OptionItem.vue';
 
 You can also mark individual options as disabled by passing a `disabled` prop to the `OptionItem` component. Note that disabled options are skipped from the focus order when using shortcuts or the search functionality.
 
-<MdxRepl client:load>
+<MdxRepl client:load preview-size="lg">
 
 <div slot="!OptionItem.vue">
   <OptionPartial />
@@ -387,7 +387,7 @@ import OptionItem from './OptionItem.vue';
 
 Readonly fields are validated and submitted, but they do not accept user input. The field is still focusable and the popup is still openable. For more info, check the [MDN](https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/readonly).
 
-<MdxRepl client:load>
+<MdxRepl client:load preview-size="lg">
 
 <div slot="!OptionItem.vue">
   <OptionPartial />
