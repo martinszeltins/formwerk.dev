@@ -1,5 +1,5 @@
 /* eslint-disable prefer-const */
-import type { File, Store } from './store';
+import type { Store, File } from './types';
 import {
   MagicString,
   babelParse,

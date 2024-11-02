@@ -1,6 +1,6 @@
 /* eslint-disable prefer-const */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import type { File, Store } from './store';
+import type { Store, File } from './types';
 import type {
   BindingMetadata,
   CompilerOptions,

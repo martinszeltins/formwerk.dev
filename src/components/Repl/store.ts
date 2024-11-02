@@ -1,24 +1,11 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import {
-  type ToRefs,
-  type UnwrapRef,
-  computed,
-  reactive,
-  ref,
-  shallowRef,
-  watch,
-  watchEffect,
-} from 'vue';
+import { computed, reactive, ref, shallowRef, watch, watchEffect } from 'vue';
 import * as defaultCompiler from 'vue/compiler-sfc';
 import { compileFile } from './transform';
 import { atou, utoa } from './utils';
-import type {
-  SFCAsyncStyleCompileOptions,
-  SFCScriptCompileOptions,
-  SFCTemplateCompileOptions,
-} from 'vue/compiler-sfc';
-import type { OutputModes } from './types';
 import { type ImportMap, mergeImportMap, useVueImportMap } from './importMap';
+import type { ReplStore, Store, StoreState } from './types';
+import { File } from './types';
 
 export const importMapFile = 'import-map.json';
 export const tsconfigFile = 'tsconfig.json';
@@ -393,111 +380,6 @@ const tsconfig = {
     target: 3.4,
   },
 };
-
-export interface SFCOptions {
-  script?: Partial<SFCScriptCompileOptions>;
-  style?: Partial<SFCAsyncStyleCompileOptions>;
-  template?: Partial<SFCTemplateCompileOptions>;
-}
-
-export type StoreState = ToRefs<{
-  files: Record<string, File>;
-  activeFilename: string;
-  mainFile: string;
-  template: {
-    welcomeSFC?: string;
-    newSFC?: string;
-  };
-  builtinImportMap: ImportMap;
-
-  // output
-  errors: (string | Error)[];
-  showOutput: boolean;
-  outputMode: OutputModes;
-  sfcOptions: SFCOptions;
-  /** `@vue/compiler-sfc` */
-  compiler: typeof defaultCompiler;
-  /* only apply for compiler-sfc */
-  vueVersion: string | null;
-
-  // volar-related
-  locale: string | undefined;
-  typescriptVersion: string;
-  /** \{ dependencyName: version \} */
-  dependencyVersion: Record<string, string>;
-  reloadLanguageTools?: (() => void) | undefined;
-}>;
-
-export interface ReplStore extends UnwrapRef<StoreState> {
-  activeFile: File;
-  /** Loading compiler */
-  loading: boolean;
-  init(): void;
-  setActive(filename: string): void;
-  addFile(filename: string | File): void;
-  deleteFile(filename: string): void;
-  renameFile(oldFilename: string, newFilename: string): void;
-  getImportMap(): ImportMap;
-  getTsConfig(): Record<string, any>;
-  serialize(): string;
-  deserialize(serializedState: string): void;
-  getFiles(): Record<string, string>;
-  setFiles(newFiles: Record<string, string>, mainFile?: string): Promise<void>;
-}
-
-export type Store = Pick<
-  ReplStore,
-  | 'files'
-  | 'activeFile'
-  | 'mainFile'
-  | 'errors'
-  | 'showOutput'
-  | 'outputMode'
-  | 'sfcOptions'
-  | 'compiler'
-  | 'vueVersion'
-  | 'locale'
-  | 'typescriptVersion'
-  | 'dependencyVersion'
-  | 'reloadLanguageTools'
-  | 'init'
-  | 'setActive'
-  | 'addFile'
-  | 'deleteFile'
-  | 'renameFile'
-  | 'getImportMap'
-  | 'getTsConfig'
->;
-
-export class File {
-  compiled = {
-    js: '',
-    css: '',
-    ssr: '',
-  };
-
-  constructor(
-    public filename: string,
-    public code = '',
-    public hidden = false,
-  ) {}
-
-  get language() {
-    if (this.filename.endsWith('.vue')) {
-      return 'vue';
-    }
-    if (this.filename.endsWith('.html')) {
-      return 'html';
-    }
-    if (this.filename.endsWith('.css')) {
-      return 'css';
-    }
-    if (this.filename.endsWith('.ts')) {
-      return 'typescript';
-    }
-    return 'javascript';
-  }
-}
 
 function addSrcPrefix(file: string) {
   return file === importMapFile ||
