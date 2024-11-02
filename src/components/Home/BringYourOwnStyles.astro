@@ -1,0 +1,25 @@
+---
+import Tabs from '../Tabs.vue';
+---
+
+<section class="mt-40 self-start">
+  <h2 class="heading-grad text-5xl font-bold leading-tight">
+    Bring your own <span
+      class="bg-gradient-to-b from-cyan-400 to-cyan-600 bg-clip-text text-transparent"
+      >styles</span
+    >.
+  </h2>
+
+  <p class="mt-5 max-w-4xl text-xl text-zinc-400">
+    Formwerk doesn't have any styles or HTML, allowing you build your own custom
+    design system with any styling or animation library. Each composables hooks
+    into some designated elements, managing their behavior and state while
+    leaving their structure and styling up to you.
+  </p>
+
+  <Tabs client:load tabs={['Tailwind', 'CSS', 'Radix']}>
+    <div slot="Tailwind">Tailwind</div>
+    <div slot="CSS">CSS</div>
+    <div slot="Radix">Radix</div>
+  </Tabs>
+</section>

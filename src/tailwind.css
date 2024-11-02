@@ -56,3 +56,7 @@ iframe {
     height: calc(var(--sl-nav-height) - 42px);
   }
 }
+
+.heading-grad {
+  @apply bg-gradient-to-b from-zinc-200 to-zinc-400 bg-clip-text text-transparent;
+}
