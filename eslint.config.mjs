@@ -5,8 +5,8 @@ import eslint from '@eslint/js';
 
 export default tseslint.config(
   eslint.configs.recommended,
-  ...eslintPluginAstro.configs['flat/recommended'],
   ...tseslint.configs.recommended,
+  ...eslintPluginAstro.configs.recommended,
   {
     rules: {
       'typescript-eslint/triple-slash-reference': 'off',
@@ -27,6 +27,6 @@ export default tseslint.config(
     },
   },
   {
-    ignores: ['dist/*', '.astro/*', 'src/pages/form-d.astro'],
+    ignores: ['dist/*', '.astro/*'],
   },
 );

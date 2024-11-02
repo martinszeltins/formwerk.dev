@@ -5,6 +5,11 @@
     "paths": {
       "@components/*": ["src/components/*"]
     },
+    "plugins": [
+      {
+        "name": "@astrojs/ts-plugin"
+      }
+    ],
     "jsx": "preserve",
     "types": ["unplugin-icons/types/vue"]
   }

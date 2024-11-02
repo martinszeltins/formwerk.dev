@@ -13,13 +13,14 @@
     "format": "prettier --write .",
     "prepare": "husky",
     "lint": "eslint .",
-    "typecheck": "pnpm tsc --noEmit --project ./tsconfig.json --skipLibCheck"
+    "typecheck": "pnpm tsc --noEmit --skipLibCheck --project ./tsconfig.json"
   },
   "dependencies": {
     "@astrojs/check": "^0.9.4",
     "@astrojs/starlight": "^0.28.5",
     "@astrojs/starlight-tailwind": "^2.0.3",
     "@astrojs/tailwind": "^5.1.2",
+    "@astrojs/ts-plugin": "^1.10.4",
     "@astrojs/vue": "^4.5.2",
     "@formwerk/core": "^0.1.23",
     "@iconify-json/vscode-icons": "^1.2.2",
