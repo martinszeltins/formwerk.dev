@@ -1,8 +1,96 @@
 ---
 import Tabs from '../Tabs.vue';
+import { Code } from '@astrojs/starlight/components';
+
+const cssVue = `
+<script setup lang="ts">
+import { type TextFieldProps, useTextField } from '@formwerk/core';
+
+const props = defineProps<TextFieldProps>();
+
+const {
+  inputProps,
+  labelProps,
+  errorMessage,
+  errorMessageProps,
+} = useTextField(props);
+</script>
+
+<template>
+  <div class="field">
+    <label v-bind="labelProps">{{ label }}</label>
+    <input v-bind="inputProps" />
+
+    <div v-if="errorMessage" v-bind="errorMessageProps" class="error">
+      {{ errorMessage }}
+    </div>
+  </div>
+</template>
+`;
+
+const tailwindVue = `
+<script setup lang="ts">
+import { type TextFieldProps, useTextField } from '@formwerk/core';
+
+const props = defineProps<TextFieldProps>();
+
+const {
+  inputProps,
+  labelProps,
+  errorMessage,
+  errorMessageProps,
+} = useTextField(props);
+</script>
+
+<template>
+  <div class="group">
+    <label
+      v-bind="labelProps"
+      class="mb-1 block text-sm font-medium text-gray-700"
+    >
+      {{ label }}
+    </label>
+
+    <input
+      v-bind="inputProps"
+      class="w-max rounded-md border border-zinc-300 px-2.5 py-2 text-sm text-gray-700 transition-colors focus:border-emerald-500 focus:outline-none focus:ring-1 focus:ring-emerald-500 invalid:border-red-500 invalid:focus:border-red-500 invalid:focus:ring-red-500"
+    />
+
+    <div
+      v-if="errorMessage"
+      v-bind="errorMessageProps"
+      class="mt-1 text-sm text-red-500 group-has-[:invalid]:block hidden"
+    >
+      {{ errorMessage }}
+    </div>
+  </div>
+</template>
+`;
+
+const cssStyle = `
+.field {
+  margin-bottom: 1rem;
+}
+
+label {
+  display: block;
+  margin-bottom: 0.25rem;
+}
+
+input {
+  width: 100%;
+  padding: 0.5rem;
+  border: 1px solid #ccc;
+}
+
+.error {
+  color: red;
+  margin-top: 0.25rem;
+}
+`;
 ---
 
-<section class="mt-40 self-start">
+<section class="mt-20 w-full self-start py-20">
   <h2 class="heading-grad text-5xl font-bold leading-tight">
     Bring your own <span
       class="bg-gradient-to-b from-cyan-400 to-cyan-600 bg-clip-text text-transparent"
@@ -17,9 +105,24 @@ import Tabs from '../Tabs.vue';
     leaving their structure and styling up to you.
   </p>
 
-  <Tabs client:load tabs={['Tailwind', 'CSS', 'Radix']}>
-    <div slot="Tailwind">Tailwind</div>
-    <div slot="CSS">CSS</div>
-    <div slot="Radix">Radix</div>
-  </Tabs>
+  <!-- <Tabs client:only tabs={['CSS', 'Tailwind']}>
+    <div slot="CSS" class="grid grid-cols-2">
+      <Code code={cssVue} lang="vue" />
+      <Code code={cssStyle} lang="css" />
+    </div>
+
+    <div slot="Tailwind">
+      <Code code={tailwindVue} lang="vue" />
+    </div>
+  </Tabs> -->
 </section>
+
+<style>
+  section {
+    background: radial-gradient(
+      circle at bottom,
+      rgba(6, 182, 212, 0.22) 0%,
+      rgba(24, 24, 27, 0.1) 70%
+    );
+  }
+</style>

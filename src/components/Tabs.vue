@@ -53,7 +53,7 @@ const tabsContent = computed(() => {
     <TabsContent
       v-for="tab in tabsContent"
       :key="tab.name"
-      class="grow rounded-b-md bg-white p-5 outline-none focus:shadow-[0_0_0_2px] focus:shadow-black"
+      class=""
       :value="tab.name"
     >
       <component :is="tab.render" />

@@ -6,7 +6,6 @@ import vue from '@astrojs/vue';
 import Icons from 'unplugin-icons/vite';
 import IconsResolver from 'unplugin-icons/resolver';
 import Components from 'unplugin-vue-components/vite';
-import { pluginCollapsibleSections } from '@expressive-code/plugin-collapsible-sections';
 
 // https://astro.build/config
 export default defineConfig({
@@ -33,9 +32,7 @@ export default defineConfig({
         alt: 'Formwerk',
         replacesTitle: true,
       },
-      expressiveCode: {
-        plugins: [pluginCollapsibleSections()],
-      },
+
       social: {
         github: 'https://github.com/formwerkjs/formwerk',
         discord: 'https://discord.gg/gQ7wqpvT5X',
