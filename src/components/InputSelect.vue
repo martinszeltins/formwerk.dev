@@ -2,7 +2,7 @@
 import { useSelect, type SelectProps } from '@formwerk/core';
 import OptionItem from '@components/OptionItem.vue';
 import OptionGroup from '@components/OptionGroup.vue';
-import { computed, watch } from 'vue';
+import { computed, useId, watch } from 'vue';
 
 export interface TheProps<TOption, TValue>
   extends SelectProps<TOption, TValue> {
@@ -15,6 +15,8 @@ export interface TheProps<TOption, TValue>
 const props = withDefaults(defineProps<TheProps<TOption, TValue>>(), {
   size: 'sm',
 });
+
+const id = `--id-${useId()}`;
 
 const {
   triggerProps,
@@ -136,7 +138,7 @@ watch(isOpen, (val) => {});
 
   .trigger {
     @apply w-full cursor-pointer whitespace-nowrap rounded-md border border-zinc-700 bg-zinc-800 py-3 pl-4 pr-3 text-zinc-400 transition-all duration-200 focus:bg-zinc-900;
-    anchor-name: --trigger;
+    anchor-name: v-bind(id);
 
     &:focus {
       @apply border-emerald-500 outline-none ring-1 ring-emerald-500;
@@ -175,7 +177,7 @@ watch(isOpen, (val) => {});
   margin: 0;
   width: 320px;
   @apply relative max-h-[60vh] p-0;
-  position-anchor: --trigger;
+  position-anchor: v-bind(id);
   position-area: bottom;
   inset-area: bottom;
   transform: scale(0.9);
