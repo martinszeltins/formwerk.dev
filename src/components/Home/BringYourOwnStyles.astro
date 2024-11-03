@@ -1,96 +1,13 @@
 ---
-import Tabs from '../Tabs.vue';
+import Tabs from '@components/Tabs.vue';
 import { Code } from '@astrojs/starlight/components';
-
-const cssVue = `
-<script setup lang="ts">
-import { type TextFieldProps, useTextField } from '@formwerk/core';
-
-const props = defineProps<TextFieldProps>();
-
-const {
-  inputProps,
-  labelProps,
-  errorMessage,
-  errorMessageProps,
-} = useTextField(props);
-</script>
-
-<template>
-  <div class="field">
-    <label v-bind="labelProps">{{ label }}</label>
-    <input v-bind="inputProps" />
-
-    <div v-if="errorMessage" v-bind="errorMessageProps" class="error">
-      {{ errorMessage }}
-    </div>
-  </div>
-</template>
-`;
-
-const tailwindVue = `
-<script setup lang="ts">
-import { type TextFieldProps, useTextField } from '@formwerk/core';
-
-const props = defineProps<TextFieldProps>();
-
-const {
-  inputProps,
-  labelProps,
-  errorMessage,
-  errorMessageProps,
-} = useTextField(props);
-</script>
-
-<template>
-  <div class="group">
-    <label
-      v-bind="labelProps"
-      class="mb-1 block text-sm font-medium text-gray-700"
-    >
-      {{ label }}
-    </label>
-
-    <input
-      v-bind="inputProps"
-      class="w-max rounded-md border border-zinc-300 px-2.5 py-2 text-sm text-gray-700 transition-colors focus:border-emerald-500 focus:outline-none focus:ring-1 focus:ring-emerald-500 invalid:border-red-500 invalid:focus:border-red-500 invalid:focus:ring-red-500"
-    />
-
-    <div
-      v-if="errorMessage"
-      v-bind="errorMessageProps"
-      class="mt-1 text-sm text-red-500 group-has-[:invalid]:block hidden"
-    >
-      {{ errorMessage }}
-    </div>
-  </div>
-</template>
-`;
-
-const cssStyle = `
-.field {
-  margin-bottom: 1rem;
-}
-
-label {
-  display: block;
-  margin-bottom: 0.25rem;
-}
-
-input {
-  width: 100%;
-  padding: 0.5rem;
-  border: 1px solid #ccc;
-}
-
-.error {
-  color: red;
-  margin-top: 0.25rem;
-}
-`;
+import TextFieldDemoCss from '@components/InputTextDemoCss.vue';
+import TextFieldDemoCssCode from '@components/InputTextDemoCss.vue?raw';
+import TextFieldDemoTailwind from '@components/InputTextDemoTailwind.vue';
+import TextFieldDemoTailwindCode from '@components/InputTextDemoTailwind.vue?raw';
 ---
 
-<section class="mt-20 w-full self-start py-20">
+<section class="styles-home-section mt-20 w-full self-start">
   <h2 class="heading-grad text-5xl font-bold leading-tight">
     Bring your own <span
       class="bg-gradient-to-b from-cyan-400 to-cyan-600 bg-clip-text text-transparent"
@@ -105,24 +22,124 @@ input {
     leaving their structure and styling up to you.
   </p>
 
-  <!-- <Tabs client:only tabs={['CSS', 'Tailwind']}>
-    <div slot="CSS" class="grid grid-cols-2">
-      <Code code={cssVue} lang="vue" />
-      <Code code={cssStyle} lang="css" />
+  <Tabs client:only="" tabs={['CSS', 'Tailwind']}>
+    <div slot="CSS" class="code-grid relative">
+      <Code
+        code={TextFieldDemoCssCode}
+        lang="vue"
+        class="!text-xs"
+        title="TextField.vue"
+        frame="code"
+      />
+
+      <div class="preview-frame">
+        <div class="preview-frame-header">
+          <h3 class="preview-frame-title">Preview</h3>
+        </div>
+
+        <div class="preview-frame-content">
+          <TextFieldDemoCss
+            client:visible
+            label="Field"
+            required
+            min-length="4"
+            placeholder="Enter text"
+          />
+        </div>
+      </div>
     </div>
 
     <div slot="Tailwind">
-      <Code code={tailwindVue} lang="vue" />
+      <div slot="CSS" class="code-grid relative">
+        <Code
+          code={TextFieldDemoTailwindCode}
+          lang="vue"
+          class="!text-xs"
+          title="TextField.vue"
+          frame="code"
+        />
+
+        <div class="preview-frame">
+          <div class="preview-frame-header">
+            <h3 class="preview-frame-title">Preview</h3>
+          </div>
+
+          <div class="preview-frame-content">
+            <TextFieldDemoTailwind
+              client:visible
+              label="Field"
+              required
+              min-length="4"
+              placeholder="Enter text"
+            />
+          </div>
+        </div>
+      </div>
     </div>
-  </Tabs> -->
+  </Tabs>
 </section>
 
 <style>
-  section {
+  .styles-home-section {
     background: radial-gradient(
       closest-corner,
       rgba(6, 182, 212, 0.22) 0%,
       rgba(24, 24, 27, 0.1) 70%
     );
+  }
+
+  .code-grid {
+    @apply grid;
+    min-width: 0;
+    max-width: 100%;
+    grid-template-columns: 1.2fr 400px;
+  }
+
+  .preview-frame {
+    @apply absolute -right-12 bottom-24 my-auto flex flex-col items-center justify-center overflow-hidden rounded-lg border border-zinc-700 bg-zinc-800/60;
+
+    .preview-frame-header {
+      @apply w-full border-b border-zinc-700 bg-zinc-900 px-4 py-2 text-[13px] font-medium text-white;
+    }
+
+    .preview-frame-content {
+      @apply p-8;
+    }
+  }
+</style>
+
+<style is:global>
+  .styles-home-section .expressive-code {
+    @apply max-w-[680px];
+
+    .frame.has-title:not(.is-terminal) {
+      .header {
+        @apply rounded-t-lg;
+      }
+
+      .title {
+        @apply flex items-center gap-1.5 border-none bg-transparent px-4 py-3 text-[13px] font-bold text-zinc-300;
+
+        &::before {
+          content: '';
+          background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32' width='18' height='18'%3E%3Cpath fill='%2341b883' d='M24.4 3.925H30l-14 24.15L2 3.925h10.71l3.29 5.6l3.22-5.6Z'%3E%3C/path%3E%3Cpath fill='%2341b883' d='m2 3.925l14 24.15l14-24.15h-5.6L16 18.415L7.53 3.925Z'%3E%3C/path%3E%3Cpath fill='%2335495e' d='M7.53 3.925L16 18.485l8.4-14.56h-5.18L16 9.525l-3.29-5.6Z'%3E%3C/path%3E%3C/svg%3E");
+          display: inline-block;
+          width: 16px;
+          height: 16px;
+        }
+
+        &::after {
+          @apply hidden;
+        }
+      }
+    }
+
+    pre {
+      @apply h-[380px] w-full overflow-auto !rounded-b-lg !bg-zinc-900/85;
+    }
+
+    .copy {
+      @apply hidden;
+    }
   }
 </style>
