@@ -26,7 +26,7 @@
     />
 
     <div
-      v-if="tabs.length > 1"
+      v-if="tabs.length > 1 && !props.previewOnly"
       class="flex items-center border-x border-t border-zinc-700 bg-zinc-950"
     >
       <button
@@ -52,7 +52,7 @@
       :key="key"
       v-show="activeFile === key"
       :data-file-name="key"
-      :hidden="hidden"
+      :hidden="hidden || props.previewOnly"
     >
       <component :is="render" />
     </div>
@@ -89,6 +89,7 @@ const props = defineProps<{
   customCode?: string;
   activeFile?: string;
   previewSize?: 'md' | 'lg';
+  previewOnly?: boolean;
 }>();
 
 const sizes = {
