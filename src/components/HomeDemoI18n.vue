@@ -16,10 +16,7 @@
         v-model="locale"
         label="Locale"
         :get-option-value="(option) => option.value"
-        :options="[
-          { label: 'English', value: 'en-US' },
-          { label: 'Arabic', value: 'ar-EG' },
-        ]"
+        :options="locales"
       />
 
       <InputSelect
@@ -51,11 +48,13 @@
 <script setup lang="ts">
 import InputNumberDemo from '@components/InputNumber.vue';
 import InputSelect from '@components/InputSelect.vue';
+import { getLocales } from '@utils/locales';
 import { computed, ref } from 'vue';
 
 const numberSystem = ref('latn');
-const number = ref(0);
+const number = ref(1234);
 const format = ref<any>('decimal');
+const locales = getLocales();
 
 const formatOptions = computed(() => {
   const options: Record<string, Intl.NumberFormatOptions> = {
@@ -77,5 +76,3 @@ const localeExtended = computed(() => {
   return `${locale.value}-u-nu-${numberSystem.value}`;
 });
 </script>
-
-<style scoped></style>
