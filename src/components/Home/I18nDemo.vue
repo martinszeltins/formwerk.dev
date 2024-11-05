@@ -46,8 +46,8 @@
 </template>
 
 <script setup lang="ts">
-import InputNumberDemo from '@components/InputNumber.vue';
-import InputSelect from '@components/InputSelect.vue';
+import InputNumberDemo from '@components/Home/InputNumber.vue';
+import InputSelect from '@components/Home/InputSelect.vue';
 import { getLocales } from '@utils/locales';
 import { computed, ref } from 'vue';
 

@@ -22,7 +22,7 @@
     "@astrojs/tailwind": "^5.1.2",
     "@astrojs/ts-plugin": "^1.10.4",
     "@astrojs/vue": "^4.5.2",
-    "@formwerk/core": "^0.1.23",
+    "@formwerk/core": "^0.1.24",
     "@iconify-json/vscode-icons": "^1.2.2",
     "@vue/compiler-sfc": "^3.5.12",
     "@vue/repl": "^4.4.2",

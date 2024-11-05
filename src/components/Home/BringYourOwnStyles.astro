@@ -1,10 +1,12 @@
 ---
-import Tabs from '@components/Tabs.vue';
+import Tabs from '@components/Home/Tabs.vue';
 import { Code } from '@astrojs/starlight/components';
-import TextFieldDemoCss from '@components/InputTextDemoCss.vue';
-import TextFieldDemoCssCode from '@components/InputTextDemoCss.vue?raw';
-import TextFieldDemoTailwind from '@components/InputTextDemoTailwind.vue';
-import TextFieldDemoTailwindCode from '@components/InputTextDemoTailwind.vue?raw';
+import TextFieldDemoCss from '@components/Home/InputTextDemoCss.vue';
+import TextFieldDemoCssCode from '@components/Home/InputTextDemoCss.vue?raw';
+import SliderTailwind from '@components/Home/Slider.vue';
+import SliderTailwindCode from '@components/Home/Slider.vue?raw';
+import SwitchOpenProps from '@components/Home/SwitchOpenProps.vue';
+import SwitchOpenPropsCode from '@components/Home/SwitchOpenProps.vue?raw';
 ---
 
 <section class="styles-home-section mt-20 w-full self-start">
@@ -22,8 +24,8 @@ import TextFieldDemoTailwindCode from '@components/InputTextDemoTailwind.vue?raw
     leaving their structure and styling up to you.
   </p>
 
-  <Tabs client:only="" tabs={['CSS', 'Tailwind']}>
-    <div slot="CSS" class="code-grid relative">
+  <Tabs client:visible tabs={['CSS', 'Tailwind', 'OpenProps']}>
+    <div slot="CSS" class="code-tab">
       <Code
         code={TextFieldDemoCssCode}
         lang="vue"
@@ -50,12 +52,12 @@ import TextFieldDemoTailwindCode from '@components/InputTextDemoTailwind.vue?raw
     </div>
 
     <div slot="Tailwind">
-      <div slot="CSS" class="code-grid relative">
+      <div slot="CSS" class="code-tab">
         <Code
-          code={TextFieldDemoTailwindCode}
+          code={SliderTailwindCode}
           lang="vue"
           class="!text-xs"
-          title="TextField.vue"
+          title="Slider.vue"
           frame="code"
         />
 
@@ -65,13 +67,36 @@ import TextFieldDemoTailwindCode from '@components/InputTextDemoTailwind.vue?raw
           </div>
 
           <div class="preview-frame-content">
-            <TextFieldDemoTailwind
+            <SliderTailwind
               client:visible
-              label="Field"
-              required
-              min-length="4"
-              placeholder="Enter text"
+              label="Price Range"
+              min={0}
+              max={1000}
+              step={10}
+              model-value={[200, 800]}
             />
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div slot="OpenProps">
+      <div slot="CSS" class="code-tab">
+        <Code
+          code={SwitchOpenPropsCode}
+          lang="vue"
+          class="!text-xs"
+          title="Switch.vue"
+          frame="code"
+        />
+
+        <div class="preview-frame">
+          <div class="preview-frame-header">
+            <h3 class="preview-frame-title">Preview</h3>
+          </div>
+
+          <div class="preview-frame-content">
+            <SwitchOpenProps client:visible label="Switch" />
           </div>
         </div>
       </div>
@@ -88,15 +113,8 @@ import TextFieldDemoTailwindCode from '@components/InputTextDemoTailwind.vue?raw
     );
   }
 
-  .code-grid {
-    @apply grid;
-    min-width: 0;
-    max-width: 100%;
-    grid-template-columns: 1.2fr 400px;
-  }
-
   .preview-frame {
-    @apply absolute -right-12 bottom-24 my-auto flex flex-col items-center justify-center overflow-hidden rounded-lg border border-zinc-700 bg-zinc-800/60;
+    @apply absolute -right-0 bottom-4 my-auto flex flex-col items-center justify-center overflow-hidden rounded-lg border border-zinc-700 bg-zinc-800/60;
 
     .preview-frame-header {
       @apply w-full border-b border-zinc-700 bg-zinc-900 px-4 py-2 text-[13px] font-medium text-white;
@@ -105,6 +123,10 @@ import TextFieldDemoTailwindCode from '@components/InputTextDemoTailwind.vue?raw
     .preview-frame-content {
       @apply p-8;
     }
+  }
+
+  .code-tab {
+    @apply relative w-full;
   }
 </style>
 
@@ -135,11 +157,23 @@ import TextFieldDemoTailwindCode from '@components/InputTextDemoTailwind.vue?raw
     }
 
     pre {
-      @apply h-[380px] w-full overflow-auto !rounded-b-lg !bg-zinc-900/85;
+      @apply h-[380px] w-full overflow-hidden !rounded-b-lg !bg-zinc-900/85;
+    }
+
+    code {
+      @apply overflow-auto;
+      scrollbar-width: thin;
+      overflow-y: auto;
+      overflow-y: overlay;
+      scrollbar-color: rgb(63 63 70) transparent;
     }
 
     .copy {
-      @apply hidden;
+      @apply invisible;
     }
+  }
+
+  .code-tab .expressive-code {
+    width: 70% !important;
   }
 </style>

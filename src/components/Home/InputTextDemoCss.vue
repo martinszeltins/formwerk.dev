@@ -12,7 +12,7 @@ const { inputProps, labelProps, errorMessage, errorMessageProps } =
     <label v-bind="labelProps">{{ label }}</label>
     <input v-bind="inputProps" />
 
-    <div v-if="errorMessage" v-bind="errorMessageProps" class="error">
+    <div v-bind="errorMessageProps" class="error">
       {{ errorMessage }}
     </div>
   </div>

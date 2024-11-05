@@ -1,7 +1,7 @@
 <script setup lang="ts" generic="TOption extends { label: string }, TValue">
 import { useSelect, type SelectProps } from '@formwerk/core';
-import OptionItem from '@components/OptionItem.vue';
-import OptionGroup from '@components/OptionGroup.vue';
+import OptionItem from '@components/Home/OptionItem.vue';
+import OptionGroup from '@components/Home/OptionGroup.vue';
 import { computed, useId, watch } from 'vue';
 
 export interface TheProps<TOption, TValue>
@@ -26,7 +26,6 @@ const {
   displayError,
   fieldValue,
   popupProps,
-  isOpen,
 } = useSelect(props);
 
 const selectedOption = computed(() => {
@@ -38,8 +37,6 @@ const selectedOption = computed(() => {
     return (option as unknown as TValue) === fieldValue.value;
   });
 });
-
-watch(isOpen, (val) => {});
 </script>
 
 <template>
