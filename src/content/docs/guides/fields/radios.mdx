@@ -33,7 +33,7 @@ The following features are implemented:
 
 - Support for either `input[type="radio"]` or custom HTML elements as a base element for the radio component.
 - Labeling, descriptions, error message displays are automatically linked to input and label elements with `aria-*` attributes.
-- Form management, data collection and validation with Typed Schemas or native HTML5 validation.
+- Form management, data collection and validation with native HTML5 validation or [Standard Schema](https://github.com/standard-schema/standard-schema) validation.
 - Support for orientation with `horizontal` and `vertical` values.
 - `v-model` support for radio groups.
 - Supported Keyboard features:
@@ -155,7 +155,7 @@ import RadioGroup from './RadioGroup.vue';
 
 ## Validation
 
-Radio components support validation with native HTML5 constraints or typed schemas. However, the `useRadioGroup` is the one that accepts validation props.
+Radio components support validation with native HTML5 constraints or [Standard Schema](https://github.com/standard-schema/standard-schema) validation. However, the `useRadioGroup` is the one that accepts validation props.
 
 ### HTML Constraint Validation
 
@@ -196,9 +196,9 @@ import RadioGroup from './RadioGroup.vue';
 
 </MdxRepl>
 
-### Typed Schema
+### Standard Schema
 
-`useRadioGroup` also supports Typed Schema validation through the `schema` prop.
+`useRadioGroup` also supports [Standard Schema](https://github.com/standard-schema/standard-schema) validation through the `schema` prop.
 
 <Aside>
 
@@ -206,7 +206,7 @@ Depending on the schema validation provider you are using, the API might slightl
 
 </Aside>
 
-Here is an example of using zod as a typed schema to validate the radio group, we will be using the radio item component from the previous examples.
+Here is an example of using zod as a Standard Schema to validate the radio group, we will be using the radio item component from the previous examples.
 
 <MdxRepl client:load>
 
@@ -225,11 +225,11 @@ Here is an example of using zod as a typed schema to validate the radio group, w
 import RadioItem from './RadioItem.vue';
 import RadioGroup from './RadioGroup.vue';
 import { z } from 'zod';
-import { defineSchema } from '@formwerk/schema-zod';
 
-const schema = defineSchema(
-  z.string().min(1, 'Please select a drink').endsWith('☕️', 'WRONG ANSWER!'),
-);
+const schema = z
+  .string()
+  .min(1, 'Please select a drink')
+  .endsWith('☕️', 'WRONG ANSWER!');
 </script>
 
 <template>
@@ -424,19 +424,19 @@ Most of the values expressed below are wrapped in `Ref` as they are reactive val
 
 These are the properties that can be passed to the `useRadioGroup` composable.
 
-| Name                    | Type                  | Description                                                |
-| ----------------------- | --------------------- | ---------------------------------------------------------- |
-| `orientation`           | `Orientation`         | The orientation of the radio group.                        |
-| `dir`                   | `Direction`           | The direction of the radio group.                          |
-| `label`                 | `string`              | The label of the radio group.                              |
-| `description`           | `string`              | The description of the radio group.                        |
-| `name`                  | `string`              | The name attribute of the radio group.                     |
-| `modelValue`            | `TValue`              | The value of the radio group.                              |
-| `disabled`              | `boolean`             | If the radio group is disabled.                            |
-| `readonly`              | `boolean`             | If the radio group is readonly.                            |
-| `required`              | `boolean`             | If the radio group is required.                            |
-| `schema`                | `TypedSchema<TValue>` | The typed schema for validation of the radio group.        |
-| `disableHtmlValidation` | `boolean`             | If HTML validation should be disabled for the radio group. |
+| Name                    | Type                     | Description                                                                                            |
+| ----------------------- | ------------------------ | ------------------------------------------------------------------------------------------------------ |
+| `orientation`           | `Orientation`            | The orientation of the radio group.                                                                    |
+| `dir`                   | `Direction`              | The direction of the radio group.                                                                      |
+| `label`                 | `string`                 | The label of the radio group.                                                                          |
+| `description`           | `string`                 | The description of the radio group.                                                                    |
+| `name`                  | `string`                 | The name attribute of the radio group.                                                                 |
+| `modelValue`            | `TValue`                 | The value of the radio group.                                                                          |
+| `disabled`              | `boolean`                | If the radio group is disabled.                                                                        |
+| `readonly`              | `boolean`                | If the radio group is readonly.                                                                        |
+| `required`              | `boolean`                | If the radio group is required.                                                                        |
+| `schema`                | `StandardSchema<TValue>` | The [Standard Schema](https://github.com/standard-schema/standard-schema) to validate the radio group. |
+| `disableHtmlValidation` | `boolean`                | If HTML validation should be disabled for the radio group.                                             |
 
 #### Returns
 

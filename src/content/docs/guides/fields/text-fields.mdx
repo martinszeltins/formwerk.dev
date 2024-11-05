@@ -22,7 +22,7 @@ Text fields are implemented with the `input` element for single line of text or 
 
 - Uses `input` or `textarea` elements as a base.
 - Labeling, descriptions, error message displays are automatically linked to input and label elements with `aria-*` attributes.
-- Validation support with native HTML constraint validation or Typed schemas.
+- Validation support with native HTML constraint validation or [Standard Schema](https://github.com/standard-schema/standard-schema) validation.
 - Support for `v-model` binding.
 
 ## Anatomy
@@ -105,7 +105,7 @@ import TextAreaField from './TextAreaField.vue';
 
 ### HTML Constraints
 
-You can use native HTML validation or Typed schemas to validate the text field. The following properties are supported:
+You can use the following properties to validate the text field with native HTML constraint validation:
 
 | Name        | Type               | Description                                                               |
 | ----------- | ------------------ | ------------------------------------------------------------------------- |
@@ -159,9 +159,9 @@ import TextField from './TextField.vue';
 
 </MdxRepl>
 
-### Typed Schema
+### Standard Schema
 
-`useTextField` also supports Typed Schema validation through the `schema` prop.
+`useTextField` also supports [Standard Schema](https://github.com/standard-schema/standard-schema) validation through the `schema` prop.
 
 <Aside>
 
@@ -187,7 +187,7 @@ const schema = defineSchema(z.string().min(3).max(8));
 </script>
 
 <template>
-  <TextField label="Typed Schema" :schema="schema" />
+  <TextField label="Standard Schema" :schema="schema" />
 </template>
 ```
 
@@ -197,9 +197,9 @@ const schema = defineSchema(z.string().min(3).max(8));
 
 ### Mixed Validation
 
-All text fields created with Formwerk support mixed validation, which means you can use both HTML constraints and Typed schemas to validate the field and they work seamlessly together.
+All text fields created with Formwerk support mixed validation, which means you can use both HTML constraints and Standard Schema validation to validate the field and they work seamlessly together.
 
-Note that HTML constraints are validated first, so any errors from the HTML constraints will be displayed first. Then once all HTML constraints are satisfied, the typed schema is validated.
+Note that HTML constraints are validated first, so any errors from the HTML constraints will be displayed first. Then once all HTML constraints are satisfied, the Standard Schema is validated.
 
 <MdxRepl client:load>
 
@@ -357,7 +357,7 @@ There is a lot more to directionality and localization, for more info check out 
 
 Formwerk does not come with any markup or styling, which is often the part that makes a design system unique. That means you can use any styling solution you want, whether it's [TailwindCSS](https://tailwindcss.com/), or plain CSS as you have already seen.
 
-Note that we make use of the `:user-invalid` pseudo-classes to style the field and control when to show the error messages without any JavaScript. Formwerk leans into native APIs and browser features to provide a more seamless experience for the user. In fact, even if you use Typed Schemas to validate the field, the pseudo-classes will still work.
+Note that we make use of the `:user-invalid` pseudo-classes to style the field and control when to show the error messages without any JavaScript. Formwerk leans into native APIs and browser features to provide a more seamless experience for the user. In fact, even if you use Standard Schemas to validate the field, the pseudo-classes will still work.
 
 For more information on styling and recommendations, check the [Styling](/guides/extras/styling) guide.
 
@@ -382,7 +382,7 @@ These are the properties that can be passed to the `useTextField` composable.
 | `required`              | `boolean`                                                       | Whether the field is required.                     |
 | `readonly`              | `boolean`                                                       | Whether the field is read-only.                    |
 | `disabled`              | `boolean`                                                       | Whether the field is disabled.                     |
-| `schema`                | `TypedSchema<string>`                                           | A schema for validation.                           |
+| `schema`                | `StandardSchema<string>`                                        | A schema for validation.                           |
 | `disableHtmlValidation` | `boolean`                                                       | Whether to disable HTML5 validation.               |
 
 <Aside>

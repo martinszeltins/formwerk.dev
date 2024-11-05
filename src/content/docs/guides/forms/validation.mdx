@@ -6,9 +6,7 @@ sidebar:
 ---
 
 import { Tabs, TabItem } from '@astrojs/starlight/components';
-
 import MdxRepl from '@components/MdxRepl.vue';
-
 import TextField from '../fields/_partials/_textField.mdx';
 
 Form validation is one of the most important features of any form library. The main goal of a client-side validation library isn't protection or security, but to provide a better user experience.
@@ -23,7 +21,7 @@ Formwerk bakes validation into any of the component composables that you use. Th
 Formwerk makes use of a couple of different validation systems:
 
 - **HTML Constraint Validation API:** Done via the various validation attributes that you can add to your form fields like `required`, `minlength`, `maxlength`, `min`, `max`, `type`, etc.
-- **Typed Schema Validation:** A Schema based validation that uses JavaScript implemented with multiple providers like [Zod](https://zod.dev/) and [Yup](https://github.com/jquense/yup).
+- **Standard Schema Validation:** A Schema based validation that uses JavaScript implemented by multiple providers like [Zod](https://zod.dev/), [Valibot](https://valibot.dev/) and [Arktype](https://arktype.io/).
 
 Both systems can be used together and you can even mix between.
 
@@ -55,150 +53,55 @@ configure({
 });
 ```
 
-## Typed Schema Validation
+## Standard Schema Validation
 
-Formwerk borrows the concept of typed schema validation from [VeeValidate](https://vee-validate.logaretm.com/v4/). Typed Schema is an abstraction that allows you to define validation rules that is library-agnostic and more importantly, type-safe.
+Formwerk supports the [Standard Schema Spec](https://github.com/standard-schema/standard-schema) and leverages it to provide a uniform schema validation with full type safety for all libraries that support it.
 
-The actual validation is done by "providers", some are available as first-party providers like [Zod](https://zod.dev/) and [Yup](https://github.com/jquense/yup). You can also implement your own provider if you'd like.
+At the moment the following providers implement the Standard Schema Spec and are supported by Formwerk:
 
-### Using Zod
+- [Zod](https://zod.dev/) (Soon)
+- [Valibot](https://valibot.dev/)
+- [Arktype](https://arktype.io/)
 
-To get started with Zod, you need to install the `@formwerk/zod` package as well as Zod itself.
-
-<Tabs>
-  <TabItem label="npm" icon="seti:npm">
-
-    ```bash
-    npm install zod @formwerk/schema-zod
-    ```
-
-  </TabItem>
-  <TabItem label="yarn" icon="seti:yarn">
-    ```bash
-    yarn add zod @formwerk/schema-zod
-    ```
-  </TabItem>
-
-  <TabItem label="pnpm" icon="pnpm">
-    ```bash
-    pnpm add zod @formwerk/schema-zod
-    ```
-  </TabItem>
-</Tabs>
-
-The `@formwerk/schema-zod` package exposes a `defineSchema` function that you have to use to define your schema. This function takes a zod schema and returns a typed schema object that Formwerk components can understand.
+Here is an example that uses Valibot:
 
 ```ts
-import { defineSchema } from '@formwerk/schema-zod';
-import { z } from 'zod';
+import * as v from 'valibot';
+import { useForm } from '@formwerk/core';
 
-// Defines a form or a form-group schema
-const schema = defineSchema(
-  z.object({
-    name: z.string().min(3),
-    email: z.string().email(),
-  }),
-);
+const schema = v.object({
+  email: v.pipe(v.string(), v.email()),
+  password: v.pipe(v.string(), v.minLength(8)),
+});
 
-// Define a schema for a single field
-const schema = defineSchema(z.string().min(3));
+const { values, handleSubmit } = useForm({
+  schema,
+});
 ```
-
-### Default Zod Values
-
-You can also initialize form values with Yup schemas using the `default` method.
-
-```ts
-const schema = defineSchema(
-  z.object({
-    name: z.string().min(3).default('Roboute Guilliman'),
-    email: z.string().email().default('roboat.gorillaman@gmail.com'),
-  }),
-);
-```
-
-### Using Yup
-
-To get started with Yup, you need to install the `@formwerk/schema-yup` package as well as Yup itself.
-
-<Tabs>
-
-  <TabItem label="npm" icon="seti:npm">
-    ```bash
-    npm install yup @formwerk/schema-yup
-    ```
-  </TabItem>
-  <TabItem label="yarn" icon="seti:yarn">
-    ```bash
-    yarn add yup @formwerk/schema-yup
-    ```
-  </TabItem>
-  <TabItem label="pnpm" icon="pnpm">
-    ```bash
-    pnpm add yup @formwerk/schema-yup
-    ```
-  </TabItem>
-</Tabs>
-
-The `@formwerk/schema-yup` package exposes a `defineSchema` function that you have to use to define your schema. This function takes a zod schema and returns a typed schema object that Formwerk components can understand.
-
-```ts
-import { defineSchema } from '@formwerk/schema-yup';
-import * as yup from 'yup';
-
-const schema = defineSchema(
-  yup.object({
-    name: yup.string().min(3),
-    email: yup.string().email(),
-  }),
-);
-```
-
-### Default Yup Values
-
-You can also initialize form values with Yup schemas using the `default` method.
-
-```ts
-const schema = defineSchema(
-  yup.object({
-    name: yup.string().min(3).default('Roboute Guilliman'),
-    email: yup.string().email().default('roboat.gorillaman@gmail.com'),
-  }),
-);
-```
-
-### Integration with HTML Constraint Validation API
-
-As you have probably have noticed in the field guides, Formwerk unifies the typed schema with the HTML constraint validation API.
-
-Under the hood, if using a typed schema, Formwerk takes the errors and sets them on the field's `validationMessage` property. That means you can make use of pseudo classes like `:invalid` and `:valid` in CSS to style your fields regardless of the validation system you use. We made use of this a few times in the styled examples.
 
 ### Form Types
 
-As mentioned in the form guide. Typed schemas automatically offer type inference for the form's current values and the submit values. This is incredibly useful to to avoid having to cast and re-check values when submitting them just because TypeScript doesn't know about the runtime validation.
+As mentioned in the form guide. Standard schemas automatically offer type inference for the form's current values and the submit values. This is incredibly useful to to avoid having to cast and re-check values when submitting them just because TypeScript isn't aware of the runtime validation.
 
-When using a TypedSchema, you don't have to do anything special to get these benefits. Types are automatically inferred from the given schema.
+When using a Standard Schema, you don't have to do anything special to get these benefits. Types are automatically inferred from the given schema.
 
 ```ts
 import { useForm } from '@formwerk/core';
-import { defineSchema } from '@formwerk/schema-zod';
-import { z } from 'zod';
+import * as v from 'valibot';
 
-const schema = defineSchema(
-  z.object({
-    name: z.string().min(3),
-    email: z.string().email(),
-  }),
-);
+const schema = v.object({
+  email: v.pipe(v.string(), v.email()),
+  password: v.pipe(v.string(), v.minLength(8)),
+});
 
 const { values, handleSubmit } = useForm({
   schema,
 });
 
-values; // { name?: string | undefined; email?: string | undefined }
+values; // { email?: string | undefined; password?: string | undefined }
 
 const onSubmit = handleSubmit((data) => {
-  data.toJSON(); // { name: string; email: string }
+  data.toJSON(); // { email: string; password: string }
 });
 ```
 
@@ -206,22 +109,25 @@ The same logic applies for form groups, however form groups do not have output t
 
 ```ts
 import { useFormGroup } from '@formwerk/core';
-import { defineSchema } from '@formwerk/schema-zod';
-import { z } from 'zod';
+import * as v from 'valibot';
 
-const schema = defineSchema(
-  z.object({
-    name: z.string().min(3),
-    email: z.string().email(),
-  }),
-);
+const schema = v.object({
+  email: v.pipe(v.string(), v.email()),
+  password: v.pipe(v.string(), v.minLength(8)),
+});
 
 const { getValues } = useFormGroup({
   schema,
 });
 
-getValues(); // { name?: string | undefined; email?: string | undefined }
+getValues(); // { email?: string | undefined; password?: string | undefined }
 ```
+
+## Unified Validation API
+
+As you have probably have noticed in the field guides, Formwerk unifies standard schema validation with the HTML constraint validation API.
+
+Under the hood, if using a Standard Schema, Formwerk takes the errors and sets them on the field's `validationMessage` property. That means you can make use of pseudo classes like `:invalid` and `:valid` in CSS to style your fields regardless of the validation system you use. We made use of this a few times in the styled examples.
 
 ## Validation Triggers and Error Display
 
@@ -358,175 +264,3 @@ import TextField from './TextField.vue';
 </div>
 
 </MdxRepl>
-
-## Implementing your own provider
-
-The Typed Schema interface is defined as follows:
-
-```ts
-type FormObject = Record<string, any>;
-
-interface TypedSchemaError {
-  path: string;
-  messages: string[];
-}
-
-interface TypedSchemaContext {
-  formData: FormObject;
-}
-
-interface TypedSchema<TInput = any, TOutput = TInput> {
-  parse(
-    values: TInput,
-    context?: TypedSchemaContext,
-  ): Promise<{ output?: TOutput; errors: TypedSchemaError[] }>;
-  defaults?(values: TInput): TInput;
-}
-```
-
-The Typed Schema is a generic type that requires having a `TInput` and `TOutput` type to be inferrable from a given schema. You can look at the Yup and Zod providers implementations to see how this is done.
-
-To implement a typed schema provider, it is mainly about implementing the `parse` method and optionally you can implement the `defaults` method.
-
-### The `parse` method
-
-The parse method accepts an input value which can be objects for forms and groups or a single value for fields. It should return a promise that resolves with:
-
-- `errors`: An array of typed schema errors, should be empty if the input is valid.
-- `output`: An optional output value, usually returned if the input is valid. In our Yup/Zod provider implementations, we also apply transformations or castings according to the schema.
-
-The `TypedSchemaError` interface is used to define an error at a given path with a list of messages. If you are not validating a nested field then you can return an empty string for the path.
-
-### The `defaults` method
-
-The `defaults` method is considered a nicer parser, it should always return a value even if the input is invalid. This is used to approximate a "default" value for the form or form group. With Yup/Zod providers, we use this to to return the default values defined with the `default` methods defined on either.
-
-### Custom provider example
-
-Let's implement a custom provider with both `parse` and `defaults` methods. We will limit it to be only capable of validating single fields and only strings for demo purposes.
-
-Our String validator will accept an object defining constraints for the string and return an error if the string violates any of the constraints.
-
-Let's define our constraint object like so:
-
-```ts
-interface StringSchemaConstraints {
-  minLength?: number;
-  maxLength?: number;
-  required?: boolean;
-  pattern?: RegExp;
-}
-```
-
-Now we can create our schema factory function that accepts the constraint object and returns a typed schema that validates strings against the given constraints.
-
-You can see this in action here:
-
-<MdxRepl client:load>
-
-<div slot="!TextField.vue">
-  <TextField />
-</div>
-
-<div slot="stringSchema.ts">
-
-```ts
-import { TypedSchema } from '@formwerk/core';
-
-export function defineStringSchema(
-  constraints: StringSchemaConstraints,
-): TypedSchema<string, string> {
-  const schema: TypedSchema<string, string> = {
-    async parse(value) {
-      const errors: TypedSchemaError[] = [];
-      if (constraints.required && !value) {
-        return { errors: [{ path: '', messages: ['Required'] }] };
-      }
-
-      const parsed = (value || '').trim();
-      if (constraints.minLength && parsed.length < constraints.minLength) {
-        errors.push({
-          path: '',
-          messages: [`Must be at least ${constraints.minLength} characters`],
-        });
-      }
-
-      if (constraints.maxLength && parsed.length > constraints.maxLength) {
-        errors.push({
-          path: '',
-          messages: [`Must be at most ${constraints.maxLength} characters`],
-        });
-      }
-
-      if (constraints.pattern && !constraints.pattern.test(parsed)) {
-        errors.push({ path: '', messages: ['Must match pattern'] });
-      }
-
-      return { errors, output: errors ? undefined : parsed };
-    },
-    defaults(value) {
-      return value?.trim();
-    },
-  };
-
-  return schema;
-}
-```
-
-</div>
-
-<div slot="App.vue">
-
-```vue
-<script setup lang="ts">
-import { useForm } from '@formwerk/core';
-import TextField from './TextField.vue';
-import { defineStringSchema } from './stringSchema';
-
-const { values, handleSubmit } = useForm();
-
-const schema = defineStringSchema({
-  minLength: 3,
-  maxLength: 10,
-  required: true,
-});
-
-const onSubmit = handleSubmit((data) => {
-  alert(JSON.stringify(data.toJSON(), null, 2));
-});
-</script>
-
-<template>
-  <form @submit.prevent="onSubmit" novalidate>
-    <TextField name="field" :schema="schema" />
-
-    <button type="submit">Submit</button>
-  </form>
-</template>
-```
-
-</div>
-
-</MdxRepl>
-
-Naturally you would want a more complex validation logic and capabilities other than just single string fields but this should give you an idea how you can implement your own typed schema provider.
-
-## Manual Type Inference
-
-You have a couple of utility types that you can use to infer both input and output types for a given schema.
-
-```ts
-import { InferInput, InferOutput } from '@formwerk/core';
-import { defineSchema } from '@formwerk/schema-zod';
-import { z } from 'zod';
-
-const schema = defineSchema(
-  z.object({
-    name: z.string().min(3),
-    email: z.string().email(),
-  }),
-);
-
-type Input = InferInput(typeof schema); // { name?: string | undefined; email?: string | undefined }
-type Output = InferOutput(typeof schema); // { name: string; email: string }
-```

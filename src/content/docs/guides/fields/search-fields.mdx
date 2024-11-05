@@ -30,7 +30,7 @@ You can find more information about the differences [here](https://developer.moz
 - Uses `input[type="search"]` element as a base.
 - Labeling, descriptions, error message displays are automatically linked to input and label elements with `aria-*` attributes.
 - Support for a custom clear button.
-- Validation support with native HTML constraint validation or Typed schemas.
+- Validation support with native HTML constraint validation or [Standard Schema](https://github.com/standard-schema/standard-schema) validation.
 - Support for `v-model` binding.
 - Supported Keyboard features:
 
@@ -82,7 +82,7 @@ Notice that we imported the `SearchFieldProps` in the previous example. This is 
 
 ### HTML Constraints
 
-You can use native HTML validation or Typed schemas to validate the text field. The following properties are supported:
+You can use the following native HTML validation properties to validate the search field:
 
 | Name        | Type               | Description                          |
 | ----------- | ------------------ | ------------------------------------ |
@@ -134,9 +134,9 @@ const search = ref('');
 
 </MdxRepl>
 
-### Typed Schema
+### Standard Schema
 
-`useSearchField` also supports Typed Schema validation through the `schema` prop.
+`useSearchField` also supports [Standard Schema](https://github.com/standard-schema/standard-schema) validation through the `schema` prop.
 
 <Aside>
 
@@ -176,9 +176,9 @@ const schema = defineSchema(z.string().min(3).max(8));
 
 ### Mixed Validation
 
-All search fields created with Formwerk support mixed validation, which means you can use both HTML constraints and Typed schemas to validate the field and they work seamlessly together.
+All search fields created with Formwerk support mixed validation, which means you can use both HTML constraints and Standard Schemas to validate the field and they work seamlessly together.
 
-Note that HTML constraints are validated first, so any errors from the HTML constraints will be displayed first. Then once all HTML constraints are satisfied, the typed schema is validated.
+Note that HTML constraints are validated first, so any errors from the HTML constraints will be displayed first. Then once all HTML constraints are satisfied, the Standard Schema is validated.
 
 <MdxRepl client:load>
 
@@ -390,7 +390,7 @@ These are the properties that can be passed to the `useSearchField` composable.
 | `required`              | `boolean?`                | Whether the field is required.            |
 | `readonly`              | `boolean?`                | Whether the field is read-only.           |
 | `disabled`              | `boolean?`                | Whether the field is disabled.            |
-| `schema`                | `TypedSchema<string>?`    | Schema for validation.                    |
+| `schema`                | `StandardSchema<string>?` | Schema for validation.                    |
 | `onSubmit`              | `(value: string) => void` | Callback function for form submission.    |
 | `disableHtmlValidation` | `boolean?`                | Whether to disable HTML5 validation.      |
 

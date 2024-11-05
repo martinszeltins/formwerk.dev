@@ -24,7 +24,7 @@ The switch field has enough unique behaviors and use-cases that justifies it hav
 - You can use `input[type="checkbox"]` element as a base or any custom element.
 - Labeling, descriptions, error message displays are automatically linked to input and label elements with `aria-*` attributes.
 - Support for custom `on` and `off` values.
-- Validation support with Typed Schemas.
+- Validation support with native HTML constraint validation or [Standard Schema](https://github.com/standard-schema/standard-schema) validation.
 - Support for `v-model` binding.
 - Supported keyboard features:
 
@@ -145,9 +145,9 @@ import Switch from './Switch.vue';
 
 </MdxRepl>
 
-### Typed Schemas
+### Standard Schemas
 
-You can also pass a `schema` prop to the switch component to validate the value.
+`useSwitch` also supports [Standard Schema](https://github.com/standard-schema/standard-schema) validation through the `schema` prop.
 
 <Aside>
 
@@ -173,7 +173,7 @@ const schema = defineSchema(z.literal(true));
 </script>
 
 <template>
-  <Switch label="Typed Schema" :schema="schema" />
+  <Switch label="Standard Schema" :schema="schema" />
 </template>
 ```
 
@@ -183,9 +183,9 @@ const schema = defineSchema(z.literal(true));
 
 ### Mixed Validation
 
-While it is unlikely that you need both HTML constraints and Typed schemas to validate a number field, Formwerk supports mixed validation, which means you can use both HTML constraints and Typed schemas to validate the switch and they will work together.
+While it is unlikely that you need both HTML constraints and Standard Schemas to validate a switch, Formwerk supports mixed validation, which means you can use both HTML constraints and Standard Schemas to validate the switch and they will work together.
 
-Note that HTML constraints are validated first, so any errors from the HTML constraints will be displayed first. Then once all HTML constraints are satisfied, the typed schema is validated.
+Note that HTML constraints are validated first, so any errors from the HTML constraints will be displayed first. Then once all HTML constraints are satisfied, the Standard Schema is validated.
 
 <MdxRepl client:load>
 
@@ -355,18 +355,18 @@ const value = ref('off');
 
 These are the properties that can be passed to the `useSwitch` composable.
 
-| Name                  | Type                   | Description                                                  |
-| --------------------- | ---------------------- | ------------------------------------------------------------ |
-| label                 | `string`               | The label for the switch component.                          |
-| name                  | `string`               | The name attribute for the switch component.                 |
-| modelValue            | `boolean`              | The value of the switch component.                           |
-| required              | `boolean`              | Whether the switch component is required.                    |
-| readonly              | `boolean`              | Whether the switch component is readonly.                    |
-| disabled              | `boolean`              | Whether the switch component is disabled.                    |
-| trueValue             | `any`                  | The value to be assigned when the switch is on.              |
-| falseValue            | `any`                  | The value to be assigned when the switch is off.             |
-| schema                | `TypedSchema<unknown>` | The schema to validate the switch component value.           |
-| disableHtmlValidation | `boolean`              | Whether to disable HTML validation for the switch component. |
+| Name                  | Type                      | Description                                                  |
+| --------------------- | ------------------------- | ------------------------------------------------------------ |
+| label                 | `string`                  | The label for the switch component.                          |
+| name                  | `string`                  | The name attribute for the switch component.                 |
+| modelValue            | `boolean`                 | The value of the switch component.                           |
+| required              | `boolean`                 | Whether the switch component is required.                    |
+| readonly              | `boolean`                 | Whether the switch component is readonly.                    |
+| disabled              | `boolean`                 | Whether the switch component is disabled.                    |
+| trueValue             | `any`                     | The value to be assigned when the switch is on.              |
+| falseValue            | `any`                     | The value to be assigned when the switch is off.             |
+| schema                | `StandardSchema<unknown>` | The schema to validate the switch component value.           |
+| disableHtmlValidation | `boolean`                 | Whether to disable HTML validation for the switch component. |
 
 ### Returns
 

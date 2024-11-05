@@ -25,6 +25,7 @@ import SliderMultiple from './_partials/_sliderMultiple.mdx';
 - Support for `min`, `max` and `step` attributes.
 - Support for both horizontal and vertical orientations.
 - Support for both LTR and RTL directions.
+- Validation with [Standard Schema](https://github.com/standard-schema/standard-schema).
 - Interactive behaviors:
   - Clicking the track element sets the value of the slider or the nearest suitable thumb to the clicked position.
   - Dragging the thumb element changes the value of the slider.
@@ -97,11 +98,11 @@ Notice that in order to model the slider progress visually we used the utility c
 
 ## Validation
 
-Because sliders in Formwerk are a fully custom component, it doesn't support any HTML validation attributes. You can however, use Typed Schemas to validate the value of the slider.
+Because sliders in Formwerk are a fully custom component, it doesn't support any HTML validation attributes. You can however, use [Standard Schema](https://github.com/standard-schema/standard-schema) to validate the value of the slider.
 
-### Typed Schema
+### Standard Schema
 
-The `useSlider` composable accepts a `schema` prop that has a typed schema value.
+The `useSlider` composable accepts a `schema` prop that is an instance of a Standard Schema.
 
 <Aside>
 
@@ -382,19 +383,19 @@ These are the properties in the object returned by the `useSliderThumb` composab
 
 These are the properties that can be passed to the `useSlider` composable.
 
-| Name        | Type                  | Description                    |
-| ----------- | --------------------- | ------------------------------ |
-| label       | `string`              | Label for the slider           |
-| name        | `string`              | Optional name for the slider   |
-| orientation | `Orientation`         | Orientation of the slider      |
-| dir         | `Direction`           | Direction of the slider        |
-| modelValue  | `number \| number[]`  | Current value of the slider    |
-| min         | `number`              | Minimum value of the slider    |
-| max         | `number`              | Maximum value of the slider    |
-| step        | `number`              | Step value for the slider      |
-| disabled    | `boolean`             | Whether the slider is disabled |
-| readonly    | `boolean`             | Whether the slider is readonly |
-| schema      | `TypedSchema<number>` | Schema for the slider value    |
+| Name        | Type                     | Description                     |
+| ----------- | ------------------------ | ------------------------------- |
+| label       | `string`                 | Label for the slider.           |
+| name        | `string`                 | Optional name for the slider.   |
+| orientation | `Orientation`            | Orientation of the slider.      |
+| dir         | `Direction`              | Direction of the slider.        |
+| modelValue  | `number \| number[]`     | Current value of the slider.    |
+| min         | `number`                 | Minimum value of the slider.    |
+| max         | `number`                 | Maximum value of the slider.    |
+| step        | `number`                 | Step value for the slider.      |
+| disabled    | `boolean`                | Whether the slider is disabled. |
+| readonly    | `boolean`                | Whether the slider is readonly. |
+| schema      | `StandardSchema<number>` | Schema for the slider value.    |
 
 #### Returns
 

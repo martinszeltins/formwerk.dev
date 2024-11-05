@@ -128,14 +128,14 @@ const onSubmit = handleSubmit((data) => {
 
 ## Validation
 
-The form guide mentioned briefly that groups can have their own validation Typed schema just like forms do. They do not override the parent form schema, they are just an extension of it.
+The form guide mentioned briefly that groups can have their own validation [Standard Schema](https://github.com/standard-schema/standard-schema) just like forms do. They do not override the parent form schema, they are just an extension of it.
 
 Formwerk prioritizes the validation sources in the following order:
 
 1. **HTML Constraints** are checked first, only if they are valid continue to the next step.
-2. **Field-level** Typed Schema is checked next, only if it is valid continue to the next step.
-3. **Group-level** Typed Schema is checked next, only if it is valid continue to the next step.
-4. **Form-level** Typed Schema is checked last.
+2. **Field-level's** Standard Schema is checked next, only if it is valid continue to the next step.
+3. **Group-level's** Standard Schema is checked next, only if it is valid continue to the next step.
+4. **Form-level's** Standard Schema is checked last.
 
 <MdxRepl preview-size="lg" client:load>
 
@@ -223,7 +223,7 @@ It also exposes the following getters and functions:
 
 | Name           | Type                                  | Description                                                                     |
 | -------------- | ------------------------------------- | ------------------------------------------------------------------------------- |
-| `getErrors`    | () => TypedError[]                    | Returns all errors within the group.                                            |
+| `getErrors`    | () => IssueCollection[]               | Returns all errors within the group.                                            |
 | `getValues`    | () => Record\<string, any>            | Returns all values within the group.                                            |
 | `getError`     | (name: string) => string \| undefined | Returns the error for a given field within the group.                           |
 | `displayError` | (name: string) => string \| undefined | Displays the error for a given field within the group if the field was touched. |
@@ -287,12 +287,12 @@ const onSubmit = handleSubmit((data) => {
 
 These are the properties that can be passed to the `useFormGroup` composable.
 
-| Name                  | Type                     | Description                                                                   |
-| --------------------- | ------------------------ | ----------------------------------------------------------------------------- |
-| name                  | `string` (optional)      | The name of the form group, if provided field names will be prefixed with it. |
-| label                 | `string`                 | The label for the form group.                                                 |
-| schema                | `TypedSchema` (optional) | The validation schema for the form group.                                     |
-| disableHtmlValidation | `boolean` (optional)     | Whether to disable HTML5 validation for fields within the form group.         |
+| Name                  | Type                        | Description                                                                   |
+| --------------------- | --------------------------- | ----------------------------------------------------------------------------- |
+| name                  | `string` (optional)         | The name of the form group, if provided field names will be prefixed with it. |
+| label                 | `string`                    | The label for the form group.                                                 |
+| schema                | `StandardSchema` (optional) | The validation schema for the form group.                                     |
+| disableHtmlValidation | `boolean` (optional)        | Whether to disable HTML5 validation for fields within the form group.         |
 
 ### Returns
 
@@ -303,7 +303,7 @@ These are the properties that can be passed to the `useFormGroup` composable.
 | `isDirty`      | `ComputedRef<boolean>`                  | Whether any field in the group has been modified.                          |
 | `isValid`      | `ComputedRef<boolean>`                  | Whether all fields in the group are valid.                                 |
 | `isTouched`    | `ComputedRef<boolean>`                  | Whether any field in the group has been touched.                           |
-| `getErrors`    | `() => TypedError[]`                    | Function to get all errors in the group.                                   |
+| `getErrors`    | `() => IssueCollection[]`               | Function to get all errors in the group.                                   |
 | `getValues`    | `() => Record<string, any>`             | Function to get all values in the group.                                   |
 | `getError`     | `(name: string) => string \| undefined` | Function to get the error for a specific field in the group.               |
 | `displayError` | `(name: string) => string \| undefined` | Function to display the error for a specific field if it has been touched. |

@@ -463,13 +463,13 @@ The dirty state is computed, there is no way to set it manually but you can rese
 
 ## Validation
 
-As you've seen from field guides, many fields can be validated with either HTML constraints via attributes like `required`, `min`, `max`, etc. or with custom Typed schema objects.
+As you've seen from field guides, many fields can be validated with either HTML constraints via attributes like `required`, `min`, `max`, etc. or with [Standard Schema](https://github.com/standard-schema/standard-schema) objects.
 
 ### HTML Constraints
 
 HTML constraints are always field-level. They are useful for dynamic fields, but at the same time they more accessible to users which is why it is recommended to use them whenever possible for basic validations.
 
-For advanced cases, you can use Typed Schemas which can be both field-level or form-level.
+For advanced cases, you can use Standard Schemas which can be both field-level or form-level.
 
 If you want to completely disable HTML constraints for the form, you can pass `disableHtmlValidation` option to `useForm`:
 
@@ -481,11 +481,11 @@ useForm({
 });
 ```
 
-### Form-level Validation with Typed Schema
+### Form-level Validation with Standard Schemas
 
-But you can also provide a form-level Typed schema to `useForm` to validate the entire form as a whole. Form-level schemas are useful for forms where the fields are known beforehand.
+But you can also provide a form-level [Standard Schema](https://github.com/standard-schema/standard-schema) to `useForm` to validate the entire form as a whole. Form-level schemas are useful for forms where the fields are known beforehand.
 
-Here is an example of a form with a typed schema:
+Here is an example of a form with a Standard Schema:
 
 <MdxRepl client:load>
 
@@ -530,7 +530,7 @@ const onSubmit = handleSubmit((data) => {
 
 </MdxRepl>
 
-For more information on Typed Schemas, check [this guide](/guides/forms/typed-schema).
+For more information on Standard Schemas and which libraries are supported, visit the project's [GitHub page](https://github.com/standard-schema/standard-schema).
 
 ### Mixing validation sources
 
@@ -541,8 +541,8 @@ That field now has three sources of validation, how does that work?
 Formwerk prioritizes the validation sources in the following order:
 
 1. HTML Constraints are checked first, only if they are valid continue to the next step.
-2. Field-level Typed Schema is checked next, only if it is valid continue to the next step.
-3. Form-level Typed Schema is checked last.
+2. Field-level Standard Schema is checked next, only if it is valid continue to the next step.
+3. Form-level Standard Schema is checked last.
 
 This keeps the validation process consistent and predictable, at the same time it is also efficient as you won't have to re-validate the whole form if a field-level validation fails for that field. You can think of it as a merged validation approach, but it is more of a cascading validation behavior where it cascades upwards to the form level.
 
@@ -893,40 +893,94 @@ function onReset() {
 
 Forms supports typing your form values with TypeScript. This is done through a couple of generic type parameters.
 
-The `useForm` composable signature is typed as:
+The `useForm` composable signature is roughly typed as:
 
 ```ts
 function useForm<
-  TForm extends FormObject = FormObject,
-  TOutput extends FormObject = TForm,
+  TSchema extends StandardSchema<FormObject>,
+  TInput extends FormObject = FormObject,
+  TOutput extends FormObject = TInput,
 >();
 ```
 
 Let's break down the generic type parameters:
 
-- `TForm`: The type of the form input values, these represent the current values of the form fields without any validation or transformations applied. We also refer to those as "input" types.
+- `TSchema`: The type of the form schema if a [Standard Schema](https://github.com/standard-schema/standard-schema) is used.
+- `TInput`: The type of the form input values, these represent the current values of the form fields without any validation or transformations applied. We also refer to those as "input" types.
 - `TOutput`: The type of the form output values, these represent the values that would be submitted. That means validation and transformations have already been applied.
 
 The distinction between input and output types is important because it helps you avoid re-checking values that have already been validated in runtime to satisfy TypeScript.
 
-So you can type a form like this:
+### Inferring Types with `initialValues`
+
+You can type a form by either providing `initialValues` to infer the input type.
 
 ```ts
-const { values, handleSubmit } = useForm<
-  { email?: string },
-  { email: string }
->();
+const { values, handleSubmit } = useForm({
+  initialValues: { email: '' },
+});
 
 values; // { email?: string | undefined }
+```
+
+However this does not provide you with output types, meaning when submitting the form the `email` field would still be typed as `string | undefined`.
+
+In order to get output types, we export a utility type called `FormSchema` that you can use to type both the input and output values. By default the input type is assumed to be a partial of the output type.
+
+```ts
+import { type FormSchema, useForm } from '@formwerk/core';
+
+// Input type is assumed to be a partial of the output type
+type LoginForm = FormSchema<{ email: string }>;
+
+const { handleSubmit, values } = useForm<LoginForm>();
+
+values; // { email: string | undefined }
+
+const onSubmit = handleSubmit((data) => {
+  console.log(data.toJSON()); // { email: string }
+});
+```
+
+If you want to explicitly define both the input and output types, you can do so by passing a second generic argument to the `FormSchema` type. The first being the input type and the second being the output type.
+
+```ts
+import { type FormSchema, useForm } from '@formwerk/core';
+
+type LoginForm = FormSchema<
+  { email: string },
+  { email: string; token: string }
+>;
+
+const { handleSubmit, values } = useForm<LoginForm>();
+
+values; // { email: string | undefined; }
+
+const onSubmit = handleSubmit((data) => {
+  console.log(data.toJSON()); // { email: string; token: string }
+});
+```
+
+We only recommend using this approach for simple forms with a few fields, or if the types are automatically generated from an API schema like GraphQL or OpenAPI specs.
+
+### Inferring Types with Standard Schema
+
+By providing a [Standard Schema](https://github.com/standard-schema/standard-schema) to the `schema` prop, the form will infer both the input and output types automatically.
+
+```ts
+import { z } from 'zod';
+const { values, handleSubmit } = useForm({
+  schema: z.object({ email: z.string().email() }),
+});
+
+values; // { email: string | undefined }
 
 const onSubmit = handleSubmit((data) => {
   data.toJSON(); // { email: string }
 });
 ```
 
-By providing types, the submit function understands that the `email` field would be present and will be a non-nullable string when the form submits.
-
-Providing types manually is fine for simple forms but quickly becomes cumbersome for more complex forms with many fields. This is why you should consider using [Typed Schema](/guides/forms/validation#typed-schema-validation) to define form schemas that the form will infer the types from automatically.
+For getting the most out of type safety, it is recommended to use Standard Schemas over manually providing types via the `initialValues` prop.
 
 ## API
 
@@ -939,7 +993,7 @@ These are the properties that can be passed to the `useForm` composable.
 | id                    | `string`                         | The unique identifier for the form.           |
 | initialValues         | `MaybeGetter<MaybeAsync<TForm>>` | The initial values of the form fields.        |
 | initialTouched        | `TouchedSchema<TForm>`           | The initial touched state of the form fields. |
-| schema                | `TypedSchema<TForm, TOutput>`    | The schema used for form validation.          |
+| schema                | `StandardSchema<TForm, TOutput>` | The schema used for form validation.          |
 | disableHtmlValidation | `boolean`                        | Flag to disable HTML validation for the form. |
 
 ### Returns
