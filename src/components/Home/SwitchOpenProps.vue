@@ -42,8 +42,7 @@ const { inputProps, labelProps, isPressed } = useSwitch(props);
 }
 
 .switch:focus {
-  outline: none;
-  box-shadow: var(--shadow-2);
+  outline: 4px solid var(--green-4);
 }
 
 .switch--active {
