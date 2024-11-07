@@ -101,20 +101,26 @@ function activateTab(tab: string) {
       </button>
     </div>
 
-    <div
-      v-for="tab in tabsContent"
-      :key="tab.name"
-      :data-active="currentTab === tab.name"
-      :data-tab-content="tab.name"
-      class="tab-content"
-      @animationend="onTransitionEnd"
-    >
-      <component :is="tab.render" />
+    <div class="flex w-full min-w-full max-w-full overflow-hidden">
+      <div
+        v-for="tab in tabsContent"
+        :key="tab.name"
+        :data-active="currentTab === tab.name"
+        :data-tab-content="tab.name"
+        class="tab-content"
+        @animationend="onTransitionEnd"
+      >
+        <component :is="tab.render" />
+      </div>
     </div>
   </div>
 </template>
 
 <style scoped lang="postcss">
+.tab-content {
+  @apply w-full;
+}
+
 .tab-content[data-active='true'] {
   animation: slide-in 300ms ease;
 }

@@ -9,15 +9,15 @@ import SwitchOpenProps from '@components/Home/SwitchOpenProps.vue';
 import SwitchOpenPropsCode from '@components/Home/SwitchOpenProps.vue?raw';
 ---
 
-<section class="styles-home-section mt-20 w-full self-start">
-  <h2 class="heading-grad text-5xl font-bold leading-tight">
+<section>
+  <h2 class="heading-grad">
     Bring your own <span
       class="bg-gradient-to-b from-cyan-400 to-cyan-600 bg-clip-text text-transparent"
       >styles</span
     >.
   </h2>
 
-  <p class="mt-5 max-w-4xl text-xl text-zinc-400">
+  <p class="section-description">
     Formwerk doesn't have any styles or HTML, allowing you build your own custom
     design system with any styling or animation library. Each composables hooks
     into some designated elements, managing their behavior and state while
@@ -105,7 +105,7 @@ import SwitchOpenPropsCode from '@components/Home/SwitchOpenProps.vue?raw';
 </section>
 
 <style>
-  .styles-home-section {
+  section {
     background: radial-gradient(
       closest-corner,
       rgba(6, 182, 212, 0.22) 0%,
@@ -114,7 +114,7 @@ import SwitchOpenPropsCode from '@components/Home/SwitchOpenProps.vue?raw';
   }
 
   .preview-frame {
-    @apply absolute -right-0 bottom-4 my-auto flex flex-col items-center justify-center overflow-hidden rounded-lg border border-zinc-700 bg-zinc-800/60;
+    @apply -right-0 bottom-4 mx-auto my-auto flex w-full flex-col items-center justify-center overflow-hidden rounded-lg border border-zinc-700 bg-zinc-800/60 lg:absolute lg:mx-0 lg:w-auto;
 
     .preview-frame-header {
       @apply w-full border-b border-zinc-700 bg-zinc-900 px-4 py-2 text-[13px] font-medium text-white;
@@ -126,13 +126,13 @@ import SwitchOpenPropsCode from '@components/Home/SwitchOpenProps.vue?raw';
   }
 
   .code-tab {
-    @apply relative w-full;
+    @apply relative flex w-full flex-wrap gap-4;
   }
 </style>
 
 <style is:global>
-  .styles-home-section .expressive-code {
-    @apply max-w-[680px];
+  section .expressive-code {
+    @apply w-full lg:max-w-[680px];
 
     .frame.has-title:not(.is-terminal) {
       .header {
@@ -174,6 +174,6 @@ import SwitchOpenPropsCode from '@components/Home/SwitchOpenProps.vue?raw';
   }
 
   .code-tab .expressive-code {
-    width: 70% !important;
+    @apply mx-auto w-full lg:mx-0 lg:!w-[70%];
   }
 </style>

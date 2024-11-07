@@ -10,18 +10,31 @@ import SocialLinks from '@components/Home/SocialLinks.astro';
 ---
 
 <html>
+  <head>
+    <link rel="icon" href="/favicon.ico" />
+    <title>Formwerk</title>
+    <meta
+      name="description"
+      content="A collection of Vue.js composables for building forms with behaviors, interactions, internationalization, and accessibility built-in, ready for your markup and styles."
+    />
+    <meta
+      name="viewport"
+      content="width=device-width, height=device-height, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    />
+  </head>
+
   <body class="h-full w-full bg-zinc-900">
-    <div class="flex items-center justify-end px-10 py-5">
+    <div class="flex items-center justify-center py-5 lg:justify-end lg:px-10">
       <SocialLinks />
     </div>
 
     <main
-      class="not-content mx-auto flex max-w-3xl flex-col items-center pt-40"
+      class="not-content mx-auto flex max-w-3xl flex-col items-center pt-20 lg:pt-40"
     >
-      <img src={Logo.src} class="reveal h-16" />
+      <img src={Logo.src} class="reveal h-10 lg:h-16" />
 
       <h1
-        class="mt-8 text-balance text-center text-6xl font-bold leading-tight"
+        class="mt-12 text-balance text-center text-4xl font-bold lg:text-6xl lg:leading-tight"
       >
         <span class="heading-grad">Build</span>
         <FlipWords
@@ -89,5 +102,24 @@ import SocialLinks from '@components/Home/SocialLinks.astro';
       transform: translateY(0);
       opacity: 1;
     }
+  }
+</style>
+
+<style is:global>
+  section {
+    @apply mt-20 w-full self-start px-5 lg:px-0;
+
+    h2,
+    .heading-grad {
+      @apply text-center text-3xl font-bold leading-tight lg:text-left lg:text-5xl lg:leading-tight;
+    }
+
+    .section-description {
+      @apply mt-5 max-w-4xl text-xl text-zinc-400;
+    }
+  }
+
+  button {
+    touch-action: manipulation;
   }
 </style>

@@ -1,6 +1,6 @@
 <template>
   <div
-    class="flex items-stretch rounded-lg border border-zinc-700/70 bg-zinc-800/60 px-8 backdrop-blur-sm"
+    class="flex flex-col items-stretch rounded-lg border border-zinc-700/70 bg-zinc-800/60 py-8 backdrop-blur-sm lg:flex-row lg:px-8 lg:py-0"
   >
     <div class="flex w-full items-center justify-center">
       <InputNumberDemo
@@ -11,7 +11,9 @@
       />
     </div>
 
-    <div class="flex w-[380px] flex-col border-l border-zinc-700/70 py-4 pl-8">
+    <div
+      class="flex flex-col border-t border-zinc-700/70 py-4 pl-8 lg:w-[380px] lg:border-l lg:border-t-0"
+    >
       <InputSelect
         v-model="locale"
         label="Locale"
