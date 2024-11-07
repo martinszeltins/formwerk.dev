@@ -2,7 +2,8 @@
 import { useSelect, type SelectProps } from '@formwerk/core';
 import OptionItem from '@components/Home/OptionItem.vue';
 import OptionGroup from '@components/Home/OptionGroup.vue';
-import { computed, useId, watch } from 'vue';
+import { computed, ref, useId, watch } from 'vue';
+import { useFloating, autoUpdate } from '@floating-ui/vue';
 
 export interface TheProps<TOption, TValue>
   extends SelectProps<TOption, TValue> {
@@ -17,6 +18,7 @@ const props = withDefaults(defineProps<TheProps<TOption, TValue>>(), {
 });
 
 const id = `--id-${useId()}`;
+const triggerEl = ref<HTMLElement | null>(null);
 
 const {
   triggerProps,
@@ -26,7 +28,21 @@ const {
   displayError,
   fieldValue,
   popupProps,
+  listBoxEl,
+  isPopupOpen,
 } = useSelect(props);
+
+let floatingStyles = ref({});
+const useJSPlacement =
+  !CSS.supports('position-area: bottom') && !CSS.supports('position-anchor');
+
+if (useJSPlacement) {
+  floatingStyles = useFloating(triggerEl, listBoxEl, {
+    placement: 'bottom-start',
+    strategy: 'fixed',
+    whileElementsMounted: autoUpdate,
+  }).floatingStyles as any;
+}
 
 const selectedOption = computed(() => {
   return props.options?.find((option) => {
@@ -52,6 +68,7 @@ const selectedOption = computed(() => {
 
     <div
       v-bind="triggerProps"
+      ref="triggerEl"
       class="trigger flex items-center gap-2.5"
       :class="{ 'has-value': !!fieldValue }"
     >
@@ -78,7 +95,13 @@ const selectedOption = computed(() => {
       </span>
     </div>
 
-    <div v-bind="popupProps" popover class="listbox">
+    <div
+      v-bind="popupProps"
+      popover
+      class="listbox"
+      :style="floatingStyles"
+      :class="{ 'is-anchor-positioned': !useJSPlacement }"
+    >
       <slot>
         <template v-if="groups">
           <OptionGroup
@@ -171,22 +194,19 @@ const selectedOption = computed(() => {
 }
 
 .listbox {
-  margin: 0;
-  width: 320px;
-  @apply relative max-h-[60vh] p-0;
-  position-anchor: v-bind(id);
-  position-area: bottom;
-  inset-area: bottom;
+  @apply relative m-0 mt-1 max-h-[60vh] w-[80vw] origin-top rounded-md border border-zinc-700 bg-zinc-900 p-0 opacity-0 shadow-lg lg:w-[280px];
   transform: scale(0.9);
-  transform-origin: top;
-
-  @apply mt-1 rounded-md border border-zinc-700 bg-zinc-900 shadow-lg;
-  opacity: 0;
   transition:
     display 0.1s allow-discrete,
     opacity 0.1s allow-discrete,
     transform 0.1s allow-discrete,
     overlay 0.1s allow-discrete;
+
+  &.is-anchor-positioned {
+    position-anchor: v-bind(id);
+    position-area: bottom;
+    inset-area: bottom;
+  }
 
   &:popover-open {
     opacity: 1;
@@ -200,7 +220,7 @@ const selectedOption = computed(() => {
 }
 
 @starting-style {
-  .listbox :popover-open {
+  .listbox:popover-open {
     opacity: 0;
     transform: scale(0.9);
   }
