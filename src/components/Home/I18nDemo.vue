@@ -3,7 +3,7 @@
     class="flex flex-col items-stretch rounded-lg border border-zinc-700/70 bg-zinc-800/60 py-8 backdrop-blur-sm lg:flex-row lg:px-8 lg:py-0"
   >
     <div class="flex w-full items-center justify-center">
-      <InputNumberDemo
+      <NumberField
         label="Number"
         v-model="number"
         :locale="localeExtended"
@@ -14,14 +14,14 @@
     <div
       class="flex flex-col border-t border-zinc-700/70 py-4 pl-8 lg:w-[380px] lg:border-l lg:border-t-0"
     >
-      <InputSelect
+      <SelectField
         v-model="locale"
         label="Locale"
         :get-option-value="(option) => option.value"
         :options="locales"
       />
 
-      <InputSelect
+      <SelectField
         v-model="numberSystem"
         label="Numbering system"
         :get-option-value="(option) => option.value"
@@ -32,7 +32,7 @@
         ]"
       />
 
-      <InputSelect
+      <SelectField
         v-model="format"
         label="Format"
         :get-option-value="(option) => option.value"
@@ -48,8 +48,8 @@
 </template>
 
 <script setup lang="ts">
-import InputNumberDemo from '@components/Home/InputNumber.vue';
-import InputSelect from '@components/Home/InputSelect.vue';
+import NumberField from '@components/Home/NumberField.vue';
+import SelectField from '@components/Home/SelectField.vue';
 import { getLocales } from '@utils/locales';
 import { computed, ref } from 'vue';
 

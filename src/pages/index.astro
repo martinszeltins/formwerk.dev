@@ -117,9 +117,75 @@ import SocialLinks from '@components/Home/SocialLinks.astro';
     .section-description {
       @apply mt-5 max-w-4xl text-xl text-zinc-400;
     }
+
+    .preview-frame {
+      @apply -right-0 bottom-4 mx-auto my-auto flex w-full flex-col items-center justify-center overflow-hidden rounded-lg border border-zinc-700 bg-zinc-800/60 lg:absolute lg:mx-0 lg:w-auto;
+
+      .preview-frame-header {
+        @apply w-full border-b border-zinc-700 bg-zinc-900 px-4 py-2 text-[13px] font-medium text-white;
+      }
+
+      .preview-frame-content {
+        @apply p-8;
+      }
+    }
+
+    .code-tab {
+      @apply relative flex w-full flex-wrap gap-4;
+
+      .expressive-code {
+        @apply mx-auto w-full lg:mx-0 lg:!w-[70%];
+      }
+    }
+
+    .expressive-code {
+      @apply w-full lg:max-w-[680px];
+
+      .frame.has-title:not(.is-terminal) {
+        .header {
+          @apply rounded-t-lg;
+        }
+
+        .title {
+          @apply flex items-center gap-1.5 border-none bg-transparent px-4 py-3 text-[13px] font-bold text-zinc-300;
+
+          &::before {
+            content: '';
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32' width='18' height='18'%3E%3Cpath fill='%2341b883' d='M24.4 3.925H30l-14 24.15L2 3.925h10.71l3.29 5.6l3.22-5.6Z'%3E%3C/path%3E%3Cpath fill='%2341b883' d='m2 3.925l14 24.15l14-24.15h-5.6L16 18.415L7.53 3.925Z'%3E%3C/path%3E%3Cpath fill='%2335495e' d='M7.53 3.925L16 18.485l8.4-14.56h-5.18L16 9.525l-3.29-5.6Z'%3E%3C/path%3E%3C/svg%3E");
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+          }
+
+          &::after {
+            @apply hidden;
+          }
+        }
+      }
+
+      pre {
+        @apply h-[380px] w-full overflow-hidden !rounded-b-lg !bg-zinc-900/85;
+
+        code {
+          @apply overflow-auto;
+          scrollbar-width: thin;
+          overflow-y: auto;
+          overflow-y: overlay;
+          scrollbar-color: rgb(63 63 70) transparent;
+        }
+      }
+
+      .copy {
+        @apply invisible;
+      }
+    }
   }
 
   button {
     touch-action: manipulation;
+  }
+
+  button[type='submit'] {
+    @apply mt-2 rounded border-none bg-emerald-600 px-4 py-2 text-sm font-medium text-white hover:bg-emerald-800;
   }
 </style>

@@ -76,6 +76,9 @@ const { inputProps, labelProps, errorMessage, errorMessageProps } =
     display: none;
     font-size: 0.875rem;
     color: rgb(239, 68, 68);
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    width: 100%;
   }
 
   &:has(:user-invalid) {

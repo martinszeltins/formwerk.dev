@@ -118,7 +118,7 @@ function activateTab(tab: string) {
 
 <style scoped lang="postcss">
 .tab-content {
-  @apply w-full;
+  @apply w-full flex-shrink-0;
 }
 
 .tab-content[data-active='true'] {

@@ -1,22 +1,97 @@
 ---
+import Tabs from '@components/Home/Tabs.vue';
+import { Code } from '@astrojs/starlight/components';
+import ZodForm from './ZodForm.vue';
+import ValibotForm from './ValibotForm.vue';
+import ArktypeForm from './ArktypeForm.vue';
 
+import ZodFormCode from './ZodForm.vue?raw';
+import ValibotFormCode from './ValibotForm.vue?raw';
+import ArktypeFormCode from './ArktypeForm.vue?raw';
 ---
 
 <section>
   <h2 class="heading-grad">
-    Supercharge your
     <span
       class="bg-gradient-to-b from-green-400 to-green-600 bg-clip-text text-transparent"
-      >forms</span
-    >.
+      >Supercharge</span
+    > your forms.
   </h2>
 
   <p class="section-description">
     Formwerk doesn't just help you build form controls, it also tackles the most
-    annoying parts about forms. Value tracking and submission, validation with
-    HTML attributes or with schema providers Zod, Yup, or Valibot. Organize your
-    forms with form groups and build repeatable form sections.
+    annoying parts about forms, like value tracking and submission. Also,
+    validation with HTML attributes or with schema providers like <a
+      target="_blank"
+      rel="noopener"
+      href="https://zod.dev/">Zod</a
+    >,
+    <a target="_blank" rel="noopener" href="https://valibot.dev/">Valibot</a>,
+    or <a target="_blank" rel="noopener" href="https://arktype.dev/">Arktype</a
+    >, and more.
   </p>
+
+  <Tabs client:visible tabs={['Zod', 'Valibot', 'ArkType']}>
+    <div slot="Zod" class="code-tab">
+      <Code
+        code={ZodFormCode}
+        lang="vue"
+        class="!text-xs"
+        title="ZodForm.vue"
+        frame="code"
+      />
+
+      <div class="preview-frame">
+        <div class="preview-frame-header">
+          <h3 class="preview-frame-title">Zod</h3>
+        </div>
+
+        <div class="preview-frame-content">
+          <ZodForm client:visible />
+        </div>
+      </div>
+    </div>
+
+    <div slot="Valibot" class="code-tab">
+      <Code
+        code={ValibotFormCode}
+        lang="vue"
+        class="!text-xs"
+        title="ValibotForm.vue"
+        frame="code"
+      />
+
+      <div class="preview-frame">
+        <div class="preview-frame-header">
+          <h3 class="preview-frame-title">Valibot</h3>
+        </div>
+
+        <div class="preview-frame-content">
+          <ValibotForm client:visible />
+        </div>
+      </div>
+    </div>
+
+    <div slot="ArkType" class="code-tab">
+      <Code
+        code={ArktypeFormCode}
+        lang="vue"
+        class="!text-xs"
+        title="ArktypeForm.vue"
+        frame="code"
+      />
+
+      <div class="preview-frame">
+        <div class="preview-frame-header">
+          <h3 class="preview-frame-title">Arktype</h3>
+        </div>
+
+        <div class="preview-frame-content">
+          <ArktypeForm client:visible />
+        </div>
+      </div>
+    </div>
+  </Tabs>
 </section>
 
 <style>
@@ -26,5 +101,9 @@
       rgba(34, 197, 94, 0.12) 0%,
       rgba(24, 24, 27, 0.1) 70%
     );
+
+    a {
+      @apply text-emerald-500 hover:text-emerald-600;
+    }
   }
 </style>
