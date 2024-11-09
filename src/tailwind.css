@@ -5,6 +5,7 @@
 :root {
   --sl-text-h3: var(--sl-text-2xl);
   --sl-text-h4: var(--sl-text-xl);
+  @apply antialiased;
 }
 
 @screen 2xl {

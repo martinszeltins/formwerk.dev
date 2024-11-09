@@ -4,7 +4,7 @@ import FlipWords from '@components/Home/FlipWords.vue';
 import BringYourOwnStyles from '@components/Home/BringYourOwnStyles.astro';
 import InternationalReady from '@components/Home/InternationalReady.astro';
 import ManagingForms from '@components/Home/ManagingForms.astro';
-import FirstClassA11y from '@components/Home/FirstClassA11y.astro';
+import BuiltInInteractions from '@components/Home/BuiltInInteractions.astro';
 import Logo from '../assets/logo-grad.svg';
 import SocialLinks from '@components/Home/SocialLinks.astro';
 ---
@@ -38,7 +38,7 @@ import SocialLinks from '@components/Home/SocialLinks.astro';
       >
         <span class="heading-grad">Build</span>
         <FlipWords
-          class="bg-gradient-to-br from-[#06D77B] to-[#02B361] bg-clip-text text-left text-transparent"
+          class="bg-gradient-to-b from-[#34e09c] to-[#02B361] bg-clip-text text-left text-transparent"
           words={[
             'High-Quality',
             'Scalable',
@@ -52,7 +52,9 @@ import SocialLinks from '@components/Home/SocialLinks.astro';
         <span class="heading-grad">Vue.js form components</span>
       </h1>
 
-      <p class="mt-3 max-w-4xl text-balance text-center text-xl text-zinc-200">
+      <p
+        class="mt-3 max-w-4xl text-balance text-center text-2xl font-medium text-zinc-400"
+      >
         A collection of Vue.js composables for building forms with behaviors,
         interactions, internationalization, and accessibility built-in, ready
         for your markup and styles.
@@ -77,7 +79,7 @@ import SocialLinks from '@components/Home/SocialLinks.astro';
       <BringYourOwnStyles />
       <InternationalReady />
       <ManagingForms />
-      <FirstClassA11y />
+      <BuiltInInteractions />
     </main>
   </body>
 </html>
@@ -115,7 +117,7 @@ import SocialLinks from '@components/Home/SocialLinks.astro';
     }
 
     .section-description {
-      @apply mt-5 max-w-4xl text-xl text-zinc-400;
+      @apply mt-5 max-w-4xl text-xl font-medium text-zinc-400;
     }
 
     .preview-frame {
