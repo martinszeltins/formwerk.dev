@@ -29,7 +29,7 @@ import SocialLinks from '@components/Home/SocialLinks.astro';
     </div>
 
     <main
-      class="not-content mx-auto flex max-w-3xl flex-col items-center py-20 lg:py-40"
+      class="not-content mx-auto flex max-w-4xl flex-col items-center py-20 lg:py-40"
     >
       <img src={Logo.src} class="reveal h-10 lg:h-16" />
 
@@ -107,7 +107,7 @@ import SocialLinks from '@components/Home/SocialLinks.astro';
 
 <style is:global>
   section {
-    @apply mt-20 w-full self-start px-5 lg:px-0;
+    @apply mt-20 w-full self-start px-5 pt-10 lg:px-0 lg:pt-20;
 
     h2,
     .heading-grad {
@@ -119,7 +119,7 @@ import SocialLinks from '@components/Home/SocialLinks.astro';
     }
 
     .preview-frame {
-      @apply -right-0 bottom-4 mx-auto my-auto flex w-full flex-col items-center justify-center overflow-hidden rounded-lg border border-zinc-700 bg-zinc-800/60 lg:absolute lg:mx-0 lg:w-auto;
+      @apply -right-0 bottom-4 mx-auto my-auto flex w-full min-w-[32%] flex-col items-center justify-center overflow-hidden rounded-lg border border-zinc-700 bg-zinc-800/60 lg:absolute lg:mx-0 lg:w-auto;
 
       .preview-frame-header {
         @apply w-full border-b border-zinc-700 bg-zinc-900 px-4 py-2 text-[13px] font-medium text-white;
