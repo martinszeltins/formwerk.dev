@@ -24,7 +24,7 @@
     "@astrojs/ts-plugin": "^1.10.4",
     "@astrojs/vue": "^4.5.2",
     "@floating-ui/vue": "^1.1.5",
-    "@formwerk/core": "^0.1.26",
+    "@formwerk/core": "^0.1.27",
     "@iconify-json/vscode-icons": "^1.2.2",
     "@vue/compiler-sfc": "^3.5.12",
     "@vue/repl": "^4.4.2",
