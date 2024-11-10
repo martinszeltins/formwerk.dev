@@ -44,7 +44,7 @@ const preferences = [
   },
   { value: 'ar-DZ', ordering: 'gregory islamic islamic-civil islamic-tbla' },
   {
-    value: 'AR-EG',
+    value: 'ar-EG',
     ordering: 'gregory coptic islamic islamic-civil islamic-tbla',
   },
   { value: 'ar-SA', ordering: 'islamic-umalqura gregory islamic islamic-rgsa' },
@@ -100,4 +100,56 @@ export function matchLocale(defaultLocale: string) {
     ) || locales.find((locale) => locale.language === parsed.language);
 
   return p?.toString() || 'en-US';
+}
+
+export function getUnits() {
+  const units = [
+    { label: 'Acre', value: 'acre' },
+    { label: 'Bit', value: 'bit' },
+    { label: 'Byte', value: 'byte' },
+    { label: 'Celsius', value: 'celsius' },
+    { label: 'Centimeter', value: 'centimeter' },
+    { label: 'Day', value: 'day' },
+    { label: 'Degree', value: 'degree' },
+    { label: 'Fahrenheit', value: 'fahrenheit' },
+    { label: 'Fluid Ounce', value: 'fluid-ounce' },
+    { label: 'Foot', value: 'foot' },
+    { label: 'Gallon', value: 'gallon' },
+    { label: 'Gigabit', value: 'gigabit' },
+    { label: 'Gigabyte', value: 'gigabyte' },
+    { label: 'Gram', value: 'gram' },
+    { label: 'Hectare', value: 'hectare' },
+    { label: 'Hour', value: 'hour' },
+    { label: 'Inch', value: 'inch' },
+    { label: 'Kilobit', value: 'kilobit' },
+    { label: 'Kilobyte', value: 'kilobyte' },
+    { label: 'Kilogram', value: 'kilogram' },
+    { label: 'Kilometer', value: 'kilometer' },
+    { label: 'Liter', value: 'liter' },
+    { label: 'Megabit', value: 'megabit' },
+    { label: 'Megabyte', value: 'megabyte' },
+    { label: 'Meter', value: 'meter' },
+    { label: 'Microsecond', value: 'microsecond' },
+    { label: 'Mile', value: 'mile' },
+    { label: 'Scandinavian Mile', value: 'mile-scandinavian' },
+    { label: 'Milliliter', value: 'milliliter' },
+    { label: 'Millimeter', value: 'millimeter' },
+    { label: 'Millisecond', value: 'millisecond' },
+    { label: 'Minute', value: 'minute' },
+    { label: 'Month', value: 'month' },
+    { label: 'Nanosecond', value: 'nanosecond' },
+    { label: 'Ounce', value: 'ounce' },
+    { label: 'Percent', value: 'percent' },
+    { label: 'Petabyte', value: 'petabyte' },
+    { label: 'Pound', value: 'pound' },
+    { label: 'Second', value: 'second' },
+    { label: 'Stone', value: 'stone' },
+    { label: 'Terabit', value: 'terabit' },
+    { label: 'Terabyte', value: 'terabyte' },
+    { label: 'Week', value: 'week' },
+    { label: 'Yard', value: 'yard' },
+    { label: 'Year', value: 'year' },
+  ];
+
+  return units;
 }

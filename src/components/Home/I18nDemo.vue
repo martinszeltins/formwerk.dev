@@ -43,6 +43,28 @@
           { label: 'Unit', value: 'unit' },
         ]"
       />
+
+      <div class="grid grid-cols-2 gap-2">
+        <SelectField
+          v-model="unit"
+          label="Unit"
+          :get-option-value="(option) => option.value"
+          :options="units"
+          :disabled="format !== 'unit'"
+        />
+
+        <SelectField
+          v-model="unitDisplay"
+          label="Unit Display"
+          :get-option-value="(option) => option.value"
+          :options="[
+            { label: 'Short', value: 'short' },
+            { label: 'Long', value: 'long' },
+            { label: 'Narrow', value: 'narrow' },
+          ]"
+          :disabled="format !== 'unit'"
+        />
+      </div>
     </div>
   </div>
 </template>
@@ -50,13 +72,17 @@
 <script setup lang="ts">
 import NumberField from '@components/Home/NumberField.vue';
 import SelectField from '@components/Home/SelectField.vue';
-import { getLocales } from '@utils/locales';
+import { getLocales, getUnits } from '@utils/locales';
 import { computed, ref } from 'vue';
 
 const numberSystem = ref('latn');
 const number = ref(1234);
 const format = ref<any>('decimal');
+const locale = ref('en-US');
 const locales = getLocales();
+const units = getUnits();
+const unit = ref('kilometer');
+const unitDisplay = ref<Intl.NumberFormatOptions['unitDisplay']>('short');
 
 const formatOptions = computed(() => {
   const options: Record<string, Intl.NumberFormatOptions> = {
@@ -66,13 +92,11 @@ const formatOptions = computed(() => {
       style: 'currency',
       currency: locale.value === 'ar-EG' ? 'EGP' : 'USD',
     },
-    unit: { style: 'unit', unit: 'kilometer', unitDisplay: 'short' },
+    unit: { style: 'unit', unit: unit.value, unitDisplay: unitDisplay.value },
   };
 
   return options[format.value];
 });
-
-const locale = ref('en-US');
 
 const localeExtended = computed(() => {
   return `${locale.value}-u-nu-${numberSystem.value}`;

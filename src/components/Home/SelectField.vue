@@ -191,6 +191,10 @@ const selectedOption = computed(() => {
       @apply h-4 w-4;
     }
   }
+
+  &[aria-disabled='true'] {
+    @apply opacity-50;
+  }
 }
 
 .listbox {
