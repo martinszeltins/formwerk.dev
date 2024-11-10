@@ -171,6 +171,10 @@ const selectedOption = computed(() => {
     &.has-value {
       @apply text-white;
     }
+
+    &[aria-disabled='true'] {
+      @apply cursor-not-allowed hover:bg-zinc-800 focus:border-zinc-700 focus:bg-zinc-800 focus:ring-0;
+    }
   }
 
   .error-message {
