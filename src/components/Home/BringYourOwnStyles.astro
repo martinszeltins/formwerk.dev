@@ -11,17 +11,15 @@ import SwitchOpenPropsCode from '@components/Home/SwitchOpenProps.vue?raw';
 
 <section>
   <h2 class="heading-grad">
-    Bring your own <span
-      class="bg-gradient-to-b from-cyan-400 to-cyan-600 bg-clip-text text-transparent"
-      >styles</span
-    >.
+    Craft with your own <span class="highlight">styles</span>.
   </h2>
 
   <p class="section-description">
-    Formwerk doesn't have any styles or HTML, allowing you build your own custom
-    design system with any styling or animation library. Each composables hooks
-    into some designated elements, managing their behavior and state while
-    leaving their structure and styling up to you.
+    Formwerk provides a blank canvas, free of predefined styles or HTML,
+    enabling you to craft a custom design system using any styling or animation
+    library. Each composable integrates with its designated elements, managing
+    behavior and state while leaving the structure and styling entirely in your
+    hands.
   </p>
 
   <Tabs client:load tabs={['CSS', 'Tailwind', 'OpenProps']}>
@@ -107,5 +105,9 @@ import SwitchOpenPropsCode from '@components/Home/SwitchOpenProps.vue?raw';
       rgba(6, 182, 212, 0.22) 0%,
       rgba(24, 24, 27, 0.1) 70%
     );
+
+    .highlight {
+      @apply bg-gradient-to-b from-cyan-400 to-cyan-600 bg-clip-text text-transparent;
+    }
   }
 </style>
