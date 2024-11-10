@@ -192,8 +192,8 @@ const selectedOption = computed(() => {
     }
   }
 
-  &[aria-disabled='true'] {
-    @apply opacity-50;
+  &:has([aria-disabled='true']) {
+    @apply cursor-not-allowed opacity-40;
   }
 }
 
