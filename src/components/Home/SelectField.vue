@@ -2,7 +2,7 @@
 import { useSelect, type SelectProps } from '@formwerk/core';
 import OptionItem from '@components/Home/OptionItem.vue';
 import OptionGroup from '@components/Home/OptionGroup.vue';
-import { computed, ref, useId, watch } from 'vue';
+import { computed, ref, useId } from 'vue';
 import { useFloating, autoUpdate } from '@floating-ui/vue';
 
 export interface TheProps<TOption, TValue>

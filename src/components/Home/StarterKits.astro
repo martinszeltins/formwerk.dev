@@ -1,0 +1,90 @@
+---
+import PhArrowRight from '~icons/ph/arrow-right';
+import TailwindLogo from '~icons/vscode-icons/file-type-tailwind';
+---
+
+<section>
+  <h2 class="heading-grad">
+    Start with
+    <span class="highlight">Starter Kits</span>!
+  </h2>
+
+  <div class="mt-10 grid grid-cols-1 gap-4 md:grid-cols-2">
+    <a href="" class="card">
+      <h3 class="heading-grad">Unstyled</h3>
+      <p class="description">
+        Component kit implemented with all Formwerk features without any
+        styling, giving you a clean foundation to build upon.
+      </p>
+
+      <p class="cta">
+        Start with Unstyled
+        <PhArrowRight />
+      </p>
+    </a>
+
+    <a href="" class="card">
+      <h3 class="heading-grad">
+        TailwindCSS
+        <TailwindLogo class="logo" />
+      </h3>
+
+      <p class="description">
+        Component kit implemented with all Formwerk features and beautifully
+        styled with TailwindCSS, giving you a polished look right out of the
+        box.
+      </p>
+
+      <p class="cta">
+        Start with Tailwind
+        <PhArrowRight />
+      </p>
+    </a>
+  </div>
+</section>
+
+<style>
+  section {
+    background: radial-gradient(
+      closest-corner,
+      rgba(244, 63, 94, 0.06) 0%,
+      rgba(24, 24, 27, 0.1) 70%
+    );
+
+    a {
+      @apply text-rose-500 hover:text-rose-600;
+
+      svg {
+        @apply inline-block h-4 w-4;
+      }
+    }
+
+    .highlight {
+      @apply bg-gradient-to-b from-rose-400 to-rose-600 bg-clip-text text-transparent;
+    }
+  }
+
+  .card {
+    @apply flex flex-col items-center rounded-lg border border-transparent bg-zinc-800/60 p-6 transition-colors duration-500 hover:border-rose-500/20 lg:items-start;
+
+    h3 {
+      @apply relative !text-2xl font-semibold;
+    }
+
+    .description {
+      @apply mt-3 text-center text-zinc-400 lg:text-left;
+    }
+
+    .cta {
+      @apply mt-6 inline-block text-lg font-semibold;
+
+      svg {
+        @apply inline-block size-6;
+      }
+    }
+
+    .logo {
+      @apply absolute -right-12 bottom-0 inline-block size-10;
+    }
+  }
+</style>

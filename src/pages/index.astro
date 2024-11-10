@@ -6,19 +6,48 @@ import InternationalReady from '@components/Home/InternationalReady.astro';
 import ManagingForms from '@components/Home/ManagingForms.astro';
 import BuiltInInteractions from '@components/Home/BuiltInInteractions.astro';
 import A11yFirst from '@components/Home/A11yFirst.astro';
+import StarterKits from '@components/Home/StarterKits.astro';
 import Logo from '../assets/logo-grad.svg';
 import SocialLinks from '@components/Home/SocialLinks.astro';
 import GoogleAnalytics from '@components/GoogleAnalytics.astro';
+
+const title = 'Formwerk - Build High-Quality Vue.js Form Components';
+const description =
+  'A collection of Vue.js composables for building forms with behaviors, interactions, internationalization, and accessibility built-in, ready for your markup and styles.';
 ---
 
 <html>
   <head>
     <link rel="icon" href="/favicon.ico" />
-    <title>Formwerk</title>
+    <title>{title}</title>
+    <meta charset="UTF-8" />
+    <meta name="robots" content="index, follow" />
+    <meta name="author" content="Formwerk" />
     <meta
-      name="description"
-      content="A collection of Vue.js composables for building forms with behaviors, interactions, internationalization, and accessibility built-in, ready for your markup and styles."
+      name="keywords"
+      content="vue, vuejs, forms, form components, form validation, accessibility, i18n, internationalization, composables"
     />
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://formwerk.dev/" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content="https://formwerk.dev/og-image.jpg" />
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:url" content="https://formwerk.dev/" />
+    <meta property="twitter:title" content={title} />
+    <meta property="twitter:description" content={description} />
+    <meta
+      property="twitter:image"
+      content="https://formwerk.dev/og-image.jpg"
+    />
+
+    <!-- Theme Color -->
+    <meta name="theme-color" content="#059669" />
+    <meta name="description" content={description} />
     <meta
       name="viewport"
       content="width=device-width, height=device-height, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
@@ -83,6 +112,7 @@ import GoogleAnalytics from '@components/GoogleAnalytics.astro';
       <InternationalReady />
       <BuiltInInteractions />
       <ManagingForms />
+      <StarterKits />
     </main>
 
     <GoogleAnalytics />

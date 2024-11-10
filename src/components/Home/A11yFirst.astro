@@ -5,7 +5,7 @@ const features = [
   {
     title: 'Aria Semantics',
     description:
-      'Formwerk components adhere to the <a href="https://www.w3.org/WAI/ARIA/apg/" target="_blank" rel="noopener">W3C ARIA Authoring Practices Guide (APG)</a>, particularly the <a href="https://www.w3.org/WAI/ARIA/apg/patterns/" target="_blank" rel="noopener noreferrer">patterns</a> for various input types. This ensures the correct use of aria attributes and keyboard interactions for each field.',
+      'Formwerk follows the <a href="https://www.w3.org/WAI/ARIA/apg/" target="_blank" rel="noopener">W3C ARIA Authoring Practices Guide</a>, ensuring proper aria attributes and keyboard interactions for all input types.',
   },
   {
     title: 'Adaptive Attributes',
@@ -16,7 +16,7 @@ const features = [
   {
     title: 'Audited by Experts',
     description:
-      'All components undergo rigorous audits by accessibility experts and users of assistive technologies. For a comprehensive list of contributors, visit the <a href="/credits">credits</a> page.',
+      'Audited by experts and assistive tech users to ensure the highest standards of accessibility. See <a href="/credits">contributors</a> for more details.',
   },
 ];
 ---
@@ -33,7 +33,7 @@ const features = [
         <div class="flex flex-col items-center rounded-lg border border-transparent bg-zinc-800/60 p-6 transition-colors duration-500 hover:border-amber-500/20 lg:items-start">
           <h3 class="heading-grad !text-2xl font-semibold">{f.title}</h3>
           <p
-            class="mt-3 text-balance text-center text-sm text-zinc-400 lg:text-left"
+            class="mt-3 text-balance text-center text-zinc-400 lg:text-left"
             set:html={f.description}
           />
 
