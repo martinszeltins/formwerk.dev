@@ -23,7 +23,7 @@ const { inputProps, labelProps, isPressed } = useSwitch(props);
 </template>
 
 <style scoped>
-@import 'https://unpkg.com/open-props';
+@import 'https://unpkg.com/open-props@1.7.7/open-props.min.css';
 
 .switch-wrapper {
   display: flex;
