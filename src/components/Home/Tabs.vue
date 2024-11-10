@@ -1,5 +1,12 @@
 <script setup lang="ts">
-import { computed, ref, useSlots, watchEffect, type Component } from 'vue';
+import {
+  computed,
+  onMounted,
+  ref,
+  useSlots,
+  watchEffect,
+  type Component,
+} from 'vue';
 
 const slots = useSlots();
 
@@ -119,14 +126,14 @@ function activateTab(tab: string) {
 <style scoped lang="postcss">
 .tab-content {
   @apply w-full flex-shrink-0;
-}
 
-.tab-content[data-active='true'] {
-  animation: slide-in 300ms ease;
-}
+  &[data-active='true'] {
+    animation: slide-in 300ms ease;
+  }
 
-.tab-content[data-active='false'] {
-  animation: slide-out 300ms ease;
+  &[data-active='false'] {
+    animation: slide-out 300ms ease;
+  }
 }
 
 @keyframes slide-out {
