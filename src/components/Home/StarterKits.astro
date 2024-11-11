@@ -1,5 +1,6 @@
 ---
 import PhArrowRight from '~icons/ph/arrow-right';
+import PhCodeSimple from '~icons/ph/code-simple-bold';
 import TailwindLogo from '~icons/vscode-icons/file-type-tailwind';
 ---
 
@@ -11,7 +12,11 @@ import TailwindLogo from '~icons/vscode-icons/file-type-tailwind';
 
   <div class="mt-10 grid grid-cols-1 gap-4 md:grid-cols-2">
     <a href="" class="card">
-      <h3 class="heading-grad">Unstyled</h3>
+      <h3 class="heading-grad flex items-center gap-2">
+        Unstyled
+        <PhCodeSimple class="size-8 text-rose-500" />
+      </h3>
+
       <p class="description">
         Component kit implemented with all Formwerk features without any
         styling, giving you a clean foundation to build upon.
