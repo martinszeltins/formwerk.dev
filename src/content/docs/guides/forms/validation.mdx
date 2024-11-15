@@ -101,7 +101,7 @@ const { values, handleSubmit } = useForm({
 values; // { email?: string | undefined; password?: string | undefined }
 
 const onSubmit = handleSubmit((data) => {
-  data.toJSON(); // { email: string; password: string }
+  data.toObject(); // { email: string; password: string }
 });
 ```
 

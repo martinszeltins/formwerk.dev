@@ -51,7 +51,7 @@ import FormGroup from './FormGroup.vue';
 const { handleSubmit } = useForm();
 
 const onSubmit = handleSubmit((data) => {
-  alert(JSON.stringify(data.toJSON(), null, 2));
+  alert(JSON.stringify(data.toObject(), null, 2));
 });
 </script>
 
@@ -103,7 +103,7 @@ import FormGroup from './FormGroup.vue';
 const { handleSubmit } = useForm();
 
 const onSubmit = handleSubmit((data) => {
-  alert(JSON.stringify(data.toJSON(), null, 2));
+  alert(JSON.stringify(data.toObject(), null, 2));
 });
 </script>
 
@@ -176,7 +176,7 @@ const { handleSubmit } = useForm({
 });
 
 const onSubmit = handleSubmit((data) => {
-  alert(JSON.stringify(data.toJSON(), null, 2));
+  alert(JSON.stringify(data.toObject(), null, 2));
 });
 </script>
 
@@ -256,7 +256,7 @@ import FormGroup from './FormGroup.vue';
 const { handleSubmit } = useForm();
 
 const onSubmit = handleSubmit((data) => {
-  alert(JSON.stringify(data.toJSON(), null, 2));
+  alert(JSON.stringify(data.toObject(), null, 2));
 });
 </script>
 

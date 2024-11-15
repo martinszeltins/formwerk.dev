@@ -12,7 +12,7 @@ const schema = z.object({
 const { handleSubmit } = useForm({ schema: undefined });
 
 const onSubmit = handleSubmit((data) => {
-  alert(JSON.stringify(data.toJSON(), null, 2));
+  alert(JSON.stringify(data.toObject(), null, 2));
 });
 </script>
 

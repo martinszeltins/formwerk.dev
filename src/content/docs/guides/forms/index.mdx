@@ -61,7 +61,7 @@ import Checkbox from './Checkbox.vue';
 const { handleSubmit } = useForm();
 
 const onSubmit = handleSubmit((data) => {
-  alert(JSON.stringify(data.toJSON(), null, 2));
+  alert(JSON.stringify(data.toObject(), null, 2));
 });
 </script>
 
@@ -114,7 +114,7 @@ const { handleSubmit } = useForm();
 const isSameAsBilling = ref(false);
 
 const onSubmit = handleSubmit((data) => {
-  const json = data.toJSON();
+  const json = data.toObject();
   if (isSameAsBilling.value) {
     json.billingAddress = json.shippingAddress;
   }
@@ -171,7 +171,7 @@ import Checkbox from './Checkbox.vue';
 const { handleSubmit } = useForm();
 
 const onSubmit = handleSubmit((data) => {
-  alert(JSON.stringify(data.toJSON(), null, 2));
+  alert(JSON.stringify(data.toObject(), null, 2));
 });
 </script>
 
@@ -221,7 +221,7 @@ import TextField from './TextField.vue';
 const { handleSubmit } = useForm();
 
 const onSubmit = handleSubmit((data) => {
-  alert(JSON.stringify(data.toJSON(), null, 2));
+  alert(JSON.stringify(data.toObject(), null, 2));
 });
 
 function onClick() {
@@ -240,9 +240,9 @@ function onClick() {
 
 </MdxRepl>
 
-#### toJSON
+#### toObject
 
-The most common way to get the form data is to call the `toJSON` method on the `data` object. This method returns a plain JavaScript object with the form data as you've seen in the previous examples.
+The most common way to get the form data is to call the `toObject` method on the `data` object. This method returns a plain JavaScript object with the form data as you've seen in the previous examples.
 
 ```ts
 import { useForm } from '@formwerk/core';
@@ -250,7 +250,7 @@ import { useForm } from '@formwerk/core';
 const { handleSubmit } = useForm();
 
 const onSubmit = handleSubmit((data) => {
-  data.toJSON(); // { email: '...', password: '...', rememberMe: true }
+  data.toObject(); // { email: '...', password: '...', rememberMe: true }
 });
 ```
 
@@ -349,7 +349,7 @@ const { handleSubmit, isSubmitting } = useForm();
 const onSubmit = handleSubmit(async (data) => {
   await new Promise((resolve) => setTimeout(resolve, 2000));
 
-  alert(JSON.stringify(data.toJSON(), null, 2));
+  alert(JSON.stringify(data.toObject(), null, 2));
 });
 </script>
 
@@ -512,7 +512,7 @@ const { handleSubmit } = useForm({
 });
 
 const onSubmit = handleSubmit((data) => {
-  alert(JSON.stringify(data.toJSON(), null, 2));
+  alert(JSON.stringify(data.toObject(), null, 2));
 });
 </script>
 
@@ -574,7 +574,7 @@ const { handleSubmit } = useForm({
 });
 
 const onSubmit = handleSubmit((data) => {
-  alert(JSON.stringify(data.toJSON(), null, 2));
+  alert(JSON.stringify(data.toObject(), null, 2));
 });
 </script>
 
@@ -771,7 +771,7 @@ import Checkbox from './Checkbox.vue';
 const { handleSubmit, reset } = useForm();
 
 const onSubmit = handleSubmit((data) => {
-  alert(JSON.stringify(data.toJSON(), null, 2));
+  alert(JSON.stringify(data.toObject(), null, 2));
 });
 
 function onResetClick() {
@@ -835,7 +835,7 @@ import TextField from './TextField.vue';
 const { handleSubmit, reset } = useForm();
 
 const onSubmit = handleSubmit((data) => {
-  alert(JSON.stringify(data.toJSON(), null, 2));
+  alert(JSON.stringify(data.toObject(), null, 2));
 });
 
 function onResetClick() {
@@ -938,7 +938,7 @@ const { handleSubmit, values } = useForm<LoginForm>();
 values; // { email: string | undefined }
 
 const onSubmit = handleSubmit((data) => {
-  console.log(data.toJSON()); // { email: string }
+  console.log(data.toObject()); // { email: string }
 });
 ```
 
@@ -957,7 +957,7 @@ const { handleSubmit, values } = useForm<LoginForm>();
 values; // { email: string | undefined; }
 
 const onSubmit = handleSubmit((data) => {
-  console.log(data.toJSON()); // { email: string; token: string }
+  console.log(data.toObject()); // { email: string; token: string }
 });
 ```
 
@@ -976,7 +976,7 @@ const { values, handleSubmit } = useForm({
 values; // { email: string | undefined }
 
 const onSubmit = handleSubmit((data) => {
-  data.toJSON(); // { email: string }
+  data.toObject(); // { email: string }
 });
 ```
 
