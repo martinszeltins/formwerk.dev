@@ -254,9 +254,47 @@ const onSubmit = handleSubmit((data) => {
 });
 ```
 
+#### toJSON
+
+The `toJSON` method returns a JSON-serializable object with the form data. While this often matches the structure from `toObject`, JSON has some limitations compared to JavaScript objects. For example, JSON cannot represent:
+
+- `undefined` values
+- Date objects (they get converted to strings)
+- File objects
+- Functions
+- BigInt values
+- Symbol values
+
+The `toJSON` method handles converting these values into JSON-safe equivalents automatically.
+
+```ts
+import { useForm } from '@formwerk/core';
+
+const { handleSubmit } = useForm();
+
+const onSubmit = handleSubmit(async (data) => {
+  const response = await fetch('https://example.org/post', {
+    body: JSON.stringify(data.toJSON()),
+  });
+});
+```
+
+If you plan to stringify the form data for use with something like `fetch` or `axios`, then you can omit the `toJSON` and call `JSON.stringify` directly on the `data` object which will call `toJSON` under the hood.
+
+```ts del={3} ins={4}
+const onSubmit = handleSubmit(async (data) => {
+  const response = await fetch('https://example.org/post', {
+    body: JSON.stringify(data.toJSON()),
+    body: JSON.stringify(data),
+  });
+});
+```
+
+The `toJSON` method is fully typed to match the JSON-serialized structure of your form data. The types will automatically handle non-serializable values like `undefined`, `Date` objects, and `File` objects in the type system, ensuring the types match what actually gets serialized to JSON.
+
 #### toFormData
 
-However, if you need to submit the form data as a [`FormData`](https://developer.mozilla.org/en-US/docs/Web/API/FormData) object, you can call the `toFormData` method instead.
+If you need to submit the form data as a [`FormData`](https://developer.mozilla.org/en-US/docs/Web/API/FormData) object, you can call the `toFormData` method instead.
 
 This method returns a `FormData` object that you can use to submit the form data to traditional form endpoints or APIs. It becomes especially useful when submitting files since they cannot be transported in JSON.
 
