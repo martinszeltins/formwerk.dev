@@ -150,7 +150,7 @@ Formwerk supports nested fields by using the `.` character in the `name` prop. T
 
 Here is an example with both nested fields and arrays:
 
-<MdxRepl preview-size="lg" client:load>
+<MdxRepl preview-size="xl" client:load>
 
 <div slot="!TextField.vue">
   <TextFieldPartial />
@@ -323,7 +323,7 @@ When you submit a form bound to `formProps` object:
 
 Here is an example of how to use `formProps`, the example will submit the data to another page that will list the submitted values. Typically your Backend endpoint would be handling the form submission.
 
-<MdxRepl client:load>
+<MdxRepl client:load preview-size="lg">
 
 <div slot="!TextField.vue">
   <TextFieldPartial />
@@ -369,7 +369,7 @@ By default, native form submissions only collect the values of `input`, `select`
 
 You can check submission status with the `isSubmitting` property. This property is `true` when the form is being submitted and `false` otherwise. This is useful when you want to show a loading spinner or disable the submit button while the form is being submitted with an async handler.
 
-<MdxRepl client:load>
+<MdxRepl client:load preview-size="lg">
 
 <div slot="!TextField.vue">
   <TextFieldPartial />
@@ -413,7 +413,7 @@ The form also tracks the overall touched state of the form, which is `true` if a
 
 Each field composable returns an `isTouched` property, `useForm` exposes its own `isTouched` property that you can use to check if the form has been interacted with, it also exposes `isFieldTouched` to query the touched state of a field.
 
-<MdxRepl client:load>
+<MdxRepl client:load preview-size="xl">
 
 <div slot="!TextField.vue">
   <TextFieldPartial />
@@ -467,7 +467,7 @@ function onFieldBlur() {
 
 Forms also track the dirty state of each field in the form. A field is considered dirty when its value has changed from the initial value. The form also tracks the overall dirty state of the form, which is `true` if any field in the form has been modified.
 
-<MdxRepl client:load>
+<MdxRepl client:load preview-size="xl">
 
 <div slot="!TextField.vue">
   <TextFieldPartial />
@@ -788,7 +788,7 @@ const { handleSubmit, displayError } = useForm({
 
 Form state can be reset with `reset` function. Calling this function will reset the current values back to the initial values, revert the touched state for all fields back to `false`, and clear any custom errors.
 
-<MdxRepl client:load>
+<MdxRepl client:load preview-size="lg">
 
 <div slot="!TextField.vue">
   <TextFieldPartial />
@@ -853,7 +853,7 @@ You can also reset the form to a specific state by passing a `ResetState` object
 - values: The new form values.
 - touched: The new touched state for each field.
 
-<MdxRepl client:load>
+<MdxRepl client:load preview-size="lg">
 
 <div slot="!TextField.vue">
   <TextFieldPartial />

@@ -74,12 +74,13 @@ import {
 } from 'vue';
 import { rewriteTypeImports, useVueImportMap } from './Repl/importMap';
 import { merge } from 'lodash-es';
-import { useStore, type SFCOptions } from './Repl/store';
+import { useStore } from './Repl/store';
 import Types from '@formwerk/core/dist/core.d.ts?raw';
 import { version as fwVersion } from '@formwerk/core';
 import VueIcon from '~icons/vscode-icons/file-type-vue';
 import TsIcon from '~icons/vscode-icons/file-type-typescript';
 import CssIcon from '~icons/vscode-icons/file-type-css';
+import type { SFCOptions } from './Repl/types';
 
 const Repl = defineAsyncComponent(() => import('./Repl.vue'));
 
@@ -88,7 +89,7 @@ const props = defineProps<{
   importMaps?: Record<string, string>;
   customCode?: string;
   activeFile?: string;
-  previewSize?: 'md' | 'lg';
+  previewSize?: 'md' | 'lg' | 'xl';
   previewOnly?: boolean;
 }>();
 
@@ -96,6 +97,7 @@ const sizes = {
   sm: 150,
   md: 180,
   lg: 300,
+  xl: 420,
 };
 
 const fileIcons: Record<string, Component> = {
