@@ -30,7 +30,8 @@ export default defineConfig({
     starlight({
       title: 'Docs',
       logo: {
-        src: './src/assets/logo.svg',
+        dark: './public/logo-dark.svg',
+        light: './public/logo-light.svg',
         alt: 'Formwerk',
         replacesTitle: true,
       },

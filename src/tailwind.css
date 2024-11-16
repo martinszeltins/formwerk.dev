@@ -34,7 +34,7 @@ iframe {
 
 .site-title {
   img {
-    height: calc(var(--sl-nav-height) - 42px);
+    height: calc(var(--sl-nav-height) - 38px);
   }
 }
 
