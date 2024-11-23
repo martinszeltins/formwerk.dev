@@ -326,6 +326,14 @@ const value = ref(0);
 
 </MdxRepl>
 
+### Discrete Slider Values
+
+You can also use discrete slider values by passing an `options` prop to the slider, this is useful for non-numeric values like a rating slider.
+
+When doing this, the slider min/max will be set to the first and last option, and the step will be set to the difference between the first and last option divided by the number of options you want to show. This also means the `step` prop is ignored when `options` is used.
+
+// TODO: Add example
+
 ## Styling
 
 You probably have noticed that the `trackProps` and `thumbProps` contain some minor styling properties, those are the bare minimum to get the slider working and they are automatically added for you.
@@ -363,9 +371,9 @@ These are the properties that can be passed to the `useSliderThumb` composable.
 
 | Name       | Type      | Description                                                                                  |
 | ---------- | --------- | -------------------------------------------------------------------------------------------- |
+| disabled   | `boolean` | Whether the thumb is disabled or not. Doesn't affect validation or submission of the slider. |
 | label      | `string`  | Optional label for the thumb, falls back to the slider's label.                              |
 | modelValue | `number`  | The current value of the thumb.                                                              |
-| disabled   | `boolean` | Whether the thumb is disabled or not. Doesn't affect validation or submission of the slider. |
 
 #### Returns
 
@@ -373,9 +381,9 @@ These are the properties in the object returned by the `useSliderThumb` composab
 
 | Name         | Type            | Description                                |
 | ------------ | --------------- | ------------------------------------------ |
-| thumbProps   | Complex Binding | Properties for the thumb element.          |
 | currentValue | `number`        | Current value of the thumb.                |
 | isDragging   | `boolean`       | Whether the thumb is being dragged or not. |
+| thumbProps   | Complex Binding | Properties for the thumb element.          |
 
 ### Slider
 
@@ -383,19 +391,21 @@ These are the properties in the object returned by the `useSliderThumb` composab
 
 These are the properties that can be passed to the `useSlider` composable.
 
-| Name        | Type                     | Description                     |
-| ----------- | ------------------------ | ------------------------------- |
-| label       | `string`                 | Label for the slider.           |
-| name        | `string`                 | Optional name for the slider.   |
-| orientation | `Orientation`            | Orientation of the slider.      |
-| dir         | `Direction`              | Direction of the slider.        |
-| modelValue  | `number \| number[]`     | Current value of the slider.    |
-| min         | `number`                 | Minimum value of the slider.    |
-| max         | `number`                 | Maximum value of the slider.    |
-| step        | `number`                 | Step value for the slider.      |
-| disabled    | `boolean`                | Whether the slider is disabled. |
-| readonly    | `boolean`                | Whether the slider is readonly. |
-| schema      | `StandardSchema<number>` | Schema for the slider value.    |
+| Name        | Type                     | Description                                    |
+| ----------- | ------------------------ | ---------------------------------------------- |
+| dir         | `Direction`              | Direction of the slider.                       |
+| disabled    | `boolean`                | Whether the slider is disabled.                |
+| label       | `string`                 | Label for the slider.                          |
+| max         | `number`                 | Maximum value of the slider.                   |
+| min         | `number`                 | Minimum value of the slider.                   |
+| modelValue  | `number \| number[]`     | Current value of the slider.                   |
+| name        | `string`                 | Optional name for the slider.                  |
+| options     | `any[]`                  | Discrete slider values to represent the steps. |
+| orientation | `Orientation`            | Orientation of the slider.                     |
+| readonly    | `boolean`                | Whether the slider is readonly.                |
+| schema      | `StandardSchema<number>` | Schema for the slider value.                   |
+| step        | `number`                 | Step value for the slider.                     |
+| value       | `number \| number[]`     | Initial value of the slider.                   |
 
 #### Returns
 
@@ -409,14 +419,14 @@ These are the properties in the object returned by the `useSlider` composable.
 | errors            | `string[]`                              | The slider's error messages.                                         |
 | fieldValue        | `number \| undefined`                   | The current value of the slider.                                     |
 | groupProps        | Complex Binding                         | The slider group container.                                          |
-| trackProps        | Complex Binding                         | The slider's track props.                                            |
 | isDirty           | `boolean`                               | Whether the slider value has changed.                                |
-| isTouched         | `boolean`                               | Whether the slider is touched.                                       |
 | isValid           | `boolean`                               | Whether the slider has error messages.                               |
+| isTouched         | `boolean`                               | Whether the slider is touched.                                       |
 | labelProps        | `AriaLabelProps`                        | The label element props.                                             |
 | setErrors         | `(msg: Arrayable<string>) => void`      | Sets the error messages for the slider and sets the `isValid` state. |
 | setTouched        | `(touched: boolean) => void`            | Sets the `isTouched` state.                                          |
 | setValue          | `(value: number) => void`               | Sets the slider's current value.                                     |
+| trackProps        | Complex Binding                         | The slider's track props.                                            |
 | useThumbMetadata  | `(thumbIndex: number) => ThumbMetadata` | Returns metadata for a slider thumb at the given index.              |
 
 #### `useThumbMetadata` returns
@@ -425,10 +435,10 @@ Additionally, `useThumbMetadata` returns an object with the following properties
 
 | Name          | Type     | Description                                            |
 | ------------- | -------- | ------------------------------------------------------ |
-| value         | `number` | Current value of the specified thumb.                  |
-| percent       | `number` | Current value percentage compared to the thumb's max.  |
-| min           | `number` | The minimum possible value of the thumb.               |
 | max           | `number` | The Maximum possible value of the thumb.               |
-| sliderPercent | `number` | Current value percentage compared to the slider's max. |
-| sliderMin     | `number` | The minimum value of the slider.                       |
+| min           | `number` | The minimum possible value of the thumb.               |
+| percent       | `number` | Current value percentage compared to the thumb's max.  |
 | sliderMax     | `number` | The maximum value of the slider.                       |
+| sliderMin     | `number` | The minimum value of the slider.                       |
+| sliderPercent | `number` | Current value percentage compared to the slider's max. |
+| value         | `number` | Current value of the specified thumb.                  |
