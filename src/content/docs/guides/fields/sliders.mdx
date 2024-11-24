@@ -331,7 +331,32 @@ You can also use discrete slider values by passing an `options` prop to the slid
 
 When doing this, the slider min/max will be set to the first and last option, and the step will be set to the difference between the first and last option divided by the number of options you want to show. This also means the `step` prop is ignored when `options` is used.
 
-// TODO: Add example
+<MdxRepl client:load>
+
+<div slot="!Slider.vue">
+  <Slider />
+</div>
+
+<div slot="!Thumb.vue">
+  <SliderThumb />
+</div>
+
+<div slot="App.vue">
+
+```vue
+<script setup lang="ts">
+import Slider from './Slider.vue';
+
+const options = ['Bad', 'Poor', 'Okay', 'Good', 'Great'];
+</script>
+
+<template>
+  <Slider label="Discrete Slider" :options="options" />
+</template>
+```
+
+</div>
+</MdxRepl>
 
 ## Styling
 
