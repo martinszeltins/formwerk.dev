@@ -358,6 +358,20 @@ const options = ['Bad', 'Poor', 'Okay', 'Good', 'Great'];
 </div>
 </MdxRepl>
 
+### Generic Types
+
+The slider's `SliderProps` accepts a generic type parameter that allows you build generically typed slider components.
+
+```vue
+<script setup lang="ts" generic="TValue">
+import { useSlider, type SliderProps } from '@formwerk/core';
+
+const props = defineProps<SliderProps<TValue>>();
+</script>
+```
+
+This gives you auto type inference for the slider's value even when using `options` prop for any type of value.
+
 ## Styling
 
 You probably have noticed that the `trackProps` and `thumbProps` contain some minor styling properties, those are the bare minimum to get the slider working and they are automatically added for you.
