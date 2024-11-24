@@ -36,7 +36,7 @@ Currently, the following features are implemented:
 - Labeling, descriptions, error message displays are automatically linked to input and label elements with `aria-*` attributes.
 - Custom checked/unchecked values.
 - Support for `indeterminate` state.
-- Form management, data collection and validation with Typed Schemas or native HTML5 validation.
+- Form management, data collection and validation with [Standard Schemas](https://github.com/standard-schema/standard-schema) or native HTML5 validation.
 - Support for orientation with `horizontal` and `vertical` values.
 - `v-model` support for both single and grouped checkboxes.
 - Supported Keyboard features:
@@ -203,7 +203,7 @@ const colors = ref([]);
 
 ## Validation
 
-Checkbox components and checkbox groups can be validated by using Typed Schemas or native HTML5 validation via the `schema` prop on each of them.
+Checkbox components and checkbox groups can be validated by using [Standard Schemas](https://github.com/standard-schema/standard-schema) or native HTML5 validation via the `schema` prop on each of them.
 
 When checkboxes are a part of a checkbox group, they will not report their own error messages as the group component should be responsible for displaying the error message.
 
@@ -255,9 +255,9 @@ import CheckboxGroup from './CheckboxGroup.vue';
 
 Note that marking any checkbox item that is part of a checkbox group as required will not make the group required and it will be ignored.
 
-### Typed Schema
+### Standard Schema
 
-Both `useCheckbox` and `useCheckboxGroup` support Typed Schema validation through the `schema` prop.
+Both `useCheckbox` and `useCheckboxGroup` support [Standard Schema](https://github.com/standard-schema/standard-schema) validation through the `schema` prop. This includes multiple providers like [Zod](https://zod.dev/), [Valibot](https://valibot.dev/), [Arktype](https://arktype.dev/), and more.
 
 <MdxRepl client:load>
 
@@ -278,6 +278,7 @@ import Checkbox from './Checkbox.vue';
 import CheckboxGroup from './CheckboxGroup.vue';
 
 const schema = z.array(z.string()).min(1, 'Required');
+
 const singleSchema = z.literal(true, 'Required');
 </script>
 
@@ -286,7 +287,7 @@ const singleSchema = z.literal(true, 'Required');
   <Checkbox label="Terms" :value="true" :schema="singleSchema" />
 
   <!-- Checkbox group -->
-  <CheckboxGroup label="Colors (Typed Schema)" :schema="schema">
+  <CheckboxGroup label="Colors (Standard Schema)" :schema="schema">
     <Checkbox label="Red" value="red" />
     <Checkbox label="Green" value="green" />
     <Checkbox label="Blue" value="blue" />
@@ -461,21 +462,21 @@ import CheckboxGroup from './CheckboxGroup.vue';
 
 These are the properties that can be passed to the `useCheckbox` composable.
 
-| Name                    | Type                  | Description                                                 |
-| ----------------------- | --------------------- | ----------------------------------------------------------- |
-| `name`                  | `string`              | The name of the checkbox.                                   |
-| `label`                 | `string`              | The label for the checkbox.                                 |
-| `modelValue`            | `TValue`              | The value bound to the checkbox.                            |
-| `value`                 | `TValue`              | The value of the checkbox when checked.                     |
-| `trueValue`             | `TValue`              | The value to use when the checkbox is checked.              |
-| `falseValue`            | `TValue`              | The value to use when the checkbox is unchecked.            |
-| `required`              | `boolean`             | Whether the checkbox is required.                           |
-| `readonly`              | `boolean`             | Whether the checkbox is read-only.                          |
-| `disabled`              | `boolean`             | Whether the checkbox is disabled.                           |
-| `indeterminate`         | `boolean`             | Whether the checkbox is in an indeterminate state.          |
-| `standalone`            | `boolean`             | Whether the checkbox is standalone and not part of a group. |
-| `schema`                | `TypedSchema<TValue>` | The schema used for validation.                             |
-| `disableHtmlValidation` | `boolean`             | If HTML validation should be disabled for the checkbox.     |
+| Name                    | Type                     | Description                                                 |
+| ----------------------- | ------------------------ | ----------------------------------------------------------- |
+| `name`                  | `string`                 | The name of the checkbox.                                   |
+| `label`                 | `string`                 | The label for the checkbox.                                 |
+| `modelValue`            | `TValue`                 | The value bound to the checkbox.                            |
+| `value`                 | `TValue`                 | The value of the checkbox when checked.                     |
+| `trueValue`             | `TValue`                 | The value to use when the checkbox is checked.              |
+| `falseValue`            | `TValue`                 | The value to use when the checkbox is unchecked.            |
+| `required`              | `boolean`                | Whether the checkbox is required.                           |
+| `readonly`              | `boolean`                | Whether the checkbox is read-only.                          |
+| `disabled`              | `boolean`                | Whether the checkbox is disabled.                           |
+| `indeterminate`         | `boolean`                | Whether the checkbox is in an indeterminate state.          |
+| `standalone`            | `boolean`                | Whether the checkbox is standalone and not part of a group. |
+| `schema`                | `StandardSchema<TValue>` | The schema used for validation.                             |
+| `disableHtmlValidation` | `boolean`                | If HTML validation should be disabled for the checkbox.     |
 
 #### Returns
 
@@ -502,18 +503,18 @@ These are the properties that can be passed to the `useCheckboxGroup` composable
 
 #### Props
 
-| Name                    | Type          | Description                                                   |
-| ----------------------- | ------------- | ------------------------------------------------------------- |
-| `dir`                   | `Direction`   | The direction of the checkbox group, either `ltr` or `rtl`.   |
-| `label`                 | `string`      | The label for the checkbox group.                             |
-| `description`           | `string`      | The description for the checkbox group.                       |
-| `name`                  | `string`      | The name of the checkbox group.                               |
-| `modelValue`            | `unknown[]`   | The value bound to the checkbox group.                        |
-| `disabled`              | `boolean`     | Whether the checkbox group is disabled.                       |
-| `readonly`              | `boolean`     | Whether the checkbox group is read-only.                      |
-| `required`              | `boolean`     | Whether the checkbox group is required.                       |
-| `schema`                | `TypedSchema` | The schema used for validation.                               |
-| `disableHtmlValidation` | `boolean`     | If HTML validation should be disabled for the checkbox group. |
+| Name                    | Type             | Description                                                   |
+| ----------------------- | ---------------- | ------------------------------------------------------------- |
+| `dir`                   | `Direction`      | The direction of the checkbox group, either `ltr` or `rtl`.   |
+| `label`                 | `string`         | The label for the checkbox group.                             |
+| `description`           | `string`         | The description for the checkbox group.                       |
+| `name`                  | `string`         | The name of the checkbox group.                               |
+| `modelValue`            | `unknown[]`      | The value bound to the checkbox group.                        |
+| `disabled`              | `boolean`        | Whether the checkbox group is disabled.                       |
+| `readonly`              | `boolean`        | Whether the checkbox group is read-only.                      |
+| `required`              | `boolean`        | Whether the checkbox group is required.                       |
+| `schema`                | `StandardSchema` | The schema used for validation.                               |
+| `disableHtmlValidation` | `boolean`        | If HTML validation should be disabled for the checkbox group. |
 
 #### Returns
 
