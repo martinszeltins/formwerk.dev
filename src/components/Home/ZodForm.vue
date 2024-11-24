@@ -3,13 +3,12 @@ import { z } from 'zod';
 import { useForm } from '@formwerk/core';
 import TextField from './TextField.vue';
 
-const schema = z.object({
-  email: z.string().min(1, 'Email is required').email(),
-  password: z.string().min(1, 'Password is required'),
+const { handleSubmit } = useForm({
+  schema: z.object({
+    email: z.string().email().min(1, 'Email is required'),
+    password: z.string().min(6, 'Password must be at least 6 characters'),
+  }),
 });
-
-// TODO: Zod not yet supported
-const { handleSubmit } = useForm({ schema: undefined });
 
 const onSubmit = handleSubmit((data) => {
   alert(JSON.stringify(data.toObject(), null, 2));

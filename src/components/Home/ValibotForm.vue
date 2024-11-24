@@ -3,12 +3,12 @@ import * as v from 'valibot';
 import { useForm } from '@formwerk/core';
 import TextField from './TextField.vue';
 
-const schema = v.object({
-  email: v.pipe(v.string(), v.minLength(1), v.email()),
-  password: v.pipe(v.string(), v.minLength(1)),
+const { handleSubmit } = useForm({
+  schema: v.object({
+    email: v.pipe(v.string(), v.minLength(1), v.email()),
+    password: v.pipe(v.string(), v.minLength(6)),
+  }),
 });
-
-const { handleSubmit } = useForm({ schema });
 
 const onSubmit = handleSubmit((data) => {
   alert(JSON.stringify(data.toObject(), null, 2));

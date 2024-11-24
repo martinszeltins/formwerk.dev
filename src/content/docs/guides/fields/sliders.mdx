@@ -102,7 +102,7 @@ Because sliders in Formwerk are a fully custom component, it doesn't support any
 
 ### Standard Schema
 
-The `useSlider` composable accepts a `schema` prop that is an instance of a Standard Schema.
+The `useSlider` composable accepts a `schema` prop that is an instance of a Standard Schema. This includes multiple providers like [Zod](https://zod.dev/), [Valibot](https://valibot.dev/), [Arktype](https://arktype.dev/), and more.
 
 <Aside>
 
@@ -125,10 +125,9 @@ Depending on the schema validation provider you are using, the API might slightl
 ```vue
 <script setup lang="ts">
 import { z } from 'zod';
-import { defineSchema } from '@formwerk/schema-zod';
 import Slider from './Slider.vue';
 
-const schema = defineSchema(z.number('Required').min(30).max(80));
+const schema = z.number('Required').min(30).max(80);
 </script>
 
 <template>

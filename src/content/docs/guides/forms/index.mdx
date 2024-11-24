@@ -537,16 +537,13 @@ Here is an example of a form with a Standard Schema:
 <script setup lang="ts">
 import { useForm } from '@formwerk/core';
 import TextField from './TextField.vue';
-import { defineSchema } from '@formwerk/schema-zod';
 import { z } from 'zod';
 
 const { handleSubmit } = useForm({
-  schema: defineSchema(
-    z.object({
-      email: z.string().email(),
-      password: z.string().min(8),
-    }),
-  ),
+  schema: z.object({
+    email: z.string().email(),
+    password: z.string().min(8),
+  }),
 });
 
 const onSubmit = handleSubmit((data) => {
@@ -600,15 +597,12 @@ Here is an example for a field with all validation sources:
 <script setup lang="ts">
 import { useForm } from '@formwerk/core';
 import TextField from './TextField.vue';
-import { defineSchema } from '@formwerk/schema-zod';
 import { z } from 'zod';
 
 const { handleSubmit } = useForm({
-  schema: defineSchema(
-    z.object({
-      field: z.string().max(8),
-    }),
-  ),
+  schema: z.object({
+    field: z.string().max(8),
+  }),
 });
 
 const onSubmit = handleSubmit((data) => {
@@ -659,16 +653,13 @@ The `getError` function returns the error of a specific field. If the field has 
 <script setup lang="ts">
 import { useForm } from '@formwerk/core';
 import TextField from './TextField.vue';
-import { defineSchema } from '@formwerk/schema-zod';
 import { z } from 'zod';
 
 const { handleSubmit, getError } = useForm({
-  schema: defineSchema(
-    z.object({
-      url: z.string().url().max(8),
-      email: z.string().email(),
-    }),
-  ),
+  schema: z.object({
+    url: z.string().url().max(8),
+    email: z.string().email(),
+  }),
 });
 </script>
 
@@ -705,16 +696,13 @@ The `getErrors` function returns all errors in the form as an array of error gro
 <script setup lang="ts">
 import { useForm } from '@formwerk/core';
 import TextField from './TextField.vue';
-import { defineSchema } from '@formwerk/schema-zod';
 import { z } from 'zod';
 
 const { handleSubmit, getErrors } = useForm({
-  schema: defineSchema(
-    z.object({
-      url: z.string().url().max(8),
-      email: z.string().email(),
-    }),
-  ),
+  schema: z.object({
+    url: z.string().url().max(8),
+    email: z.string().email(),
+  }),
 });
 </script>
 
@@ -752,16 +740,13 @@ You can alternatively use CSS with `:user-invalid` pseudo-class to show errors o
 <script setup lang="ts">
 import { useForm } from '@formwerk/core';
 import TextField from './TextField.vue';
-import { defineSchema } from '@formwerk/schema-zod';
 import { z } from 'zod';
 
 const { handleSubmit, displayError } = useForm({
-  schema: defineSchema(
-    z.object({
-      url: z.string().url().max(8),
-      email: z.string().email(),
-    }),
-  ),
+  schema: z.object({
+    url: z.string().url().max(8),
+    email: z.string().email(),
+  }),
 });
 </script>
 

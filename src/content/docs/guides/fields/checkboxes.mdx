@@ -274,12 +274,11 @@ Both `useCheckbox` and `useCheckboxGroup` support Typed Schema validation throug
 ```vue
 <script setup lang="ts">
 import { z } from 'zod';
-import { defineSchema } from '@formwerk/schema-zod';
 import Checkbox from './Checkbox.vue';
 import CheckboxGroup from './CheckboxGroup.vue';
 
-const schema = defineSchema(z.array(z.string()).min(1, 'Required'));
-const singleSchema = defineSchema(z.literal(true, 'Required'));
+const schema = z.array(z.string()).min(1, 'Required');
+const singleSchema = z.literal(true, 'Required');
 </script>
 
 <template>

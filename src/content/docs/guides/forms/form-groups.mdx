@@ -154,22 +154,17 @@ Formwerk prioritizes the validation sources in the following order:
 import { useForm } from '@formwerk/core';
 import TextField from './TextField.vue';
 import FormGroup from './FormGroup.vue';
-import { defineSchema } from '@formwerk/schema-zod';
 import { z } from 'zod';
 
-const shippingSchema = defineSchema(
-  z.object({
-    address: z.string().min(5),
-    city: z.string().min(3),
-    zip: z.string().length(5),
-  }),
-);
+const shippingSchema = z.object({
+  address: z.string().min(5),
+  city: z.string().min(3),
+  zip: z.string().length(5),
+});
 
-const schema = defineSchema(
-  z.object({
-    email: z.string().email(),
-  }),
-);
+const schema = z.object({
+  email: z.string().email(),
+});
 
 const { handleSubmit } = useForm({
   schema,

@@ -161,7 +161,7 @@ import TextField from './TextField.vue';
 
 ### Standard Schema
 
-`useTextField` also supports [Standard Schema](https://github.com/standard-schema/standard-schema) validation through the `schema` prop.
+`useTextField` also supports [Standard Schema](https://github.com/standard-schema/standard-schema) validation through the `schema` prop. This includes multiple providers like [Zod](https://zod.dev/), [Valibot](https://valibot.dev/), [Arktype](https://arktype.dev/), and more.
 
 <Aside>
 
@@ -180,10 +180,9 @@ Depending on the schema validation provider you are using, the API might slightl
 ```vue
 <script setup lang="ts">
 import { z } from 'zod';
-import { defineSchema } from '@formwerk/schema-zod';
 import TextField from './TextField.vue';
 
-const schema = defineSchema(z.string().min(3).max(8));
+const schema = z.string().min(3).max(8);
 </script>
 
 <template>
@@ -212,10 +211,9 @@ Note that HTML constraints are validated first, so any errors from the HTML cons
 ```vue
 <script setup lang="ts">
 import { z } from 'zod';
-import { defineSchema } from '@formwerk/schema-zod';
 import TextField from './TextField.vue';
 
-const schema = defineSchema(z.string().min(3).max(20));
+const schema = z.string().min(3).max(20);
 </script>
 
 <template>
@@ -242,10 +240,9 @@ If you need to disable the native validation, you can do so by setting the `disa
 ```vue
 <script setup lang="ts">
 import { z } from 'zod';
-import { defineSchema } from '@formwerk/schema-zod';
 import TextField from './TextField.vue';
 
-const schema = defineSchema(z.string().min(3).max(20));
+const schema = z.string().min(3).max(20);
 </script>
 
 <template>

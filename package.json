@@ -24,7 +24,7 @@
     "@astrojs/ts-plugin": "^1.10.4",
     "@astrojs/vue": "^4.5.3",
     "@floating-ui/vue": "^1.1.5",
-    "@formwerk/core": "^0.1.27",
+    "@formwerk/core": "^0.2.0",
     "@iconify-json/vscode-icons": "^1.2.2",
     "@vue/compiler-sfc": "^3.5.13",
     "@vue/repl": "^4.4.2",
@@ -38,7 +38,7 @@
     "typescript": "^5.7.2",
     "valibot": "1.0.0-beta.8",
     "vue": "^3.5.13",
-    "zod": "^3.23.8"
+    "zod": "npm:@awaddev/zod@3.23.8-standard-schema"
   },
   "devDependencies": {
     "@babel/types": "^7.26.0",

@@ -147,7 +147,7 @@ const value = ref(26);
 
 ### Standard Schema
 
-`useNumberField` also supports [Standard Schema](https://github.com/standard-schema/standard-schema) validation through the `schema` prop.
+`useNumberField` also supports [Standard Schema](https://github.com/standard-schema/standard-schema) validation through the `schema` prop. This includes multiple providers like [Zod](https://zod.dev/), [Valibot](https://valibot.dev/), [Arktype](https://arktype.dev/), and more.
 
 <Aside>
 
@@ -200,10 +200,9 @@ Note that HTML constraints are validated first, so any errors from the HTML cons
 ```vue
 <script setup lang="ts">
 import { z } from 'zod';
-import { defineSchema } from '@formwerk/schema-zod';
 import NumberField from './NumberField.vue';
 
-const schema = defineSchema(z.number().min(1).max(10));
+const schema = z.number().min(1).max(10);
 </script>
 
 <template>

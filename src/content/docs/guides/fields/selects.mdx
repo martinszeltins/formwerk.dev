@@ -30,7 +30,7 @@ Note that [customizable selects](https://developer.chrome.com/blog/rfc-customiza
 - Support for option searching with starting characters.
 - First-class Support for `[popover]` popups for dropdowns/menus.
 - Generic typing support for options.
-- Validation support with Typed schemas.
+- Validation support with [Standard Schemas](https://github.com/standard-schema/standard-schema).
 - Support for `v-model` binding.
 - Supported Keyboard features:
 
@@ -196,13 +196,15 @@ const groups = [
 
 ## Validation
 
-Because selects in Formwerk are a fully custom component, it doesn't support any HTML validation attributes. You can however, use Typed Schemas to validate the value of the slider.
+Because selects in Formwerk are a fully custom component, it doesn't support any HTML validation attributes. You can however, use Standard Schemas to validate the value of the select.
 
 In the future when customizable selects are available in the browser, Formwerk will leverage that to provide better validation support for the native HTML constraints.
 
-### Typed Schema
+### Standard Schema
 
-`useSelect` supports Typed Schema validation through the `schema` prop.
+S
+
+`useSelect` supports Standard Schema validation through the `schema` prop.
 
 <MdxRepl client:load preview-size="lg">
 
@@ -221,14 +223,11 @@ In the future when customizable selects are available in the browser, Formwerk w
 import SelectField from './SelectField.vue';
 import OptionItem from './OptionItem.vue';
 import { z } from 'zod';
-import { defineSchema } from '@formwerk/schema-zod';
 
-const schema = defineSchema(
-  z
-    .string()
-    .min(1, 'Please select a drink')
-    .endsWith('coffee', 'WRONG ANSWER!'),
-);
+const schema = z
+  .string()
+  .min(1, 'Please select a drink')
+  .endsWith('coffee', 'WRONG ANSWER!');
 </script>
 
 <template>

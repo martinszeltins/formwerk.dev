@@ -3,12 +3,12 @@ import { type } from 'arktype';
 import { useForm } from '@formwerk/core';
 import TextField from './TextField.vue';
 
-const schema = type({
-  email: type('string.email > 1'),
-  password: type('string > 1'),
+const { handleSubmit } = useForm({
+  schema: type({
+    email: type('string.email > 1'),
+    password: type('string > 6'),
+  }),
 });
-
-const { handleSubmit } = useForm({ schema });
 
 const onSubmit = handleSubmit((data) => {
   alert(JSON.stringify(data.toObject(), null, 2));
