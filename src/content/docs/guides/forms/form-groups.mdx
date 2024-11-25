@@ -8,7 +8,7 @@ sidebar:
 import { Aside, Tabs, TabItem } from '@astrojs/starlight/components';
 
 import MdxRepl from '@components/MdxRepl.vue';
-
+import MdxTableAPI from '@components/MdxTableAPI.vue';
 import Kbd from '@components/KeyboardKey.vue';
 
 import TextFieldPartial from '../fields/_partials/_textField.mdx';
@@ -282,24 +282,10 @@ const onSubmit = handleSubmit((data) => {
 
 These are the properties that can be passed to the `useFormGroup` composable.
 
-| Name                  | Type                        | Description                                                                   |
-| --------------------- | --------------------------- | ----------------------------------------------------------------------------- |
-| name                  | `string` (optional)         | The name of the form group, if provided field names will be prefixed with it. |
-| label                 | `string`                    | The label for the form group.                                                 |
-| schema                | `StandardSchema` (optional) | The validation schema for the form group.                                     |
-| disableHtmlValidation | `boolean` (optional)        | Whether to disable HTML5 validation for fields within the form group.         |
+<MdxTableAPI typeName="FormGroupProps" />
 
 ### Returns
 
-| Name           | Type                                    | Description                                                                |
-| -------------- | --------------------------------------- | -------------------------------------------------------------------------- |
-| `labelProps`   | `Object`                                | Props to be spread on the label element.                                   |
-| `groupProps`   | `Object`                                | Props to be spread on the group container element.                         |
-| `isDirty`      | `ComputedRef<boolean>`                  | Whether any field in the group has been modified.                          |
-| `isValid`      | `ComputedRef<boolean>`                  | Whether all fields in the group are valid.                                 |
-| `isTouched`    | `ComputedRef<boolean>`                  | Whether any field in the group has been touched.                           |
-| `getErrors`    | `() => IssueCollection[]`               | Function to get all errors in the group.                                   |
-| `getValues`    | `() => Record<string, any>`             | Function to get all values in the group.                                   |
-| `getError`     | `(name: string) => string \| undefined` | Function to get the error for a specific field in the group.               |
-| `displayError` | `(name: string) => string \| undefined` | Function to display the error for a specific field if it has been touched. |
-| `validate`     | `() => Promise<void>`                   | Function to validate all fields in the group.                              |
+These are the properties in the object returned by the `useFormGroup` composable.
+
+<MdxTableAPI fnName="useFormGroup" />

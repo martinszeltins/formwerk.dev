@@ -9,6 +9,7 @@ import { Tabs, TabItem, Aside } from '@astrojs/starlight/components';
 import AnatomyCanvas from '@components/AnatomyCanvas.vue';
 import AnatomyNumberField from '@components/AnatomyNumberField.vue';
 import MdxRepl from '@components/MdxRepl.vue';
+import MdxTableAPI from '@components/MdxTableAPI.vue';
 import Kbd from '@components/KeyboardKey.vue';
 import MouseWheel from '@components/MouseWheel.vue';
 
@@ -379,27 +380,7 @@ There is a lot more to directionality and localization, for more info check out 
 
 These are the properties that can be passed to the `useNumberField` composable.
 
-| Name                    | Type                        | Description                                 |
-| ----------------------- | --------------------------- | ------------------------------------------- |
-| `label`                 | `string`                    | The label for the number field.             |
-| `locale`                | `string?`                   | The locale to use for formatting.           |
-| `modelValue`            | `number?`                   | The v-model value for the number field.     |
-| `description`           | `string?`                   | Description text for the number field.      |
-| `incrementLabel`        | `string?`                   | Label for the increment button.             |
-| `decrementLabel`        | `string?`                   | Label for the decrement button.             |
-| `name`                  | `string?`                   | The name attribute for the input element.   |
-| `value`                 | `Numberish?`                | The initial value of the number field.      |
-| `min`                   | `Numberish?`                | The minimum allowed value.                  |
-| `max`                   | `Numberish?`                | The maximum allowed value.                  |
-| `step`                  | `Numberish?`                | The step value for increments/decrements.   |
-| `placeholder`           | `string?`                   | Placeholder text for the input.             |
-| `required`              | `boolean?`                  | Whether the field is required.              |
-| `readonly`              | `boolean?`                  | Whether the field is read-only.             |
-| `disabled`              | `boolean?`                  | Whether the field is disabled.              |
-| `formatOptions`         | `Intl.NumberFormatOptions?` | Options for number formatting.              |
-| `schema`                | `StandardSchema`            | Schema for validation.                      |
-| `disableWheel`          | `boolean?`                  | Whether to disable the wheel event handler. |
-| `disableHtmlValidation` | `boolean?`                  | Whether to disable HTML5 validation.        |
+<MdxTableAPI typeName="NumberFieldProps" />
 
 <Aside>
   Most of the props above can be passed as `Ref<T>` or `() => T` and the reactivity will be handled for you.
@@ -409,23 +390,4 @@ These are the properties that can be passed to the `useNumberField` composable.
 
 These are the properties in the object returned by the `useNumberField` composable.
 
-| Name                   | Type                               | Description                                                         |
-| ---------------------- | ---------------------------------- | ------------------------------------------------------------------- |
-| `decrement`            | `() => void`                       | Decreases the number value by the step amount.                      |
-| `decrementButtonProps` | Complex Binding                    | The decrement button element's props.                               |
-| `descriptionProps`     | `AriaDescriptionProps`             | The description element's props.                                    |
-| `displayError`         | `() => string \| undefined`        | A getter to display the error message if touched.                   |
-| `errorMessage`         | `string \| undefined`              | The validation message.                                             |
-| `errorMessageProps`    | `AriaErrorMessageProps`            | The error message element props.                                    |
-| `errors`               | `string[]`                         | The field's error messages.                                         |
-| `fieldValue`           | `number \| undefined`              | The current value of the field.                                     |
-| `increment`            | `() => void`                       | Increases the number value by the step amount.                      |
-| `incrementButtonProps` | Complex Binding                    | The increment button element's props.                               |
-| `inputProps`           | Complex Binding                    | The base element props.                                             |
-| `isDirty`              | `boolean`                          | Whether the field value has changed.                                |
-| `isTouched`            | `boolean`                          | Whether the field is touched.                                       |
-| `isValid`              | `boolean`                          | Whether the field has error messages.                               |
-| `labelProps`           | `AriaLabelProps`                   | The label element props.                                            |
-| `setErrors`            | `(msg: Arrayable<string>) => void` | Sets the error messages for the field and sets the `isValid` state. |
-| `setTouched`           | `(touched: boolean) => void`       | Sets the `isTouched` state.                                         |
-| `setValue`             | `(value: number) => void`          | Sets the field's current value.                                     |
+<MdxTableAPI fnName="useNumberField" />

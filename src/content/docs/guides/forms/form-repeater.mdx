@@ -9,8 +9,8 @@ import { Aside, Tabs, TabItem } from '@astrojs/starlight/components';
 
 import AnatomyCanvas from '@components/AnatomyCanvas.vue';
 import AnatomyRepeater from '@components/AnatomyRepeater.vue';
-
 import MdxRepl from '@components/MdxRepl.vue';
+import MdxTableAPI from '@components/MdxTableAPI.vue';
 
 import RepeaterPartial from './_partials/_repeater.mdx';
 import TextFieldPartial from '../fields/_partials/_textField.mdx';
@@ -258,45 +258,22 @@ If you need a field to be uncontrolled, avoid passing a name prop to the field.
 
 These are the properties that can be passed to the `useFormRepeater` composable.
 
-| Name                | Type                   | Description                                          |
-| ------------------- | ---------------------- | ---------------------------------------------------- |
-| name                | `string`               | The name of the repeater field.                      |
-| min                 | `Numberish` (optional) | The minimum number of items allowed in the repeater. |
-| max                 | `Numberish` (optional) | The maximum number of items allowed in the repeater. |
-| addButtonLabel      | `string` (optional)    | Custom label for the add button.                     |
-| removeButtonLabel   | `string` (optional)    | Custom label for the remove button.                  |
-| moveUpButtonLabel   | `string` (optional)    | Custom label for the move up button.                 |
-| moveDownButtonLabel | `string` (optional)    | Custom label for the move down button.               |
+<MdxTableAPI typeName="FormRepeaterProps" />
 
 ### Returns
 
 These are the properties in the object returned by the `useFormRepeater` composable.
 
-| Name           | Type                                 | Description                                                                   |
-| -------------- | ------------------------------------ | ----------------------------------------------------------------------------- |
-| addButtonProps | `Object`                             | Props to be spread on the add button element.                                 |
-| add            | `() => void`                         | Function to add a new item to the repeater.                                   |
-| swap           | `(from: number, to: number) => void` | Function to swap the positions of two items in the repeater.                  |
-| remove         | `(index: number) => void`            | Function to remove an item from the repeater.                                 |
-| move           | `(from: number, to: number) => void` | Function to move an item to a new position in the repeater.                   |
-| insert         | `(index: number) => void`            | Function to insert a new item at a specific index.                            |
-| items          | `readonly string[]`                  | Readonly array of strings representing the keys of the items in the repeater. |
-| Iteration      | `Component`                          | Component used to render repeated items.                                      |
+<MdxTableAPI fnName="useFormRepeater" />
 
 ### `<Iteration />`
 
 #### Props
 
-| Name  | Type     | Description                                               |
-| ----- | -------- | --------------------------------------------------------- |
-| index | `number` | The index of the current repeated item. This is required. |
+<MdxTableAPI typeName="FormRepeaterIterationProps" />
 
 #### Slot Props
 
-These are the properties passed to the default slot of the `Repeat` component.
+These are the properties passed to the default slot of the `Iteration` component.
 
-| Name                | Type                         | Description                                         |
-| ------------------- | ---------------------------- | --------------------------------------------------- |
-| moveDownButtonProps | `FormRepeaterButtonDomProps` | Props to be spread on the move down button element. |
-| moveUpButtonProps   | `FormRepeaterButtonDomProps` | Props to be spread on the move up button element.   |
-| removeButtonProps   | `FormRepeaterButtonDomProps` | Props to be spread on the remove button element.    |
+<MdxTableAPI typeName="FormRepeaterIterationSlotProps" />

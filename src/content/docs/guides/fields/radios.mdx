@@ -9,6 +9,7 @@ import { Aside } from '@astrojs/starlight/components';
 import AnatomyCanvas from '@components/AnatomyCanvas.vue';
 import AnatomyRadio from '@components/AnatomyRadio.vue';
 import MdxRepl from '@components/MdxRepl.vue';
+import MdxTableAPI from '@components/MdxTableAPI.vue';
 import Kbd from '@components/KeyboardKey.vue';
 
 import RadioGroupPartial from './_partials/_radioGroup.mdx';
@@ -424,40 +425,13 @@ Most of the values expressed below are wrapped in `Ref` as they are reactive val
 
 These are the properties that can be passed to the `useRadioGroup` composable.
 
-| Name                    | Type                     | Description                                                                                            |
-| ----------------------- | ------------------------ | ------------------------------------------------------------------------------------------------------ |
-| `orientation`           | `Orientation`            | The orientation of the radio group.                                                                    |
-| `dir`                   | `Direction`              | The direction of the radio group.                                                                      |
-| `label`                 | `string`                 | The label of the radio group.                                                                          |
-| `description`           | `string`                 | The description of the radio group.                                                                    |
-| `name`                  | `string`                 | The name attribute of the radio group.                                                                 |
-| `modelValue`            | `TValue`                 | The value of the radio group.                                                                          |
-| `disabled`              | `boolean`                | If the radio group is disabled.                                                                        |
-| `readonly`              | `boolean`                | If the radio group is readonly.                                                                        |
-| `required`              | `boolean`                | If the radio group is required.                                                                        |
-| `schema`                | `StandardSchema<TValue>` | The [Standard Schema](https://github.com/standard-schema/standard-schema) to validate the radio group. |
-| `disableHtmlValidation` | `boolean`                | If HTML validation should be disabled for the radio group.                                             |
+<MdxTableAPI typeName="RadioGroupProps" />
 
 #### Returns
 
 These are the properties in the object returned by the `useRadioGroup` composable.
 
-| Name                | Type                               | Description                                                                |
-| ------------------- | ---------------------------------- | -------------------------------------------------------------------------- |
-| `descriptionProps`  | `AriaDescriptionProps`             | The group's description element props.                                     |
-| `displayError`      | `() => string \| undefined`        | A getter to display the error message if touched.                          |
-| `errorMessage`      | `string \| undefined`              | The group's first error message.                                           |
-| `errorMessageProps` | `AriaErrorMessageProps`            | The group's error message element props.                                   |
-| `errors`            | `string[]`                         | The group's error messages.                                                |
-| `fieldValue`        | `any[]`                            | The group's value.                                                         |
-| `groupProps`        | `AriaGroupProps`                   | The group's element props.                                                 |
-| `isDirty`           | `boolean`                          | If the group is dirty, that is if the group value has changed.             |
-| `isTouched`         | `boolean`                          | If the group is touched, that is if at least one checkbox item is touched. |
-| `isValid`           | `boolean`                          | If the group has any error messages.                                       |
-| `labelProps`        | `AriaLabelProps`                   | The group's label element props.                                           |
-| `setErrors`         | `(msg: Arrayable<string>) => void` | Sets the error messages for the group and sets the `isValid` state.        |
-| `setTouched`        | `(touched: boolean) => void`       | Sets the `isTouched` state.                                                |
-| `setValue`          | `(value: any[]) => void`           | Sets the group value and updates the selected item checked state.          |
+<MdxTableAPI fnName="useRadioGroup" />
 
 ### Radio
 
@@ -465,19 +439,10 @@ These are the properties in the object returned by the `useRadioGroup` composabl
 
 These are the properties that can be passed to the `useRadio` composable.
 
-| Name       | Type      | Description                                                  |
-| ---------- | --------- | ------------------------------------------------------------ |
-| `value`    | `TValue`  | The radio's value. Will be used to track its selected state. |
-| `label`    | `string`  | The radio's label.                                           |
-| `disabled` | `boolean` | If the radio is disabled.                                    |
+<MdxTableAPI typeName="RadioProps" />
 
 #### Returns
 
 These are the properties in the object returned by the `useRadio` composable.
 
-| Name         | Type             | Description                      |
-| ------------ | ---------------- | -------------------------------- |
-| `inputProps` | Complex Binding  | The radio's base element props.  |
-| `isChecked`  | `boolean`        | If the radio is checked.         |
-| `isDisabled` | `boolean`        | If the radio is disabled.        |
-| `labelProps` | `AriaLabelProps` | The radio's label element props. |
+<MdxTableAPI fnName="useRadio" />

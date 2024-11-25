@@ -10,6 +10,7 @@ import { Aside } from '@astrojs/starlight/components';
 import AnatomyCanvas from '@components/AnatomyCanvas.vue';
 import AnatomySwitch from '@components/AnatomySwitch.vue';
 import MdxRepl from '@components/MdxRepl.vue';
+import MdxTableAPI from '@components/MdxTableAPI.vue';
 import Kbd from '@components/KeyboardKey.vue';
 
 import SwitchPartial from './_partials/_switch.mdx';
@@ -344,35 +345,14 @@ const value = ref('off');
 
 ## API
 
-## Props
+### Props
 
 These are the properties that can be passed to the `useSwitch` composable.
 
-| Name                  | Type                      | Description                                                  |
-| --------------------- | ------------------------- | ------------------------------------------------------------ |
-| label                 | `string`                  | The label for the switch component.                          |
-| name                  | `string`                  | The name attribute for the switch component.                 |
-| modelValue            | `boolean`                 | The value of the switch component.                           |
-| required              | `boolean`                 | Whether the switch component is required.                    |
-| readonly              | `boolean`                 | Whether the switch component is readonly.                    |
-| disabled              | `boolean`                 | Whether the switch component is disabled.                    |
-| trueValue             | `any`                     | The value to be assigned when the switch is on.              |
-| falseValue            | `any`                     | The value to be assigned when the switch is off.             |
-| schema                | `StandardSchema<unknown>` | The schema to validate the switch component value.           |
-| disableHtmlValidation | `boolean`                 | Whether to disable HTML validation for the switch component. |
+<MdxTableAPI typeName="SwitchProps" />
 
 ### Returns
 
 These are the properties in the object returned by the `useSwitch` composable.
 
-| Name                | Type                        | Description                            |
-| ------------------- | --------------------------- | -------------------------------------- |
-| `errorMessage`      | `string \| undefined`       | The validation message.                |
-| `errorMessageProps` | `AriaErrorMessageProps`     | The error message element props.       |
-| `inputProps`        | Complex Binding             | The base element props.                |
-| `isDirty`           | `boolean`                   | Whether the switch value has changed.  |
-| `isPressed`         | `boolean`                   | Whether the switch is on/off.          |
-| `isTouched`         | `boolean`                   | Whether the switch is touched.         |
-| `isValid`           | `boolean`                   | Whether the switch has error messages. |
-| `labelProps`        | `AriaLabelProps`            | The label element props.               |
-| `togglePressed`     | `(force?: boolean) => void` | Switches the field value on/off        |
+<MdxTableAPI fnName="useSwitch" />

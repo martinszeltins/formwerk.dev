@@ -7,6 +7,7 @@ sidebar:
 
 import { Aside, Tabs, TabItem } from '@astrojs/starlight/components';
 import MdxRepl from '@components/MdxRepl.vue';
+import MdxTableAPI from '@components/MdxTableAPI.vue';
 import Kbd from '@components/KeyboardKey.vue';
 
 import TextFieldPartial from '../fields/_partials/_textField.mdx';
@@ -1011,36 +1012,10 @@ For getting the most out of type safety, it is recommended to use Standard Schem
 
 These are the properties that can be passed to the `useForm` composable.
 
-| Name                  | Type                             | Description                                   |
-| --------------------- | -------------------------------- | --------------------------------------------- |
-| id                    | `string`                         | The unique identifier for the form.           |
-| initialValues         | `MaybeGetter<MaybeAsync<TForm>>` | The initial values of the form fields.        |
-| initialTouched        | `TouchedSchema<TForm>`           | The initial touched state of the form fields. |
-| schema                | `StandardSchema<TForm, TOutput>` | The schema used for form validation.          |
-| disableHtmlValidation | `boolean`                        | Flag to disable HTML validation for the form. |
+<MdxTableAPI typeName="FormProps" />
 
 ### Returns
 
 These are the properties in the object returned by the `useForm` composable.
 
-| Name            | Type                                                | Description                                           |
-| --------------- | --------------------------------------------------- | ----------------------------------------------------- |
-| values          | `Record<string, any>`                               | The current values of the form.                       |
-| isSubmitting    | `boolean`                                           | Indicates if the form is currently submitting.        |
-| isTouched       | `boolean`                                           | Indicates if any field in the form has been touched.  |
-| isDirty         | `boolean`                                           | Indicates if any field in the form has been modified. |
-| isValid         | `boolean`                                           | Indicates if the form is valid.                       |
-| setFieldValue   | `(path: string, value: any) => void`                | Sets the value of a specific field.                   |
-| getFieldValue   | `(path: string) => any`                             | Gets the value of a specific field.                   |
-| isFieldTouched  | `(path: string) => boolean`                         | Checks if a specific field has been touched.          |
-| isFieldDirty    | `(path: string) => boolean`                         | Checks if a specific field's value has been modified. |
-| setFieldTouched | `(path: string, touched: boolean) => void`          | Sets the touched state of a specific field.           |
-| setFieldErrors  | `(path: string, errors: Arrayable<string>) => void` | Sets the errors for a specific field.                 |
-| setValues       | `(values: Record<string, any>) => void`             | Sets the values of multiple fields.                   |
-| getError        | `(path: string) => string \| undefined`             | Gets the error for a specific field.                  |
-| displayError    | `(path: string) => string \| undefined`             | Displays the error for a specific field.              |
-| getErrors       | `(path: string) => string \| undefined`             | Gets all errors in the form.                          |
-| formProps       | `Object`                                            | The properties to bound to the form element.          |
-| handleSubmit    | `(cb: (data) => void) => Promise<void>`             | Handles form submission.                              |
-| reset           | `(state: ResetState) => Promise<void>`              | Resets the form state.                                |
-| validate        | `() => Promise<FormValidationResult>`               | Validates the form.                                   |
+<MdxTableAPI fnName="useForm" />

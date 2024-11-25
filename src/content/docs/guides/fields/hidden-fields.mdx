@@ -11,6 +11,7 @@ import { Tabs, TabItem, Aside } from '@astrojs/starlight/components';
 import AnatomyCanvas from '@components/AnatomyCanvas.vue';
 import AnatomyHiddenField from '@components/AnatomyHiddenField.vue';
 import MdxRepl from '@components/MdxRepl.vue';
+import MdxTableAPI from '@components/MdxTableAPI.vue';
 
 Hidden fields let you include data that cannot be seen or modified by users when a form is submitted. A good example is a CSRF token or an ID for the content being submitted.
 
@@ -125,45 +126,14 @@ const onSubmit = handleSubmit((data) => {
 
 ## API
 
-### useHiddenField
+### Props
 
-#### Props
+These are the properties that can be passed to the `useHiddenField` composable and the `HiddenField` component.
 
-These are the properties that can be passed to the `useHiddenField` composable.
+<MdxTableAPI typeName="HiddenFieldProps" />
 
-| Name       | Type      | Description                                |
-| ---------- | --------- | ------------------------------------------ |
-| `name`     | `string`  | The name attribute for the input element.  |
-| `value`    | `any`     | The value attribute for the input element. |
-| `disabled` | `boolean` | Whether the field is disabled.             |
-
-<Aside>
-  All the props above can be passed as `Ref<T>` or `() => T` and the reactivity will be handled for you.
-</Aside>
-
-#### Returns
+### Returns
 
 These are the properties in the object returned by the `useHiddenField` composable.
 
-| Name           | Type                               | Description                                                         |
-| -------------- | ---------------------------------- | ------------------------------------------------------------------- |
-| `displayError` | `() => string \| undefined`        | A getter to display the error message if touched.                   |
-| `errorMessage` | `string \| undefined`              | The validation message.                                             |
-| `errors`       | `string[]`                         | The field's error messages.                                         |
-| `fieldValue`   | `string \| undefined`              | The current value of the field.                                     |
-| `isDirty`      | `boolean`                          | Whether the field value has changed.                                |
-| `isTouched`    | `boolean`                          | Whether the field is touched.                                       |
-| `isValid`      | `boolean`                          | Whether the field has error messages.                               |
-| `setErrors`    | `(msg: Arrayable<string>) => void` | Sets the error messages for the field and sets the `isValid` state. |
-| `setTouched`   | `(touched: boolean) => void`       | Sets the `isTouched` state.                                         |
-| `setValue`     | `(value: number) => void`          | Sets the field's current value.                                     |
-
-### HiddenField Component
-
-#### Props
-
-| Name       | Type      | Description                                |
-| ---------- | --------- | ------------------------------------------ |
-| `name`     | `string`  | The name attribute for the input element.  |
-| `value`    | `any`     | The value attribute for the input element. |
-| `disabled` | `boolean` | Whether the field is disabled.             |
+<MdxTableAPI fnName="useHiddenField" />

@@ -10,6 +10,7 @@ import { Aside } from '@astrojs/starlight/components';
 import AnatomyCanvas from '@components/AnatomyCanvas.vue';
 import AnatomySelect from '@components/AnatomySelect.vue';
 import MdxRepl from '@components/MdxRepl.vue';
+import MdxTableAPI from '@components/MdxTableAPI.vue';
 import Kbd from '@components/KeyboardKey.vue';
 
 import OptionPartial from './_partials/_option.mdx';
@@ -448,20 +449,13 @@ Furthermore, the popover element will receive the `aria-multiselectable` attribu
 
 These are the properties that can be passed to the `useOption` composable.
 
-| Name     | Type                 | Description                                  |
-| -------- | -------------------- | -------------------------------------------- |
-| label    | `string`             | The label for the option.                    |
-| value    | `any`                | The value for the option. Used for tracking. |
-| disabled | `boolean` (optional) | Whether the option is disabled.              |
+<MdxTableAPI typeName="OptionProps" />
 
 #### Returns
 
 These are the properties in the object returned by the `useOption` composable.
 
-| Name        | Type      | Description                               |
-| ----------- | --------- | ----------------------------------------- |
-| optionProps | `object`  | Props to be spread on the option element. |
-| isSelected  | `boolean` | Whether the option is selected.           |
+<MdxTableAPI fnName="useOption" />
 
 ### Option Group
 
@@ -469,18 +463,13 @@ These are the properties in the object returned by the `useOption` composable.
 
 These are the properties that can be passed to the `useOptionGroup` composable.
 
-| Name  | Type     | Description              |
-| ----- | -------- | ------------------------ |
-| label | `string` | The label for the group. |
+<MdxTableAPI typeName="OptionGroupProps" />
 
 #### Returns
 
 These are the properties in the object returned by the `useOptionGroup` composable.
 
-| Name       | Type     | Description                              |
-| ---------- | -------- | ---------------------------------------- |
-| labelProps | `object` | Props to be spread on the label element. |
-| groupProps | `object` | Props to be spread on the group element. |
+<MdxTableAPI fnName="useOptionGroup" />
 
 ### Select
 
@@ -488,37 +477,10 @@ These are the properties in the object returned by the `useOptionGroup` composab
 
 These are the properties that can be passed to the `useSelect` composable.
 
-| Name        | Type                                           | Description                                            |
-| ----------- | ---------------------------------------------- | ------------------------------------------------------ |
-| label       | `string`                                       | The label for the select field.                        |
-| name        | `string` (optional)                            | The name attribute for the select field.               |
-| description | `string` (optional)                            | The description for the select field.                  |
-| modelValue  | `Arrayable<TValue>` (optional)                 | The value(s) bound to the select field.                |
-| disabled    | `boolean` (optional)                           | Whether the select field is disabled.                  |
-| readonly    | `boolean` (optional)                           | Whether the select field is read-only.                 |
-| multiple    | `boolean` (optional)                           | Whether the select field supports multiple selections. |
-| orientation | `Orientation` (optional)                       | The orientation of the select field listbox.           |
-| schema      | `StandardSchema<Arrayable<TValue>>` (optional) | The schema for validating the select field value.      |
+<MdxTableAPI typeName="SelectProps" />
 
 #### Returns
 
 These are the properties in the object returned by the `useSelect` composable.
 
-| Name              | Type                               | Description                                                         |
-| ----------------- | ---------------------------------- | ------------------------------------------------------------------- |
-| descriptionProps  | `object`                           | Props to be spread on the description element.                      |
-| displayError      | `() => string \| undefined`        | A getter to display the error message if touched.                   |
-| errorMessage      | `string \| undefined`              | The validation message.                                             |
-| errorMessageProps | `object`                           | Props to be spread on the error message element.                    |
-| errors            | `string[]`                         | The field's error messages.                                         |
-| fieldValue        | `number \| undefined`              | The current value of the field.                                     |
-| isDirty           | `boolean`                          | Whether the field value has changed.                                |
-| isOpen            | `boolean`                          | Whether the listbox menu is open.                                   |
-| isTouched         | `boolean`                          | Whether the field is touched.                                       |
-| isValid           | `boolean`                          | Whether the field has error messages.                               |
-| labelProps        | `object`                           | Props to be spread on the label element.                            |
-| popupProps        | `object`                           | Props to be spread on the popup element.                            |
-| setErrors         | `(msg: Arrayable<string>) => void` | Sets the error messages for the field and sets the `isValid` state. |
-| setTouched        | `(touched: boolean) => void`       | Sets the `isTouched` state.                                         |
-| setValue          | `(value: number) => void`          | Sets the field's current value.                                     |
-| triggerProps      | `object`                           | Props to be spread on the trigger element.                          |
+<MdxTableAPI fnName="useSelect" />
