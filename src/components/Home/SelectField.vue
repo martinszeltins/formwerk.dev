@@ -33,8 +33,9 @@ const {
 } = useSelect(props);
 
 let floatingStyles = ref({});
-const useJSPlacement =
-  !CSS.supports('position-area: bottom') && !CSS.supports('position-anchor');
+const useJSPlacement = import.meta.env.SSR
+  ? false
+  : !CSS.supports('position-area: bottom') && !CSS.supports('position-anchor');
 
 if (useJSPlacement) {
   floatingStyles = useFloating(triggerEl, listBoxEl, {
