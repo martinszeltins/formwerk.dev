@@ -35,7 +35,7 @@ export default defineConfig({
         alt: 'Formwerk',
         replacesTitle: true,
       },
-
+      favicon: '/favicon.svg',
       social: {
         github: 'https://github.com/formwerkjs/formwerk',
         discord: 'https://discord.gg/gQ7wqpvT5X',
