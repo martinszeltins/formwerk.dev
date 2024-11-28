@@ -28,7 +28,7 @@ export default defineConfig({
   },
   integrations: [
     starlight({
-      title: 'Docs',
+      title: 'Formwerk',
       logo: {
         dark: './public/logo-dark.svg',
         light: './public/logo-light.svg',
