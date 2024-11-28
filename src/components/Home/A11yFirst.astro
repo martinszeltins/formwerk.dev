@@ -1,5 +1,5 @@
 ---
-import PhArrowRight from '~icons/ph/arrow-right';
+// import PhArrowRight from '~icons/ph/arrow-right';
 
 const features = [
   {
@@ -10,14 +10,14 @@ const features = [
   {
     title: 'Adaptive Attributes',
     description:
-      'You can use any HTML markup you prefer. Aria attributes will automatically adjust based on the elements you choose.',
-    learnMore: '/docs/a11y/adaptive-attributes',
+      'You can use almost any HTML markup you prefer. The attributes and listeners will adapt based on the elements you use.',
   },
-  {
-    title: 'Audited by Experts',
-    description:
-      'Audited by experts and assistive tech users to ensure the highest standards of accessibility. See <a href="/credits">contributors</a> for more details.',
-  },
+  // {
+  //   title: '',
+  //   description:
+  //     'Audited by experts and assistive tech users to ensure the highest standards of accessibility. See <a href="/credits">contributors</a> for more details.',
+  //   learnMore: '',
+  // },
 ];
 ---
 
@@ -37,12 +37,12 @@ const features = [
             set:html={f.description}
           />
 
-          {f.learnMore && (
+          {/* {f.learnMore && (
             <a href={f.learnMore} class="mt-6 inline-block text-sm">
               Learn more
               <PhArrowRight />
             </a>
-          )}
+          )} */}
         </div>
       ))
     }
