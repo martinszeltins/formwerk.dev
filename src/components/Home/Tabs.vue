@@ -85,6 +85,16 @@ function activateTab(tab: string) {
     `${Math.sign(newTabIdx - oldTabIdx)}`,
   );
 }
+
+function getInitialStyle(name: string) {
+  if (tabsRoot.value) {
+    return {};
+  }
+
+  return {
+    display: name === currentTab.value ? undefined : 'none',
+  };
+}
 </script>
 
 <template>
@@ -115,6 +125,7 @@ function activateTab(tab: string) {
         :data-active="currentTab === tab.name"
         :data-tab-content="tab.name"
         class="tab-content"
+        :style="getInitialStyle(tab.name)"
         @animationend="onTransitionEnd"
       >
         <component :is="tab.render" />
