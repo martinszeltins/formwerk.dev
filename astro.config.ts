@@ -64,6 +64,9 @@ export default defineConfig({
           autogenerate: { directory: 'guides/extras' },
         },
       ],
+      editLink: {
+        baseUrl: 'https://github.com/formwerkjs/formwerk.dev/edit/main/',
+      },
     }),
     tailwind({
       applyBaseStyles: false,
