@@ -2,7 +2,7 @@
   "name": "formwerk.dev",
   "type": "module",
   "version": "0.0.1",
-  "packageManager": "pnpm@9.8.0",
+  "packageManager": "pnpm@9.14.3+sha256.652c47dac7c2b9350db4cdb9330c087d527114a0c2dff4cbac7ea9b96be928bd",
   "private": true,
   "scripts": {
     "dev": "astro dev",
