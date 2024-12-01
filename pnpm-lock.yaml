@@ -14,6 +14,9 @@ importers:
       '@astrojs/partytown':
         specifier: ^2.1.2
         version: 2.1.2
+      '@astrojs/sitemap':
+        specifier: ^3.2.1
+        version: 3.2.1
       '@astrojs/starlight':
         specifier: ^0.29.2
         version: 0.29.2(astro@4.16.16(@types/node@22.10.1)(rollup@4.27.4)(typescript@5.7.2))
@@ -5102,7 +5105,7 @@ snapshots:
 
   '@types/sax@1.2.7':
     dependencies:
-      '@types/node': 17.0.45
+      '@types/node': 22.10.1
 
   '@types/unist@2.0.11': {}
 

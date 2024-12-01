@@ -9,8 +9,11 @@ import Components from 'unplugin-vue-components/vite';
 
 import partytown from '@astrojs/partytown';
 
+import sitemap from '@astrojs/sitemap';
+
 // https://astro.build/config
 export default defineConfig({
+  site: 'https://formwerk.dev',
   vite: {
     plugins: [
       Components({
@@ -73,5 +76,6 @@ export default defineConfig({
     }),
     vue(),
     partytown({ config: { forward: ['dataLayer.push'] } }),
+    sitemap(),
   ],
 });
