@@ -38,6 +38,35 @@ export default defineConfig({
         alt: 'Formwerk',
         replacesTitle: true,
       },
+      head: [
+        {
+          tag: 'script',
+          attrs: {
+            type: 'text/partytown',
+            async: true,
+            src: 'https://www.googletagmanager.com/gtag/js?id=G-CVDZRK6FZF',
+          },
+        },
+        {
+          tag: 'script',
+          attrs: {
+            type: 'text/partytown',
+            lang: 'js',
+          },
+          content: `
+            const dataLayer = window.dataLayer || [];
+
+            function gtag() {
+              // eslint-disable-next-line prefer-rest-params
+              dataLayer.push(arguments);
+            }
+
+            gtag('js', new Date());
+
+            gtag('config', 'G-CVDZRK6FZF');
+          `,
+        },
+      ],
       favicon: '/favicon.svg',
       social: {
         github: 'https://github.com/formwerkjs/formwerk',
