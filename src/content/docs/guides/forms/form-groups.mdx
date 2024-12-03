@@ -10,6 +10,8 @@ import { Aside, Tabs, TabItem } from '@astrojs/starlight/components';
 import MdxRepl from '@components/MdxRepl.vue';
 import MdxTableAPI from '@components/MdxTableAPI.vue';
 import Kbd from '@components/KeyboardKey.vue';
+import AnatomyCanvas from '@components/AnatomyCanvas.vue';
+import AnatomyFormGroup from '@components/AnatomyFormGroup.vue';
 
 import TextFieldPartial from '../fields/_partials/_textField.mdx';
 import CheckboxPartial from '../fields/_partials/_checkbox.mdx';
@@ -19,6 +21,19 @@ import GroupPartial from './_partials/_group.mdx';
 Form groups are a way to structure related fields in a form. They allow you to group fields together and slice forms into smaller parts. This can be useful for organizing forms with many fields, or for creating reusable group components that may be added to multiple forms.
 
 That's their main purpose, to slice forms into manageable parts. They are not nested forms, they do not submit data on their own, they are just a way to group fields together in a parent form.
+
+## Features
+
+- Multi-layered validation with both HTML attributes or [Standard Schemas](https://github.com/standard-schema/standard-schema).
+- Aggregated state for validation, dirty, touched, and more.
+- Supports either a `fieldset` and `legend` elements or any other HTML elements.
+- Automatic field name prefixing for organizing submitted data structure.
+
+## Anatomy
+
+<AnatomyCanvas>
+  <AnatomyFormGroup />
+</AnatomyCanvas>
 
 ## Creating a Form Group
 

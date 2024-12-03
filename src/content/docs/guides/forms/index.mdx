@@ -17,6 +17,17 @@ Forms allow users to fill and submit data to your application, sometimes they ar
 
 Assuming you've followed the other guides and have created a few input components, you can now use them to build a form. Formwerk builds on the native `form` element but it is not required.
 
+## Features
+
+- Value tracking and submission handling.
+- Nested fields and arrays support.
+- Controlled and uncontrolled fields.
+- Multi-layered validation with both HTML attributes or [Standard Schemas](https://github.com/standard-schema/standard-schema).
+- Aggregated state for validation, dirty, touched, and more.
+- Type safety for form data and submitted data.
+- Scrolling to first invalid field after submission.
+- Submitted data can be consumed as a plain object, JSON or `FormData` object.
+
 ## useForm
 
 You will be using the `useForm` composable to create a form context in the current component. This effectively marks the component as a form, meaning you can only use `useForm` once per component.
