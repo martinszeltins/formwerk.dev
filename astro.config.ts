@@ -80,7 +80,7 @@ export default defineConfig({
             'guides/getting-started',
             'guides/why',
             'guides/composables',
-            'guides/examples',
+            'showcase',
           ],
         },
         {
@@ -94,6 +94,10 @@ export default defineConfig({
         {
           label: 'Extras',
           autogenerate: { directory: 'guides/extras' },
+        },
+        {
+          label: 'Built with Formwerk',
+          items: ['libraries', 'resources'],
         },
       ],
       editLink: {
