@@ -92,6 +92,10 @@ export default defineConfig({
           autogenerate: { directory: 'guides/forms' },
         },
         {
+          label: 'Starter Kits',
+          items: ['starter-kits/minimal'],
+        },
+        {
           label: 'Extras',
           autogenerate: { directory: 'guides/extras' },
         },
