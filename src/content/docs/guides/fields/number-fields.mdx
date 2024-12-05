@@ -1,5 +1,5 @@
 ---
-title: Number Field
+title: Number Fields
 description: Learn how to build accessible and i18n-ready number field Vue components with Formwerk.
 sidebar:
   order: 2
@@ -12,6 +12,7 @@ import MdxRepl from '@components/MdxRepl.vue';
 import MdxTableAPI from '@components/MdxTableAPI.vue';
 import Kbd from '@components/KeyboardKey.vue';
 import MouseWheel from '@components/MouseWheel.vue';
+import PreviewCard from '@components/PreviewCard.vue';
 
 import NumberFieldPartial from './_partials/_numberField.mdx';
 
@@ -373,6 +374,21 @@ import NumberField from './NumberField.vue';
 There is a lot more to directionality and localization, for more info check out the [i18n guide](/guides/extras/i18n/).
 
 </Aside>
+
+## Examples
+
+These are some examples of number fields built with Formwerk.
+
+<div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+  <PreviewCard
+    title="NumberFlow"
+    description="Showcase of a number field using the excellent `@number-flow/vue` to animate value transitions."
+    link="https://stackblitz.com/edit/formwerk-numberflow"
+    src="/thumbs/number-flow.mp4"
+    external
+    client:idle
+  />
+</div>
 
 ## API
 
