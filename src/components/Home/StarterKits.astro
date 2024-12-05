@@ -1,7 +1,7 @@
 ---
 // import PhArrowRight from '~icons/ph/arrow-right';
-import PhCodeSimple from '~icons/ph/code-simple-bold';
-import TailwindLogo from '~icons/vscode-icons/file-type-tailwind';
+import PhFeather from '~icons/ph/feather-bold';
+import LogoWhite from '@assets/logo-w.svg';
 ---
 
 <section>
@@ -21,13 +21,14 @@ import TailwindLogo from '~icons/vscode-icons/file-type-tailwind';
   <div class="mt-10 grid grid-cols-1 gap-4 md:grid-cols-2">
     <a href="" class="card">
       <h3 class="heading-grad flex items-center gap-2">
-        Unstyled
-        <PhCodeSimple class="size-8 text-rose-500" />
+        <PhFeather class="size-8 text-rose-500" />
+        Minimal
       </h3>
 
       <p class="description">
-        Component kit implemented with all Formwerk features without any
-        styling, giving you a clean foundation to build upon.
+        A component kit that includes all Formwerk features with minimal
+        styling, providing a clean foundation for your next project. Styled with
+        plain CSS.
       </p>
 
       <p class="cta">
@@ -39,14 +40,13 @@ import TailwindLogo from '~icons/vscode-icons/file-type-tailwind';
 
     <a href="" class="card">
       <h3 class="heading-grad">
-        TailwindCSS
-        <TailwindLogo class="logo" />
+        <img src={LogoWhite.src} class="logo" />
+        Atma
       </h3>
 
       <p class="description">
-        Component kit implemented with all Formwerk features and beautifully
-        styled with TailwindCSS, giving you a polished look right out of the
-        box.
+        Our accented dark components used in the docs and showcase, styled with
+        TailwindCSS.
       </p>
 
       <p class="cta">
@@ -102,7 +102,7 @@ import TailwindLogo from '~icons/vscode-icons/file-type-tailwind';
     }
 
     .logo {
-      @apply absolute -right-12 bottom-0 inline-block size-10;
+      @apply inline-block size-10;
     }
   }
 </style>
