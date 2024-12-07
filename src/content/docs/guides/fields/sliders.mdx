@@ -20,10 +20,10 @@ import SliderMultiple from './_partials/_sliderMultiple.mdx';
 
 ## Features
 
-- Labeling, descriptions, error message displays are automatically linked to input and label elements with `aria-*` attributes.
+- Labeling, descriptions, and error message displays are automatically linked to input and label elements with `aria-*` attributes.
 - `v-model` support for binding the value of the slider and the individual thumbs.
 - Multi-thumb support with auto value clamping.
-- Support for `min`, `max` and `step` attributes.
+- Support for `min`, `max`, and `step` attributes.
 - Support for both horizontal and vertical orientations.
 - Support for both LTR and RTL directions.
 - Validation with [Standard Schema](https://github.com/standard-schema/standard-schema).
@@ -51,23 +51,23 @@ import SliderMultiple from './_partials/_sliderMultiple.mdx';
 
 ## Building a thumb component
 
-Every slider needs at least one thumb to represent the current value of the slider. This means the slider in Formwerk is a compound component similar to Radio buttons.
+Every slider needs at least one thumb to represent the current value of the slider. This means the slider in Formwerk is a compound component similar to radio buttons.
 
-First, let's build a thumb component that will be used in the slider later, we will keep styling to a minimum by using a simple circle SVG.
+First, let's build a thumb component that will be used in the slider later. We will keep styling to a minimum by using a simple circle SVG.
 
 You will be using the `useSliderThumb` composable to build the thumb component.
 
 <SliderThumb />
 
-There is nothing to show yet, because we need to build the slider component.
+There is nothing to show yet because we need to build the slider component.
 
 ## Building a slider component
 
 You will be using the `useSlider` composable to build the slider component.
 
-The `useSlider` composable returns binding objects for the elements shown in the [anatomy](#anatomy), you will use `v-bind` to bind them to the corresponding DOM elements.
+The `useSlider` composable returns binding objects for the elements shown in the [anatomy](#anatomy). You will use `v-bind` to bind them to the corresponding DOM elements.
 
-The Slider is what we consider a fully custom component, meaning it doesn't have an underlying `input` base element that you can use. While The `input[type="range"]` may be a suitable candidate, it doesn't scale to support the wide range (pun intended) of use-cases that developers expect of slider inputs today.
+The Slider is what we consider a fully custom component, meaning it doesn't have an underlying `input` base element that you can use. While the `input[type="range"]` may be a suitable candidate, it doesn't scale to support the wide range (pun intended) of use-cases that developers expect of slider inputs today.
 
 <MdxRepl client:load>
 
@@ -95,11 +95,11 @@ import Slider from './Slider.vue';
 
 </MdxRepl>
 
-Notice that in order to model the slider progress visually we used the utility composable `useThumbMetadata` to calculate the percentage of the thumb position.
+Notice that in order to model the slider progress visually, we used the utility composable `useThumbMetadata` to calculate the percentage of the thumb position.
 
 ## Validation
 
-Because sliders in Formwerk are a fully custom component, it doesn't support any HTML validation attributes. You can however, use [Standard Schema](https://github.com/standard-schema/standard-schema) to validate the value of the slider.
+Because sliders in Formwerk are a fully custom component, they don't support any HTML validation attributes. You can, however, use [Standard Schema](https://github.com/standard-schema/standard-schema) to validate the value of the slider.
 
 ### Standard Schema
 
@@ -107,7 +107,7 @@ The `useSlider` composable accepts a `schema` prop that is an instance of a Stan
 
 <Aside>
 
-Depending on the schema validation provider you are using, the API might slightly differ. Check the supported validation providers for more information. In this example we are using the `zod` schema validation provider.
+Depending on the schema validation provider you are using, the API might slightly differ. Check the supported validation providers for more information. In this example, we are using the `zod` schema validation provider.
 
 </Aside>
 
@@ -144,7 +144,7 @@ const schema = z.number('Required').min(30).max(80);
 
 ### Multiple Thumbs
 
-You can have as many thumbs as you want inside a slider, just add another `<Thumb />` component and this will be automatically handled for you:
+You can have as many thumbs as you want inside a slider. Just add another `<Thumb />` component, and this will be automatically handled for you:
 
 - Min/Max clamping for each thumb.
 - Value conversion to an array instead of a single number.
@@ -180,11 +180,11 @@ const value = ref([10, 30]);
 
 </MdxRepl>
 
-Note that we did change some CSS from the previous examples in order to color the track properly, but it is up to you how you want to do that in anyway you want.
+Note that we did change some CSS from the previous examples in order to color the track properly, but it is up to you how you want to do that in any way you want.
 
 ### Disabled
 
-Use disabled to mark sliders as non-interactive, disabled sliders are not validated and are not submitted.
+Use `disabled` to mark sliders as non-interactive. Disabled sliders are not validated and are not submitted.
 
 <MdxRepl client:load>
 
@@ -252,7 +252,7 @@ const value = ref(50);
 
 ### RTL
 
-The `useSlider` composable accepts a `dir` property, you can set it to `RTL` and it will handle thumb positioning automatically along with inverting the horizontal arrow keys (left/right arrows).
+The `useSlider` composable accepts a `dir` property. You can set it to `RTL`, and it will handle thumb positioning automatically along with inverting the horizontal arrow keys (left/right arrows).
 
 <MdxRepl client:load>
 
@@ -285,13 +285,13 @@ const value = ref(50);
 
 <Aside>
 
-There is a lot more to directionality and localization, for more info check out the [i18n guide](/guides/extras/i18n/).
+There is a lot more to directionality and localization. For more info, check out the [i18n guide](/guides/extras/i18n/).
 
 </Aside>
 
 ### Orientation
 
-`useSlider` also accepts an `orientation` prop, you can set to either `horizontal` (default) or `vertical`.
+`useSlider` also accepts an `orientation` prop. You can set it to either `horizontal` (default) or `vertical`.
 
 Formwerk will handle most things in either orientation in terms of interaction and thumb positioning. But slider layout is left to you to do.
 
@@ -328,7 +328,7 @@ const value = ref(0);
 
 ### Discrete Slider Values
 
-You can also use discrete slider values by passing an `options` prop to the slider, this is useful for non-numeric values like a rating slider.
+You can also use discrete slider values by passing an `options` prop to the slider. This is useful for non-numeric values like a rating slider.
 
 When doing this, the slider min/max will be set to the first and last option, and the step will be set to the difference between the first and last option divided by the number of options you want to show. This also means the `step` prop is ignored when `options` is used.
 
@@ -361,7 +361,7 @@ const options = ['Bad', 'Poor', 'Okay', 'Good', 'Great'];
 
 ### Generic Types
 
-The slider's `SliderProps` accepts a generic type parameter that allows you build generically typed slider components.
+The slider's `SliderProps` accepts a generic type parameter that allows you to build generically typed slider components.
 
 ```vue
 <script setup lang="ts" generic="TValue">
@@ -371,34 +371,34 @@ const props = defineProps<SliderProps<TValue>>();
 </script>
 ```
 
-This gives you auto type inference for the slider's value even when using `options` prop for any type of value.
+This gives you auto type inference for the slider's value even when using the `options` prop for any type of value.
 
 ## Styling
 
-You probably have noticed that the `trackProps` and `thumbProps` contain some minor styling properties, those are the bare minimum to get the slider working and they are automatically added for you.
+You probably have noticed that the `trackProps` and `thumbProps` contain some minor styling properties. These are the bare minimum to get the slider working, and they are automatically added for you.
 
 If you are interested in knowing what properties are added, here is a list:
 
 - `trackProps` style properties:
   - `container-type`: is set to `size` or `inline-size` depending on the orientation. You should NOT override this property.
-  - `position`: is set to `relative`, you can override this to anything but `static`.
+  - `position`: is set to `relative`. You can override this to anything but `static`.
 - `thumbProps` style properties:
-  - `position`: is set to `absolute`, you should NOT override this property.
-  - `translate`: used to position the thumb, you should NOT override this property.
-  - `will-change`: is set to `translate`, you should NOT override this property.
-  - any inset position properties like `top`, `left`, `right`, `bottom` are set to `0`, you should NOT override these properties.
+  - `position`: is set to `absolute`. You should NOT override this property.
+  - `translate`: used to position the thumb. You should NOT override this property.
+  - `will-change`: is set to `translate`. You should NOT override this property.
+  - Any inset position properties like `top`, `left`, `right`, `bottom` are set to `0`. You should NOT override these properties.
 
 We were very careful to not add any easily overridden properties to the `trackProps` and `thumbProps` to avoid any conflicts with your custom styles.
 
-Other than all of that you can use any styling solution you want, whether it's [TailwindCSS](https://tailwindcss.com/), or plain CSS.
+Other than all of that, you can use any styling solution you want, whether it's [TailwindCSS](https://tailwindcss.com/) or plain CSS.
 
 #### Thumb attributes
 
-The thumb element will receive the `aria-orientation` attribute which is the same as the slider's orientation so you can style tooltips or other UI elements according to the slider's orientation.
+The thumb element will receive the `aria-orientation` attribute, which is the same as the slider's orientation, so you can style tooltips or other UI elements according to the slider's orientation.
 
 #### Slider attributes
 
-The slider element will receive the `aria-orientation` attribute which is the prop you pass to the slider.
+The slider element will receive the `aria-orientation` attribute, which is the prop you pass to the slider.
 
 ## API
 

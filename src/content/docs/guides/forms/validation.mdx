@@ -21,29 +21,29 @@ Formwerk bakes validation into any of the component composables that you use. Th
 Formwerk makes use of a couple of different validation systems:
 
 - **HTML Constraint Validation API:** Done via the various validation attributes that you can add to your form fields like `required`, `minlength`, `maxlength`, `min`, `max`, `type`, etc.
-- **Standard Schema Validation:** A Schema based validation that uses JavaScript implemented by multiple providers like [Zod](https://zod.dev/), [Valibot](https://valibot.dev/) and [Arktype](https://arktype.io/).
+- **Standard Schema Validation:** A schema-based validation that uses JavaScript implemented by multiple providers like [Zod](https://zod.dev/), [Valibot](https://valibot.dev/), and [Arktype](https://arktype.io/).
 
-Both systems can be used together and you can even mix between.
+Both systems can be used together, and you can even mix between them.
 
 ## HTML Constraint Validation API
 
-The HTML constraint API at its core is pretty simple. It's a set of attributes that you can add to your form fields and they enforce rules on the field's value.
+The HTML constraint API at its core is pretty simple. It's a set of attributes that you can add to your form fields, and they enforce rules on the field's value.
 
-Each field has some attributes that can be set, some of these attributes are specific to the type of the field. Each field guide shows you which attributes are available for that field, so we won't cover them in detail here.
+Each field has some attributes that can be set; some of these attributes are specific to the type of the field. Each field guide shows you which attributes are available for that field, so we won't cover them in detail here.
 
-However you need to keep in mind some caveats around this:
+However, you need to keep in mind some caveats around this:
 
-- Rules like `maxLength` for text fields or `min/max` for number fields are "preventative". This means they don't allow values that violate the rule, or they prevent violation. Unlike other attributes like `minLength` and `required` which are "suggestive", in other words the user can violate them and see an error message. In either case both prevent submission.
-- Some validation rules are applied implicitly based on the field's type. For text fields, setting a `[type="email"]` will automatically apply the browser's email validation. Similarly, other types like `[type="url"]` will apply URL validation. These rules are also "suggestive" as in the user can violate them and see an error message.
-- Validation messages are always set in the user's language, if the user's locale is German for example, the message will be in German regardless of the language of your application.
+- Rules like `maxLength` for text fields or `min/max` for number fields are "preventative". This means they don't allow values that violate the rule or they prevent violation. Unlike other attributes like `minLength` and `required`, which are "suggestive", in other words, the user can violate them and see an error message. In either case, both prevent submission.
+- Some validation rules are applied implicitly based on the field's type. For text fields, setting a `[type="email"]` will automatically apply the browser's email validation. Similarly, other types like `[type="url"]` will apply URL validation. These rules are also "suggestive", as in the user can violate them and see an error message.
+- Validation messages are always set in the user's language. If the user's locale is German, for example, the message will be in German regardless of the language of your application.
 
-Given these caveats and the limited capabilities for advanced cases. Forces many apps today prefer to use a schema based validation library like Zod or Yup which is also supported by Formwerk.
+Given these caveats and the limited capabilities for advanced cases, many apps today prefer to use a schema-based validation library like Zod or Yup, which is also supported by Formwerk.
 
 ### Disabling HTML5 Validation
 
-In some cases, you may need to disable HTML validation messages, one common reason is [language mismatch between the browser and the website](/guides/extras/i18n/#html-validation-language-mismatch).
+In some cases, you may need to disable HTML validation messages. One common reason is [language mismatch between the browser and the website](/guides/extras/i18n/#html-validation-language-mismatch).
 
-You can disable HTML5 validation by setting `disableHtmlValidation` to `true`. This option exist as a prop on fields, forms, form groups or as a global configuration with the `configure` function.
+You can disable HTML5 validation by setting `disableHtmlValidation` to `true`. This option exists as a prop on fields, forms, form groups, or as a global configuration with the `configure` function.
 
 ```ts
 import { configure } from '@formwerk/core';
@@ -57,7 +57,7 @@ configure({
 
 Formwerk supports the [Standard Schema Spec](https://github.com/standard-schema/standard-schema) and leverages it to provide a uniform schema validation with full type safety for all libraries that support it.
 
-At the moment the following providers implement the Standard Schema Spec and are supported by Formwerk:
+At the moment, the following providers implement the Standard Schema Spec and are supported by Formwerk:
 
 - [Zod](https://zod.dev/) (Soon)
 - [Valibot](https://valibot.dev/)
@@ -81,7 +81,7 @@ const { values, handleSubmit } = useForm({
 
 ### Form Types
 
-As mentioned in the form guide. Standard schemas automatically offer type inference for the form's current values and the submit values. This is incredibly useful to to avoid having to cast and re-check values when submitting them just because TypeScript isn't aware of the runtime validation.
+As mentioned in the form guide, standard schemas automatically offer type inference for the form's current values and the submit values. This is incredibly useful to avoid having to cast and re-check values when submitting them just because TypeScript isn't aware of the runtime validation.
 
 When using a Standard Schema, you don't have to do anything special to get these benefits. Types are automatically inferred from the given schema.
 
@@ -105,7 +105,7 @@ const onSubmit = handleSubmit((data) => {
 });
 ```
 
-The same logic applies for form groups, however form groups do not have output types.
+The same logic applies to form groups; however, form groups do not have output types.
 
 ```ts
 import { useFormGroup } from '@formwerk/core';
@@ -125,13 +125,13 @@ getValues(); // { email?: string | undefined; password?: string | undefined }
 
 ## Unified Validation API
 
-As you have probably have noticed in the field guides, Formwerk unifies standard schema validation with the HTML constraint validation API.
+As you have probably noticed in the field guides, Formwerk unifies standard schema validation with the HTML constraint validation API.
 
-Under the hood, if using a Standard Schema, Formwerk takes the errors and sets them on the field's `validationMessage` property. That means you can make use of pseudo classes like `:invalid` and `:valid` in CSS to style your fields regardless of the validation system you use. We made use of this a few times in the styled examples.
+Under the hood, if using a Standard Schema, Formwerk takes the errors and sets them on the field's `validationMessage` property. That means you can make use of pseudo-classes like `:invalid` and `:valid` in CSS to style your fields regardless of the validation system you use. We made use of this a few times in the styled examples.
 
 ## Validation Triggers and Error Display
 
-Formwerk always displays the error messages regardless if the user has interacted with the field or not. This is done to avoid confusion for you as the developer and puts you in control.
+Formwerk always displays the error messages regardless of whether the user has interacted with the field or not. This is done to avoid confusion for you as the developer and puts you in control.
 
 So instead of "When to validate?", you can think of it as "When to display errors?" which is less complicated and less prone to errors.
 
@@ -142,16 +142,16 @@ Formwerk by default validates on the following events:
 - `blur`: When a field loses focus.
 - `change`: When a field changes its value.
 - `submit`: When a form is submitted.
-- `click`: for some types of fields like `checkbox` or `radio`.
-- `invalid`: an event that fires if the field becomes invalid as a result of HTML constraint validation.
+- `click`: For some types of fields like `checkbox` or `radio`.
+- `invalid`: An event that fires if the field becomes invalid as a result of HTML constraint validation.
 
-at this moment you can't change the default validation events.
+At this moment, you can't change the default validation events.
 
 ### Error Display
 
 Now that you know you will always have errors available, you can decide when to display them.
 
-All Formwerk components exposes a few properties that can help you with error display:
+All Formwerk components expose a few properties that can help you with error display:
 
 - `errors`: An array of all error messages if the field is invalid.
 - `errorMessage`: The error message if the field is invalid. Always the first element of the `errors` array.
@@ -160,7 +160,7 @@ All Formwerk components exposes a few properties that can help you with error di
 - `isDirty`: A boolean indicating if the field's value has changed.
 - `displayError`: A function that returns the error message if the field has been touched and is invalid.
 
-Given these properties you can mix between them to produce the desired behavior.
+Given these properties, you can mix between them to produce the desired behavior.
 
 Here's an example that shows errors only when the field is touched:
 
@@ -213,7 +213,7 @@ import TextField from './TextField.vue';
 
 </MdxRepl>
 
-Notice that even tho the error message is present initially, it is still not displayed. This is because the field is not yet touched.
+Notice that even though the error message is present initially, it is still not displayed. This is because the field is not yet touched.
 
 You can shorten this logic by using the `displayError` function.
 

@@ -25,8 +25,8 @@ Assuming you've followed the other guides and have created a few input component
 - Multi-layered validation with both HTML attributes or [Standard Schemas](https://github.com/standard-schema/standard-schema).
 - Aggregated state for validation, dirty, touched, and more.
 - Type safety for form data and submitted data.
-- Scrolling to first invalid field after submission.
-- Submitted data can be consumed as a plain object, JSON or `FormData` object.
+- Scrolling to the first invalid field after submission.
+- Submitted data can be consumed as a plain object, JSON, or `FormData` object.
 
 ## useForm
 
@@ -95,13 +95,13 @@ const onSubmit = handleSubmit((data) => {
 
 ## Controlled Fields
 
-You may have noticed that we passed `name` prop to the input fields in the previous example. This is because Formwerk uses the `name` prop to identify the fields in the form and uses it to build the form data object that will eventually be submitted.
+You may have noticed that we passed the `name` prop to the input fields in the previous example. This is because Formwerk uses the `name` prop to identify the fields in the form and uses it to build the form data object that will eventually be submitted.
 
-Passing `name` prop to the field marks it as "controlled", as in it is being tracked by the form and contributes its state and value to the form data object.
+Passing the `name` prop to the field marks it as "controlled", as in it is being tracked by the form and contributes its state and value to the form data object.
 
 Now if you want to do the opposite, which is to not have the field be tracked by the form, then you can simply skip passing the `name` prop. This matches the behavior of `FormData` objects and native form submission behavior.
 
-Here is an example where a non-controlled field can be useful, in this example we toggle the visibility of the `billingAddress` field based on the value of the `sameAsShipping` field but we don't want to submit the latter.
+Here is an example where a non-controlled field can be useful. In this example, we toggle the visibility of the `billingAddress` field based on the value of the `sameAsShipping` field, but we don't want to submit the latter.
 
 <MdxRepl preview-size="lg" client:load>
 
@@ -211,9 +211,9 @@ You noticed that the values of the form are collected and passed for you in the 
 
 ### handleSubmit
 
-The previous examples used the `handleSubmit` function to submit the form, this function doesn't require you to use a `form` element nor it requires you to use it with a `submit` event. You can use it with any event or even call it directly.
+The previous examples used the `handleSubmit` function to submit the form. This function doesn't require you to use a `form` element nor does it require you to use it with a `submit` event. You can use it with any event or even call it directly.
 
-The `handleSubmit` function takes a callback function that will be called with the `data` object when the form is submitted. The callback is run only if the form is valid, otherwise, it does nothing.
+The `handleSubmit` function takes a callback function that will be called with the `data` object when the form is submitted. The callback is run only if the form is valid; otherwise, it does nothing.
 
 Here is an example where we just call the submission handler directly:
 
@@ -291,7 +291,7 @@ const onSubmit = handleSubmit(async (data) => {
 });
 ```
 
-If you plan to stringify the form data for use with something like `fetch` or `axios`, then you can omit the `toJSON` and call `JSON.stringify` directly on the `data` object which will call `toJSON` under the hood.
+If you plan to stringify the form data for use with something like `fetch` or `axios`, then you can omit the `toJSON` and call `JSON.stringify` directly on the `data` object, which will call `toJSON` under the hood.
 
 ```ts del={3} ins={4}
 const onSubmit = handleSubmit(async (data) => {
@@ -322,18 +322,16 @@ const onSubmit = handleSubmit((data) => {
 
 ### formProps
 
-If you prefer to not handle submissions with JavaScript and instead want to rely on native form submissions which is common with non-JS server-rendered applications like Rails (Ruby) or Laravel (PHP) applications. In those cases you would be using Vue.js as a progressive enhancement for adding interactivity to these applications.
+If you prefer to not handle submissions with JavaScript and instead want to rely on native form submissions, which is common with non-JS server-rendered applications like Rails (Ruby) or Laravel (PHP) applications, you can use the `formProps` object that is returned by the `useForm` composable to bind the form props to the `form` element. It will enhance the native submission cycle with the same features as with the `handleSubmit` function.
 
-In such cases, you can use the `formProps` object that is returned by the `useForm` composable to bind the form props to the `form` element and it will enhance the native submission cycle with the same features as with the `handleSubmit` function.
-
-When you submit a form bound to `formProps` object:
+When you submit a form bound to the `formProps` object:
 
 1. The form submit event will be prevented.
 2. The form data will be collected and validated.
-3. If invalid, the form will not be submitted and the flow ends.
+3. If invalid, the form will not be submitted, and the flow ends.
 4. If valid, the form will be submitted using the native form submission cycle.
 
-Here is an example of how to use `formProps`, the example will submit the data to another page that will list the submitted values. Typically your Backend endpoint would be handling the form submission.
+Here is an example of how to use `formProps`. The example will submit the data to another page that will list the submitted values. Typically, your backend endpoint would be handling the form submission.
 
 <MdxRepl client:load preview-size="lg">
 
@@ -379,7 +377,7 @@ By default, native form submissions only collect the values of `input`, `select`
 
 ### isSubmitting
 
-You can check submission status with the `isSubmitting` property. This property is `true` when the form is being submitted and `false` otherwise. This is useful when you want to show a loading spinner or disable the submit button while the form is being submitted with an async handler.
+You can check the submission status with the `isSubmitting` property. This property is `true` when the form is being submitted and `false` otherwise. This is useful when you want to show a loading spinner or disable the submit button while the form is being submitted with an async handler.
 
 <MdxRepl client:load preview-size="lg">
 
@@ -435,7 +433,7 @@ useForm({
 });
 ```
 
-You can see it in action in the following example, scroll all the way down to see the form submit button and then click it to see the invalid field being scrolled into view.
+You can see it in action in the following example. Scroll all the way down to see the form submit button and then click it to see the invalid field being scrolled into view.
 
 <MdxRepl client:load preview-size="lg">
 
@@ -492,11 +490,11 @@ useForm({
 
 ## Touched Fields
 
-Forms tracks the touched state of each field in the form. A field is considered touched when the user interacts with it, which means if they have focused and blurred the field at least once. In addition to blurring, whenever the form is submitted, all fields are marked as touched.
+Forms track the touched state of each field in the form. A field is considered touched when the user interacts with it, which means if they have focused and blurred the field at least once. In addition to blurring, whenever the form is submitted, all fields are marked as touched.
 
 The form also tracks the overall touched state of the form, which is `true` if any field in the form has been touched.
 
-Each field composable returns an `isTouched` property, `useForm` exposes its own `isTouched` property that you can use to check if the form has been interacted with, it also exposes `isFieldTouched` to query the touched state of a field.
+Each field composable returns an `isTouched` property. `useForm` exposes its own `isTouched` property that you can use to check if the form has been interacted with. It also exposes `isFieldTouched` to query the touched state of a field.
 
 <MdxRepl client:load preview-size="xl">
 
@@ -536,7 +534,7 @@ const onSubmit = handleSubmit((data) => {
 
 </MdxRepl>
 
-You can set the touched state of a field manually with `setFieldTouched` function.
+You can set the touched state of a field manually with the `setFieldTouched` function.
 
 ```ts
 import { useForm } from '@formwerk/core';
@@ -582,19 +580,19 @@ const { isDirty, isFieldDirty } = useForm();
 
 </MdxRepl>
 
-The dirty state is computed, there is no way to set it manually but you can reset the form to its initial values or a new set of values to influence the dirty state.
+The dirty state is computed. There is no way to set it manually, but you can reset the form to its initial values or a new set of values to influence the dirty state.
 
 ## Validation
 
-As you've seen from field guides, many fields can be validated with either HTML constraints via attributes like `required`, `min`, `max`, etc. or with [Standard Schema](https://github.com/standard-schema/standard-schema) objects.
+As you've seen from field guides, many fields can be validated with either HTML constraints via attributes like `required`, `min`, `max`, etc., or with [Standard Schema](https://github.com/standard-schema/standard-schema) objects.
 
 ### HTML Constraints
 
-HTML constraints are always field-level. They are useful for dynamic fields, but at the same time they more accessible to users which is why it is recommended to use them whenever possible for basic validations.
+HTML constraints are always field-level. They are useful for dynamic fields, but at the same time, they are more accessible to users, which is why it is recommended to use them whenever possible for basic validations.
 
-For advanced cases, you can use Standard Schemas which can be both field-level or form-level.
+For advanced cases, you can use Standard Schemas, which can be both field-level or form-level.
 
-If you want to completely disable HTML constraints for the form, you can pass `disableHtmlValidation` option to `useForm`:
+If you want to completely disable HTML constraints for the form, you can pass the `disableHtmlValidation` option to `useForm`:
 
 ```ts
 import { useForm } from '@formwerk/core';
@@ -654,19 +652,19 @@ For more information on Standard Schemas and which libraries are supported, visi
 
 ### Mixing validation sources
 
-Let's say you have mix of validations in place. You have a field with some HTML constraints, and a schema that validates that field at the same time. Let's throw in a form-level schema that validates the form including that field.
+Let's say you have a mix of validations in place. You have a field with some HTML constraints and a schema that validates that field at the same time. Let's throw in a form-level schema that validates the form, including that field.
 
-That field now has three sources of validation, how does that work?
+That field now has three sources of validation. How does that work?
 
 Formwerk prioritizes the validation sources in the following order:
 
-1. HTML Constraints are checked first, only if they are valid continue to the next step.
-2. Field-level Standard Schema is checked next, only if it is valid continue to the next step.
+1. HTML Constraints are checked first. Only if they are valid, continue to the next step.
+2. Field-level Standard Schema is checked next. Only if it is valid, continue to the next step.
 3. Form-level Standard Schema is checked last.
 
-This keeps the validation process consistent and predictable, at the same time it is also efficient as you won't have to re-validate the whole form if a field-level validation fails for that field. You can think of it as a merged validation approach, but it is more of a cascading validation behavior where it cascades upwards to the form level.
+This keeps the validation process consistent and predictable. At the same time, it is also efficient, as you won't have to re-validate the whole form if a field-level validation fails for that field. You can think of it as a merged validation approach, but it is more of a cascading validation behavior where it cascades upwards to the form level.
 
-The only think you need to be careful of is to not have conflicting validations between the different sources, this can cause the field to never be valid.
+The only thing you need to be careful of is to not have conflicting validations between the different sources, as this can cause the field to never be valid.
 
 Here is an example for a field with all validation sources:
 
@@ -708,7 +706,7 @@ const onSubmit = handleSubmit((data) => {
 
 </MdxRepl>
 
-You can even have a fourth source of the validation with [Form Groups](/guides/forms/form-groups/).
+You can even have a fourth source of validation with [Form Groups](/guides/forms/form-groups/).
 
 ## Displaying Errors
 
@@ -767,7 +765,7 @@ const { handleSubmit, getError } = useForm({
 
 <TabItem label="getErrors()">
 
-The `getErrors` function returns all errors in the form as an array of error groups, each group contains a field error messages.
+The `getErrors` function returns all errors in the form as an array of error groups. Each group contains a field error message.
 
 <MdxRepl  client:load>
 
@@ -809,9 +807,9 @@ const { handleSubmit, getErrors } = useForm({
 
 <TabItem label="displayError()">
 
-The `displayError` function is similar to `getError` but it only displays the error if the field has been touched. This is useful when you want to show errors only after the user has interacted with the field.
+The `displayError` function is similar to `getError`, but it only displays the error if the field has been touched. This is useful when you want to show errors only after the user has interacted with the field.
 
-You can alternatively use CSS with `:user-invalid` pseudo-class to show errors only when the field is invalid and has been interacted with. More info on that in the [Styling guide](/guides/extras/styling/).
+You can alternatively use CSS with the `:user-invalid` pseudo-class to show errors only when the field is invalid and has been interacted with. More info on that in the [Styling guide](/guides/extras/styling/).
 
 <MdxRepl  client:load>
 
@@ -856,7 +854,7 @@ const { handleSubmit, displayError } = useForm({
 
 ## Resetting Forms
 
-Form state can be reset with `reset` function. Calling this function will reset the current values back to the initial values, revert the touched state for all fields back to `false`, and clear any custom errors.
+Form state can be reset with the `reset` function. Calling this function will reset the current values back to the initial values, revert the touched state for all fields back to `false`, and clear any custom errors.
 
 <MdxRepl client:load preview-size="lg">
 
@@ -904,9 +902,9 @@ function onResetClick() {
 
 </MdxRepl>
 
-Notice that even tho we called reset, the errors are still displayed. By default, reset re-validates the form afterwards. This is to ensure that the validation state of the fields match their actual validity.
+Notice that even though we called reset, the errors are still displayed. By default, reset re-validates the form afterward. This is to ensure that the validation state of the fields matches their actual validity.
 
-You should consider using `isTouched` or `displayError` to show errors only when the field has been interacted with which would eliminate this caveat. Alternatively, you can disable this behavior by passing `revalidate: false` to the `reset` function.
+You should consider using `isTouched` or `displayError` to show errors only when the field has been interacted with, which would eliminate this caveat. Alternatively, you can disable this behavior by passing `revalidate: false` to the `reset` function.
 
 ```ts
 import { useForm } from '@formwerk/core';
@@ -978,7 +976,7 @@ Whenever you call `reset` with a custom state, that new state becomes the initia
 
 </Aside>
 
-Lastly, the value setting behavior is by default uses a `replace` strategy. This means that the values are replaced with the new values, any unspecified values will be considered `undefined`.
+Lastly, the value setting behavior by default uses a `replace` strategy. This means that the values are replaced with the new values, and any unspecified values will be considered `undefined`.
 
 If you want to merge the new values with the existing initial values, you can pass `behavior: 'merge'` to the `reset` function as the second argument.
 
@@ -999,7 +997,7 @@ function onReset() {
 
 ## Form Types
 
-Forms supports typing your form values with TypeScript. This is done through a couple of generic type parameters.
+Forms support typing your form values with TypeScript. This is done through a couple of generic type parameters.
 
 The `useForm` composable signature is roughly typed as:
 
@@ -1014,8 +1012,8 @@ function useForm<
 Let's break down the generic type parameters:
 
 - `TSchema`: The type of the form schema if a [Standard Schema](https://github.com/standard-schema/standard-schema) is used.
-- `TInput`: The type of the form input values, these represent the current values of the form fields without any validation or transformations applied. We also refer to those as "input" types.
-- `TOutput`: The type of the form output values, these represent the values that would be submitted. That means validation and transformations have already been applied.
+- `TInput`: The type of the form input values. These represent the current values of the form fields without any validation or transformations applied. We also refer to those as "input" types.
+- `TOutput`: The type of the form output values. These represent the values that would be submitted. That means validation and transformations have already been applied.
 
 The distinction between input and output types is important because it helps you avoid re-checking values that have already been validated in runtime to satisfy TypeScript.
 
@@ -1031,9 +1029,9 @@ const { values, handleSubmit } = useForm({
 values; // { email?: string | undefined }
 ```
 
-However this does not provide you with output types, meaning when submitting the form the `email` field would still be typed as `string | undefined`.
+However, this does not provide you with output types, meaning when submitting the form, the `email` field would still be typed as `string | undefined`.
 
-In order to get output types, we export a utility type called `FormSchema` that you can use to type both the input and output values. By default the input type is assumed to be a partial of the output type.
+In order to get output types, we export a utility type called `FormSchema` that you can use to type both the input and output values. By default, the input type is assumed to be a partial of the output type.
 
 ```ts
 import { type FormSchema, useForm } from '@formwerk/core';

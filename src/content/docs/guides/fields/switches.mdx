@@ -18,12 +18,12 @@ import SwitchCustomPartial from './_partials/_switchCustom.mdx';
 
 > A switch is an input widget that allows users to choose one of two values: on or off. Switches are similar to checkboxes and toggle buttons, which can also serve as binary inputs. One difference, however, is that switches can only be used for binary input.
 
-The switch field has enough unique behaviors and use-cases that justifies it having its own composable. The binary state of a switch means it shouldn't be used to represent "required" inputs where the switch needs to be "on". It is a user preference that can be turned off.
+The switch field has enough unique behaviors and use-cases that justify it having its own composable. The binary state of a switch means it shouldn't be used to represent "required" inputs where the switch needs to be "on". It is a user preference that can be turned off.
 
 ## Features
 
-- You can use `input[type="checkbox"]` element as a base or any custom element.
-- Labeling, descriptions, error message displays are automatically linked to input and label elements with `aria-*` attributes.
+- You can use an `input[type="checkbox"]` element as a base or any custom element.
+- Labeling, descriptions, and error message displays are automatically linked to input and label elements with `aria-*` attributes.
 - Support for custom `on` and `off` values.
 - Validation support with native HTML constraint validation or [Standard Schema](https://github.com/standard-schema/standard-schema) validation.
 - Support for `v-model` binding.
@@ -42,9 +42,9 @@ The switch field has enough unique behaviors and use-cases that justifies it hav
 
 ## Building a Switch component
 
-The `useSwitch` composable provides the necessary props and methods to build a switch component. It returns binding objects for the elements shown in the [anatomy](#anatomy), you will use `v-bind` to bind them to the corresponding DOM elements.
+The `useSwitch` composable provides the necessary props and methods to build a switch component. It returns binding objects for the elements shown in the [anatomy](#anatomy). You will use `v-bind` to bind them to the corresponding DOM elements.
 
-There is two ways to build a switch component:
+There are two ways to build a switch component:
 
 - With an `input[type="checkbox"]` as a base element.
 - Without an `input` element, like a `div` or a `button`.
@@ -53,7 +53,7 @@ We will review the two ways to build a switch component in the following example
 
 ### With `input[type="checkbox"]` base element
 
-We will add some styling to the next example because switches don't look like one unless we style it. Also it would just look like a checkbox.
+We will add some styling to the next example because switches don't look like one unless we style them. Otherwise, it would just look like a checkbox.
 
 <MdxRepl client:load>
 
@@ -84,9 +84,9 @@ const isOn = ref(false);
 
 ### Without input elements
 
-Similar to the previous example, we can get the exact same look and behavior with a `div` element or a `button` element.
+Similar to the previous example, we can achieve the same look and behavior with a `div` element or a `button` element.
 
-In this example will actually use `svg` element to closely resemble a switch, we will borrow those SVG paths from [Phosphor Icons](https://phosphoricons.com/).
+In this example, we will use an `svg` element to closely resemble a switch. We will borrow those SVG paths from [Phosphor Icons](https://phosphoricons.com/).
 
 <MdxRepl client:load>
 
@@ -118,7 +118,7 @@ const isOn = ref(false);
 
 ### HTML Constraints
 
-While ideally the switch field should not be validatable, you can still use the `required` attribute if you chose to use an `input[type="checkbox"]` as a base element. We make no assumption about how you want to use the switch field.
+While ideally, the switch field should not be validatable, you can still use the `required` attribute if you choose to use an `input[type="checkbox"]` as a base element. We make no assumptions about how you want to use the switch field.
 
 | Name       | Type      | Description                           |
 | ---------- | --------- | ------------------------------------- |
@@ -152,7 +152,7 @@ import Switch from './Switch.vue';
 
 <Aside>
 
-Depending on the schema validation provider you are using, the API might slightly differ. Check the supported validation providers for more information. In this example we are using the `zod` schema validation provider.
+Depending on the schema validation provider you are using, the API might slightly differ. Check the supported validation providers for more information. In this example, we are using the `zod` schema validation provider.
 
 </Aside>
 
@@ -183,9 +183,9 @@ const schema = z.literal(true);
 
 ### Mixed Validation
 
-While it is unlikely that you need both HTML constraints and Standard Schemas to validate a switch, Formwerk supports mixed validation, which means you can use both HTML constraints and Standard Schemas to validate the switch and they will work together.
+While it is unlikely that you need both HTML constraints and Standard Schemas to validate a switch, Formwerk supports mixed validation, which means you can use both HTML constraints and Standard Schemas to validate the switch, and they will work together.
 
-Note that HTML constraints are validated first, so any errors from the HTML constraints will be displayed first. Then once all HTML constraints are satisfied, the Standard Schema is validated.
+Note that HTML constraints are validated first, so any errors from the HTML constraints will be displayed first. Then, once all HTML constraints are satisfied, the Standard Schema is validated.
 
 <MdxRepl client:load>
 
@@ -214,7 +214,7 @@ const schema = z.custom((val) => {
 
 </MdxRepl>
 
-If you need to disable the native validation, you can do so by setting the `disableHtmlValidation` prop to `true`. You can also disable it globally for all fields, for more information check out the [Validation](/guides/forms/validation/) guide.
+If you need to disable the native validation, you can do so by setting the `disableHtmlValidation` prop to `true`. You can also disable it globally for all fields. For more information, check out the [Validation](/guides/forms/validation/) guide.
 
 <MdxRepl client:load>
 
@@ -252,7 +252,7 @@ const schema = z.custom((val) => {
 
 ### Disabled
 
-Use disabled to mark the switch as non-interactive. Disabled switches are not validated and will not be submitted.
+Use `disabled` to mark the switch as non-interactive. Disabled switches are not validated and will not be submitted.
 
 If you need to prevent the user from interacting with the field while still allowing it to submit, consider using `readonly` instead.
 
@@ -280,7 +280,7 @@ import Switch from './Switch.vue';
 
 ### Readonly
 
-Readonly switches are validated and submitted, but they do not accept user input. The switch is still focusable and the value is copyable. For more info, check the [MDN](https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/readonly).
+Readonly switches are validated and submitted, but they do not accept user input. The switch is still focusable, and the value is copyable. For more info, check the [MDN](https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/readonly).
 
 <MdxRepl client:load>
 

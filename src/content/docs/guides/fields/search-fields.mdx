@@ -14,30 +14,30 @@ import MdxRepl from '@components/MdxRepl.vue';
 import MdxTableAPI from '@components/MdxTableAPI.vue';
 import SearchFieldPartial from './_partials/_searchField.mdx';
 
-> input elements of type search are text fields designed for the user to enter search queries into. These are functionally identical to text inputs, but may be styled differently by the user agent.
+> Input elements of type search are text fields designed for the user to enter search queries into. These are functionally identical to text inputs but may be styled differently by the user agent.
 
-Search fields have extra behaviors and use-cases that set them apart from regular text fields. This composable provides the behavior, state and accessibility implementation for search fields.
+Search fields have extra behaviors and use-cases that set them apart from regular text fields. This composable provides the behavior, state, and accessibility implementation for search fields.
 
 A couple of behaviors set this apart from regular text fields:
 
 - The text content can be cleared with the clear button or a keyboard shortcut.
-- They are usually used without a parent `form` elements and sometimes without a `submit` button. So they can be submitted with `Enter` keyboard key on their own.
+- They are usually used without a parent `form` element and sometimes without a `submit` button. So they can be submitted with the `Enter` keyboard key on their own.
 
 You can find more information about the differences [here](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/search#differences_between_search_and_text_types).
 
 ## Features
 
 - Uses `input[type="search"]` element as a base.
-- Labeling, descriptions, error message displays are automatically linked to input and label elements with `aria-*` attributes.
+- Labeling, descriptions, and error message displays are automatically linked to input and label elements with `aria-*` attributes.
 - Support for a custom clear button.
 - Validation support with native HTML constraint validation or [Standard Schema](https://github.com/standard-schema/standard-schema) validation.
 - Support for `v-model` binding.
 - Supported Keyboard features:
 
-| Key                               | Description                                                                                        |
-| --------------------------------- | -------------------------------------------------------------------------------------------------- |
-| <Kbd code="Esc" />                | Clears the input value.                                                                            |
-| <Kbd code="Enter" label="Enter"/> | If in a form, submits the form. Otherwise submits the input with the `onSubmit` event or callback. |
+| Key                               | Description                                                                                         |
+| --------------------------------- | --------------------------------------------------------------------------------------------------- |
+| <Kbd code="Esc" />                | Clears the input value.                                                                             |
+| <Kbd code="Enter" label="Enter"/> | If in a form, submits the form. Otherwise, submits the input with the `onSubmit` event or callback. |
 
 ## Anatomy
 
@@ -47,7 +47,7 @@ You can find more information about the differences [here](https://developer.moz
 
 ## Building a Search Field Component
 
-The `useSearchField` composable returns binding objects for the elements shown in the [anatomy](#anatomy), you will use `v-bind` to bind them to the corresponding DOM elements.
+The `useSearchField` composable returns binding objects for the elements shown in the [anatomy](#anatomy). You will use `v-bind` to bind them to the corresponding DOM elements.
 
 <MdxRepl client:load>
 
@@ -76,7 +76,7 @@ const search = ref('');
 
 </MdxRepl>
 
-Notice that we imported the `SearchFieldProps` in the previous example. This is recommended to use as your component prop types. Not only you get type safety for your component out of it but also it handles the reactivity aspects of the props so you don't have to. You are free to extend it with your own props or omit the ones you don't need.
+Notice that we imported the `SearchFieldProps` in the previous example. This is recommended to use as your component prop types. Not only do you get type safety for your component out of it, but it also handles the reactivity aspects of the props so you don't have to. You are free to extend it with your own props or omit the ones you don't need.
 
 ## Validation
 
@@ -86,14 +86,14 @@ You can use the following native HTML validation properties to validate the sear
 
 | Name        | Type               | Description                          |
 | ----------- | ------------------ | ------------------------------------ |
-| `maxLength` | `number`           | The maximum length of characters     |
-| `minLength` | `number`           | The minimum length of characters     |
+| `maxLength` | `number`           | The maximum length of characters.    |
+| `minLength` | `number`           | The minimum length of characters.    |
 | `required`  | `boolean`          | Whether the text field is required.  |
 | `pattern`   | `string \| RegExp` | A regular expression for validation. |
 
 <Aside>
-  Note that `minLength`, and `maxLength` attributes accept a number or a string,
-  the string however must be parseable as a number. Formwerk takes care of
+  Note that `minLength` and `maxLength` attributes accept a number or a string.
+  The string, however, must be parseable as a number. Formwerk takes care of
   typing strings safely and parsing them so you don't have to bind the values as
   numbers.
 </Aside>
@@ -140,7 +140,7 @@ const search = ref('');
 
 <Aside>
 
-Depending on the schema validation provider you are using, the API might slightly differ. Check the supported validation providers for more information. In this example we are using the `zod` schema validation provider.
+Depending on the schema validation provider you are using, the API might slightly differ. Check the supported validation providers for more information. In this example, we are using the `zod` schema validation provider.
 
 </Aside>
 
@@ -175,9 +175,9 @@ const schema = z.string().min(3).max(8);
 
 ### Mixed Validation
 
-All search fields created with Formwerk support mixed validation, which means you can use both HTML constraints and Standard Schemas to validate the field and they work seamlessly together.
+All search fields created with Formwerk support mixed validation, which means you can use both HTML constraints and Standard Schemas to validate the field, and they work seamlessly together.
 
-Note that HTML constraints are validated first, so any errors from the HTML constraints will be displayed first. Then once all HTML constraints are satisfied, the Standard Schema is validated.
+Note that HTML constraints are validated first, so any errors from the HTML constraints will be displayed first. Then, once all HTML constraints are satisfied, the Standard Schema is validated.
 
 <MdxRepl client:load>
 
@@ -209,7 +209,7 @@ const schema = z.string().min(3).max(8);
 
 </MdxRepl>
 
-This makes schemas lighter, however we recommend sticking to one or the other per form for maintainability.
+This makes schemas lighter; however, we recommend sticking to one or the other per form for maintainability.
 
 If you need to disable the native validation, you can do so by setting the `disableHtmlValidation` prop to `true`.
 
@@ -244,13 +244,13 @@ const schema = z.string().min(3).max(10);
 
 </MdxRepl>
 
-You can also disable it globally for all fields, for more information check out the [Validation](/guides/forms/validation/) guide.
+You can also disable it globally for all fields. For more information, check out the [Validation](/guides/forms/validation/) guide.
 
 ## Usage
 
 ### Disabled
 
-You can disable the search field by setting the `disabled` prop to `true`. Disabled fields are not editable, will not be validated and will not be submitted with the form.
+You can disable the search field by setting the `disabled` prop to `true`. Disabled fields are not editable, will not be validated, and will not be submitted with the form.
 
 If you need to prevent the user from interacting with the field while still allowing it to submit, consider using `readonly` instead.
 
@@ -278,7 +278,7 @@ import SearchField from './SearchField.vue';
 
 ### Readonly
 
-Readonly fields are validated and submitted, but they do not accept user input. The field is still focusable and the value is copyable. For more info, check the [MDN](https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/readonly).
+Readonly fields are validated and submitted, but they do not accept user input. The field is still focusable, and the value is copyable. For more info, check the [MDN](https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/readonly).
 
 <MdxRepl client:load>
 
@@ -304,7 +304,7 @@ import SearchField from './SearchField.vue';
 
 ### RTL
 
-The search field doesn't really need much for RTL support, however the `dir` prop can be used to set the direction of the field for convenience.
+The search field doesn't really need much for RTL support; however, the `dir` prop can be used to set the direction of the field for convenience.
 
 <MdxRepl client:load>
 
@@ -330,13 +330,13 @@ import SearchField from './SearchField.vue';
 
 <Aside>
 
-There is a lot more to directionality and localization, for more info check out the [i18n guide](/guides/extras/i18n/).
+There is a lot more to directionality and localization. For more info, check out the [i18n guide](/guides/extras/i18n/).
 
 </Aside>
 
 ### Submitting
 
-Search fields can be used without a parent `form` element and sometimes without a `submit` button. The `useSearchField` accepts a `onSubmit` callback that is called when the user presses the `Enter` key on the field.
+Search fields can be used without a parent `form` element and sometimes without a `submit` button. The `useSearchField` accepts an `onSubmit` callback that is called when the user presses the `Enter` key on the field.
 
 <MdxRepl client:load>
 

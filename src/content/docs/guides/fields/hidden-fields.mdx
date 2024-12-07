@@ -15,7 +15,7 @@ import MdxTableAPI from '@components/MdxTableAPI.vue';
 
 Hidden fields let you include data that cannot be seen or modified by users when a form is submitted. A good example is a CSRF token or an ID for the content being submitted.
 
-As such they do not have most of the features of other fields.
+As such, they do not have most of the features of other fields.
 
 ## Features
 
@@ -55,7 +55,7 @@ const props = defineProps<HiddenFieldProps>();
 </template>
 ```
 
-In order to show you how hidden fields work, we will have to use a `form` in the following example. We will try to keep it as simple as possible, but you can check the [form guide](/guides/forms/) for more information.
+To demonstrate how hidden fields work, we will use a `form` in the following example. We will try to keep it as simple as possible, but you can check the [form guide](/guides/forms/) for more information.
 
 <MdxRepl client:load>
 
@@ -87,13 +87,13 @@ const onSubmit = handleSubmit((data) => {
 
 ## Validation
 
-Hidden fields do not support validation although their [API](#api) supports showing any possible error messages that the form might have for the field. The main reason for this is that hidden fields are ... well, hidden. That means the user cannot interact with them and as such you should make sure they always have valid values otherwise it will be confusing to the user.
+Hidden fields do not support validation, although their [API](#api) supports showing any possible error messages that the form might have for the field. The main reason for this is that hidden fields are, well, hidden. That means the user cannot interact with them, and as such, you should ensure they always have valid values; otherwise, it will be confusing to the user.
 
 ## Usage
 
 ### Disabled
 
-Marking a hidden field as disabled will make it non-submittable. Meaning its value will not be included in the form data when the form is submitted.
+Marking a hidden field as disabled will make it non-submittable, meaning its value will not be included in the form data when the form is submitted.
 
 <MdxRepl client:load>
 

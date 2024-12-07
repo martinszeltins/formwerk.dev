@@ -17,12 +17,12 @@ import TextAreaPartial from './_partials/_textarea.mdx';
 
 Text fields are used to allow users to input plain text into a form.
 
-Text fields are implemented with the `input` element for single line of text or `textarea` element for multiple lines of text.
+Text fields are implemented with the `input` element for a single line of text or the `textarea` element for multiple lines of text.
 
 ## Features
 
 - Uses `input` or `textarea` elements as a base.
-- Labeling, descriptions, error message displays are automatically linked to input and label elements with `aria-*` attributes.
+- Labels, descriptions, and error message displays are automatically linked to input and label elements with `aria-*` attributes.
 - Validation support with native HTML constraint validation or [Standard Schema](https://github.com/standard-schema/standard-schema) validation.
 - Support for `v-model` binding.
 
@@ -36,7 +36,7 @@ Text fields are implemented with the `input` element for single line of text or 
 
 You can start by importing the `useTextField` composable and using it in your text field component.
 
-The `useTextField` composable returns binding objects for the elements shown in the [anatomy](#anatomy), you will use `v-bind` to bind them to the corresponding DOM elements.
+The `useTextField` composable returns binding objects for the elements shown in the [anatomy](#anatomy). You will use `v-bind` to bind them to the corresponding DOM elements.
 
 <MdxRepl client:load>
 
@@ -65,23 +65,23 @@ const name = ref('');
 
 <Aside type="caution">
 
-Only `text`, `password`, `email`, `tel` and `url` types are supported at the moment for `input` elements.
+Only `text`, `password`, `email`, `tel`, and `url` types are supported at the moment for `input` elements.
 
-The other types have their own composables, check out the following guides:
+The other types have their own composables. Check out the following guides:
 
-- Number field, check out the [Number Field](/guides/fields/number-fields/) guide.
-- Search field, check out the [Search Field](/guides/fields/search-fields/) guide.
+- Number field: see the [Number Field](/guides/fields/number-fields/) guide.
+- Search field: see the [Search Field](/guides/fields/search-fields/) guide.
 - No support for `date` fields at the moment.
 
 </Aside>
 
 Notice that we imported the `TextFieldProps` in the previous example. This is recommended to use as your component prop types.
 
-Not only you get type safety for your component out of it but also it handles the reactivity aspects of the props so you don't have to. You are free to extend it with your own props or omit the ones you don't need.
+Not only do you get type safety for your component out of it, but it also handles the reactivity aspects of the props so you don't have to. You are free to extend it with your own props or omit the ones you don't need.
 
 ## Building a Text Area Component
 
-Instead of using a `input[type="text"]` element, you can switch to using a `textarea` element as a base element instead.
+Instead of using an `input[type="text"]` element, you can switch to using a `textarea` element as a base element instead.
 
 <MdxRepl client:load>
 
@@ -110,8 +110,8 @@ You can use the following properties to validate the text field with native HTML
 
 | Name        | Type               | Description                                                               |
 | ----------- | ------------------ | ------------------------------------------------------------------------- |
-| `maxLength` | `number`           | The maximum length of characters                                          |
-| `minLength` | `number`           | The minimum length of characters                                          |
+| `maxLength` | `number`           | The maximum length of characters.                                         |
+| `minLength` | `number`           | The minimum length of characters.                                         |
 | `required`  | `boolean`          | Whether the text field is required.                                       |
 | `pattern`   | `string \| RegExp` | A regular expression for validation. Not supported for `textarea` fields. |
 
@@ -123,8 +123,8 @@ In addition to the above properties, if you are using the `input` element, you c
 | `url`   | Validates the value as a URL.    |
 
 <Aside>
-  Note that `minLength`, and `maxLength` attributes accept a number or a string,
-  the string however must be parseable as a number. Formwerk takes care of
+  Note that `minLength` and `maxLength` attributes accept a number or a string.
+  The string, however, must be parseable as a number. Formwerk takes care of
   typing strings safely and parsing them so you don't have to bind the values as
   numbers.
 </Aside>
@@ -166,7 +166,7 @@ import TextField from './TextField.vue';
 
 <Aside>
 
-Depending on the schema validation provider you are using, the API might slightly differ. Check the supported validation providers for more information. In this example we are using the `zod` schema validation provider.
+Depending on the schema validation provider you are using, the API might slightly differ. Check the supported validation providers for more information. In this example, we are using the `zod` schema validation provider.
 
 </Aside>
 
@@ -197,9 +197,9 @@ const schema = z.string().min(3).max(8);
 
 ### Mixed Validation
 
-All text fields created with Formwerk support mixed validation, which means you can use both HTML constraints and Standard Schema validation to validate the field and they work seamlessly together.
+All text fields created with Formwerk support mixed validation, which means you can use both HTML constraints and Standard Schema validation to validate the field, and they work seamlessly together.
 
-Note that HTML constraints are validated first, so any errors from the HTML constraints will be displayed first. Then once all HTML constraints are satisfied, the Standard Schema is validated.
+Note that HTML constraints are validated first, so any errors from the HTML constraints will be displayed first. Then, once all HTML constraints are satisfied, the Standard Schema is validated.
 
 <MdxRepl client:load>
 
@@ -226,7 +226,7 @@ const schema = z.string().min(3).max(20);
 
 </MdxRepl>
 
-This makes schemas lighter, however we recommend sticking to one or the other per form for maintainability.
+This makes schemas lighter; however, we recommend sticking to one or the other per form for maintainability.
 
 If you need to disable the native validation, you can do so by setting the `disableHtmlValidation` prop to `true`.
 
@@ -261,13 +261,13 @@ const schema = z.string().min(3).max(20);
 
 </MdxRepl>
 
-You can also disable it globally for all fields, for more information check out the [Validation](/guides/forms/validation/) guide.
+You can also disable it globally for all fields. For more information, check out the [Validation](/guides/forms/validation/) guide.
 
 ## Usage
 
 ### Disabled
 
-Use disabled to mark fields as non-interactive, disabled fields are not validated and are not submitted.
+Use `disabled` to mark fields as non-interactive. Disabled fields are not validated and are not submitted.
 
 If you need to prevent the user from interacting with the field while still allowing it to submit, consider using `readonly` instead.
 
@@ -295,7 +295,7 @@ import TextField from './TextField.vue';
 
 ### Readonly
 
-Readonly fields are validated and submitted, but they do not accept user input. The field is still focusable and the value is copyable. For more info, check the [MDN](https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/readonly).
+Readonly fields are validated and submitted, but they do not accept user input. The field is still focusable, and the value is copyable. For more info, check the [MDN](https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/readonly).
 
 <MdxRepl client:load>
 
@@ -321,7 +321,7 @@ import TextField from './TextField.vue';
 
 ### RTL
 
-The text field doesn't really need much for RTL support, however the `dir` prop can be used to set the direction of the field for convenience.
+The text field doesn't require much for RTL support; however, the `dir` prop can be used to set the direction of the field for convenience.
 
 <MdxRepl client:load>
 
@@ -347,13 +347,13 @@ import TextField from './TextField.vue';
 
 <Aside>
 
-There is a lot more to directionality and localization, for more info check out the [i18n guide](/guides/extras/i18n/).
+There is a lot more to directionality and localization. For more info, check out the [i18n guide](/guides/extras/i18n/).
 
 </Aside>
 
 ## Styling
 
-Formwerk does not come with any markup or styling, which is often the part that makes a design system unique. That means you can use any styling solution you want, whether it's [TailwindCSS](https://tailwindcss.com/), or plain CSS as you have already seen.
+Formwerk does not come with any markup or styling, which is often the part that makes a design system unique. That means you can use any styling solution you want, whether it's [TailwindCSS](https://tailwindcss.com/) or plain CSS, as you have already seen.
 
 Note that we make use of the `:user-invalid` pseudo-classes to style the field and control when to show the error messages without any JavaScript. Formwerk leans into native APIs and browser features to provide a more seamless experience for the user. In fact, even if you use Standard Schemas to validate the field, the pseudo-classes will still work.
 
@@ -368,7 +368,7 @@ These are the properties that can be passed to the `useTextField` composable.
 <MdxTableAPI typeName="TextFieldProps" />
 
 <Aside>
-  All the props above can be passed as `Ref<T>` or `() => T` and the reactivity will be handled for you.
+  All the props above can be passed as `Ref<T>` or `() => T`, and the reactivity will be handled for you.
 </Aside>
 
 ### Returns

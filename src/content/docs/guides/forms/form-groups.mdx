@@ -1,6 +1,6 @@
 ---
 title: Form Groups
-description: Learn how to grouping fields and slice forms into smaller parts
+description: Learn how to group fields and slice forms into smaller parts
 sidebar:
   order: 2
 ---
@@ -18,15 +18,15 @@ import CheckboxPartial from '../fields/_partials/_checkbox.mdx';
 import FieldsetPartial from './_partials/_fieldset.mdx';
 import GroupPartial from './_partials/_group.mdx';
 
-Form groups are a way to structure related fields in a form. They allow you to group fields together and slice forms into smaller parts. This can be useful for organizing forms with many fields, or for creating reusable group components that may be added to multiple forms.
+Form groups are a way to structure related fields in a form. They allow you to group fields together and slice forms into smaller parts. This can be useful for organizing forms with many fields or for creating reusable group components that may be added to multiple forms.
 
-That's their main purpose, to slice forms into manageable parts. They are not nested forms, they do not submit data on their own, they are just a way to group fields together in a parent form.
+Their main purpose is to slice forms into manageable parts. They are not nested forms; they do not submit data on their own. They are just a way to group fields together in a parent form.
 
 ## Features
 
 - Multi-layered validation with both HTML attributes or [Standard Schemas](https://github.com/standard-schema/standard-schema).
 - Aggregated state for validation, dirty, touched, and more.
-- Supports either a `fieldset` and `legend` elements or any other HTML elements.
+- Supports either `fieldset` and `legend` elements or any other HTML elements.
 - Automatic field name prefixing for organizing submitted data structure.
 
 ## Anatomy
@@ -41,7 +41,7 @@ To create a form group, you can use the `useFormGroup` composable. Just like fie
 
 Typically, you need to create a `FormGroup` component that you can use to structure your form fields. You can use `fieldset` as a base element for your `FormGroup` component or any other element that you prefer.
 
-Form groups require a `name` prop which will be used to nest the fields values in the form data. In the next examples, fill out the data and submit the form to see how the form data are structured.
+Form groups require a `name` prop, which will be used to nest the fields' values in the form data. In the next examples, fill out the data and submit the form to see how the form data are structured.
 
 ### With a fieldset element
 
@@ -89,7 +89,7 @@ const onSubmit = handleSubmit((data) => {
 
 </MdxRepl>
 
-Naturally, styling is entirely up to you. This can be much easier with another HTML elements like `div` as shown in the next section.
+Naturally, styling is entirely up to you. This can be much easier with other HTML elements like `div`, as shown in the next section.
 
 ### With any HTML element
 
@@ -143,13 +143,13 @@ const onSubmit = handleSubmit((data) => {
 
 ## Validation
 
-The form guide mentioned briefly that groups can have their own validation [Standard Schema](https://github.com/standard-schema/standard-schema) just like forms do. They do not override the parent form schema, they are just an extension of it.
+The form guide mentioned briefly that groups can have their own validation [Standard Schema](https://github.com/standard-schema/standard-schema) just like forms do. They do not override the parent form schema; they are just an extension of it.
 
 Formwerk prioritizes the validation sources in the following order:
 
-1. **HTML Constraints** are checked first, only if they are valid continue to the next step.
-2. **Field-level's** Standard Schema is checked next, only if it is valid continue to the next step.
-3. **Group-level's** Standard Schema is checked next, only if it is valid continue to the next step.
+1. **HTML Constraints** are checked first; only if they are valid, continue to the next step.
+2. **Field-level's** Standard Schema is checked next; only if it is valid, continue to the next step.
+3. **Group-level's** Standard Schema is checked next; only if it is valid, continue to the next step.
 4. **Form-level's** Standard Schema is checked last.
 
 <MdxRepl preview-size="xl" client:load>
@@ -215,13 +215,13 @@ const onSubmit = handleSubmit((data) => {
 
 <Aside>
 
-Even tho the group can have its own validation schema, it only acts as a liaison between the fields and the form schema. The form still tracks the fields, their validity and their values.
+Even though the group can have its own validation schema, it only acts as a liaison between the fields and the form schema. The form still tracks the fields, their validity, and their values.
 
 </Aside>
 
 ## Group state
 
-The group tracks and aggregates the fields state that are part of it. The follow states are an aggregation of the fields that are part of the group:
+The group tracks and aggregates the fields' state that are part of it. The following states are an aggregation of the fields that are part of the group:
 
 | Name        | Type    | Description                                                                 |
 | ----------- | ------- | --------------------------------------------------------------------------- |
@@ -241,9 +241,9 @@ It also exposes the following getters and functions:
 
 ## Group Names and Nested Paths
 
-A group can accept a `name` prop which will prefix all the field names nested under it with that same name.
+A group can accept a `name` prop, which will prefix all the field names nested under it with that same name.
 
-This means also when submitting the form, the data will be nested under the group name.
+This means that when submitting the form, the data will be nested under the group name.
 
 <MdxRepl preview-size="xl" client:load>
 

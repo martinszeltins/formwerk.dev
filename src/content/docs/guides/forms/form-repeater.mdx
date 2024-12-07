@@ -16,14 +16,14 @@ import RepeaterPartial from './_partials/_repeater.mdx';
 import TextFieldPartial from '../fields/_partials/_textField.mdx';
 import CheckboxPartial from '../fields/_partials/_checkbox.mdx';
 
-Form repeaters or also known as field arrays are a way to create a list of fields that may repeat multiple times in a form. This is useful for creating forms that collect a dynamic number of items like a list of emails, a list of addresses, it can also be used for a group of fields that fill an object's information.
+Form repeaters, also known as field arrays, are a way to create a list of fields that may repeat multiple times in a form. This is useful for creating forms that collect a dynamic number of items, like a list of emails or addresses. It can also be used for a group of fields that fill an object's information.
 
 ## Features
 
 - Adding, removing, and swapping items.
 - Auto-name prefixing for nested fields.
 - Min and Max item count enforcement.
-- Accessibility for add/remove and move buttons are automatically managed.
+- Accessibility for add/remove and move buttons is automatically managed.
 
 ## Anatomy
 
@@ -35,7 +35,7 @@ Form repeaters or also known as field arrays are a way to create a list of field
 
 To create a form repeater, you can use the `useFormRepeater` composable.
 
-Typically, you need to create a `FormRepeater` component that you can use to structure your form fields. There is no specific element that you need to use at this time as this is considered a utility container.
+Typically, you need to create a `FormRepeater` component that you can use to structure your form fields. There is no specific element that you need to use at this time, as this is considered a utility container.
 
 At its simplest, the `useFormRepeater` composable returns the items you need to render the repeater.
 
@@ -49,15 +49,15 @@ const { items, Iteration } = useFormRepeater(props);
 
 Note that the `Iteration` component used here is a component that is returned by the `useFormRepeater` composable. This component is a wrapper that is used to render each item in the repeater in a managed way.
 
-Under the hood the `Iteration` component prefixes the nested fields with the repeater's name and the index of the item.
+Under the hood, the `Iteration` component prefixes the nested fields with the repeater's name and the index of the item.
 
-The `Iteration` default slot props contains the following properties:
+The `Iteration` default slot props contain the following properties:
 
 - `removeButtonProps`: The props for the remove button.
 - `moveUpButtonProps`: The props for the move up button.
 - `moveDownButtonProps`: The props for the move down button.
 
-The `items` array is a readonly array of strings that represent the keys of the items in the repeater. These are unique identifiers for each item in the repeater and you should not attempt to set them manually.
+The `items` array is a readonly array of strings that represent the keys of the items in the repeater. These are unique identifiers for each item in the repeater, and you should not attempt to set them manually.
 
 Putting it all together, you get a simple example like this:
 
@@ -75,11 +75,7 @@ const { items, Iteration, addButtonProps } = useFormRepeater(props);
     v-for="(key, index) in items"
     :key="key"
     :index="index"
-    v-slot="{
-      removeButtonProps,
-      moveUpButtonProps,
-      moveDownButtonProps,
-    }"
+    v-slot="{ removeButtonProps, moveUpButtonProps, moveDownButtonProps }"
   >
     <h3>#{{ index + 1 }}</h3>
 
@@ -88,7 +84,7 @@ const { items, Iteration, addButtonProps } = useFormRepeater(props);
     <button v-bind="moveUpButtonProps">Move up</button>
     <button v-bind="moveDownButtonProps">Move down</button>
     <button v-bind="removeButtonProps">Remove</button>
-  </Repeat>
+  </Iteration>
 
   <button v-bind="addButtonProps">Add</button>
 </template>
@@ -96,7 +92,7 @@ const { items, Iteration, addButtonProps } = useFormRepeater(props);
 
 ## Example
 
-Here is a fully styled example that makes use of some of the fields we created in the field guides. We also integrate a `TransitionGroup` from Vue to animate the entering and leaving of the repeater items. Which is why we are not abstracting the looping aspect of the repeater, this gives you the flexibility to use any animation library/tool you like.
+Here is a fully styled example that makes use of some of the fields we created in the field guides. We also integrate a `TransitionGroup` from Vue to animate the entering and leaving of the repeater items. This is why we are not abstracting the looping aspect of the repeater, as it gives you the flexibility to use any animation library/tool you like.
 
 <MdxRepl preview-size="lg" client:load>
 
@@ -132,7 +128,7 @@ const onSubmit = handleSubmit((data) => {
   <form @submit="onSubmit" novalidate>
     <FormRepeater name="users">
       <TextField name="email" label="Email Address" required type="email" />
-      <Checkbox name="isAdmin" label="is Admin" />
+      <Checkbox name="isAdmin" label="Is Admin" />
     </FormRepeater>
 
     <button type="submit">Submit</button>
@@ -186,7 +182,7 @@ const onSubmit = handleSubmit((data) => {
   <form @submit="onSubmit" novalidate>
     <FormRepeater name="users" min="1" max="3">
       <TextField name="email" label="Email Address" required type="email" />
-      <Checkbox name="isAdmin" label="is Admin" />
+      <Checkbox name="isAdmin" label="Is Admin" />
     </FormRepeater>
 
     <button type="submit">Submit</button>
@@ -198,7 +194,7 @@ const onSubmit = handleSubmit((data) => {
 
 </MdxRepl>
 
-### Field path prefixing
+### Field Path Prefixing
 
 Repeaters require a `name` prop to know which part of the form they are going to repeat. Any fields nested within a repeater will have a name that is prefixed with the repeater's name and the index of the item. This is done automatically for you.
 
@@ -206,7 +202,7 @@ You can observe this by submitting the previous examples.
 
 #### Unnamed Fields
 
-As you've learned previously in the [form guide](/guides/forms/), not having a name prop on the field will make it an uncontrolled field. This is also true for repeaters, however if you pass an empty string as the field name, the field would still be controlled and will set its value to iteration path directly.
+As you've learned previously in the [form guide](/guides/forms/), not having a name prop on the field will make it an uncontrolled field. This is also true for repeaters; however, if you pass an empty string as the field name, the field would still be controlled and will set its value to the iteration path directly.
 
 Try adding new items to the following example and fill out the email fields. Notice how the values are set on the array indices directly.
 

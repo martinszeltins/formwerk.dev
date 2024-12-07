@@ -1,6 +1,6 @@
 ---
 title: Radio Buttons
-description: Learn how to build accessible Vue.js radio button Vue components with Formwerk.
+description: Learn how to build accessible Vue.js radio button components with Formwerk.
 sidebar:
   order: 3
 ---
@@ -16,25 +16,25 @@ import RadioGroupPartial from './_partials/_radioGroup.mdx';
 import RadioInputPartial from './_partials/_radioInput.mdx';
 import RadioItemPartial from './_partials/_radioItem.mdx';
 
-> A radio group is a set of checkable buttons, known as radio buttons, where no more than one of the buttons can be checked at a time. Some implementations may initialize the set with all buttons in the unchecked state in order to force the user to check one of the buttons before moving past a certain point in the workflow.
+> A radio group is a set of checkable buttons, known as radio buttons, where no more than one of the buttons can be checked at a time. Some implementations may initialize the set with all buttons in the unchecked state to force the user to check one of the buttons before moving past a certain point in the workflow.
 
 Radios in HTML do not have a "group" concept, but they get grouped implicitly by the "name" attribute. This isn't the case in Vue and most UI libraries, as they are grouped by the model name they mutate.
 
-Formwerk follows the "group" concept to provide a consistent API for radio fields regardless if they are bound to the same model or if they have the same name or not.
+Formwerk follows the "group" concept to provide a consistent API for radio fields regardless of whether they are bound to the same model or if they have the same name or not.
 
-This means radios are a compound field, meaning they require more than one composable to work properly and by extension, you need to build more than one component to make them work.
+This means radios are a compound field, meaning they require more than one composable to work properly, and by extension, you need to build more than one component to make them work.
 
-For radios you will use the `useRadioGroup` and `useRadio` composables in order to build radio components.
+For radios, you will use the `useRadioGroup` and `useRadio` composables to build radio components.
 
 ## Features
 
-You can build radio components using either the native HTML `input[type="radio"]` elements or other HTML elements. We provide the behavior, state and accessibility implementation for both cases with the same API and features.
+You can build radio components using either the native HTML `input[type="radio"]` elements or other HTML elements. We provide the behavior, state, and accessibility implementation for both cases with the same API and features.
 
 The following features are implemented:
 
 - Support for either `input[type="radio"]` or custom HTML elements as a base element for the radio component.
-- Labeling, descriptions, error message displays are automatically linked to input and label elements with `aria-*` attributes.
-- Form management, data collection and validation with native HTML5 validation or [Standard Schema](https://github.com/standard-schema/standard-schema) validation.
+- Labeling, descriptions, and error message displays are automatically linked to input and label elements with `aria-*` attributes.
+- Form management, data collection, and validation with native HTML5 validation or [Standard Schema](https://github.com/standard-schema/standard-schema) validation.
 - Support for orientation with `horizontal` and `vertical` values.
 - `v-model` support for radio groups.
 - Supported Keyboard features:
@@ -42,7 +42,7 @@ The following features are implemented:
 | Key                                          | Description                                                                      |
 | -------------------------------------------- | -------------------------------------------------------------------------------- |
 | <Kbd code="ArrowDown" label="ArrowDown"  />  | Focuses the next radio item in the group.                                        |
-| <Kbd code="ArrowRight" label="ArrowRight" /> | Focuses the next radio item in the group. in RTL, focuses the previous item.     |
+| <Kbd code="ArrowRight" label="ArrowRight" /> | Focuses the next radio item in the group. In RTL, focuses the previous item.     |
 | <Kbd code="ArrowLeft" label="Arrow Left" />  | Focuses the previous radio item in the group.                                    |
 | <Kbd code="ArrowUp" label="Arrow Up" />      | Focuses the previous radio item in the group. In RTL, focuses the next item.     |
 | <Kbd code="Tab" label="Tab" />               | Focuses the selected item in the group. If none selected, focuses the first one. |
@@ -56,9 +56,9 @@ The following features are implemented:
 
 ## Building a Radio Group Component
 
-The `useRadioGroup` provides the behavior, state and accessibility implementation for group components.
+The `useRadioGroup` provides the behavior, state, and accessibility implementation for group components.
 
-Unlike checkboxes, radio components **MUST** be grouped by a radio group component. Which is why we will start by building a `RadioGroup` component as a perquisite. We will be using this component in following examples throughout this page.
+Unlike checkboxes, radio components **MUST** be grouped by a radio group component. This is why we will start by building a `RadioGroup` component as a prerequisite. We will be using this component in the following examples throughout this page.
 
 <RadioGroupPartial />
 
@@ -66,7 +66,7 @@ Unlike checkboxes, radio components **MUST** be grouped by a radio group compone
 
 With the Radio Group component built, we can now build a `RadioItem` component. You will be using the `useRadio` composable to build it.
 
-You can use either the native HTML `input[type="radio"]` element or custom HTML elements. Doesn't matter which one you choose, both have the same exact API and Formwerk does the work needed for each case behind the scenes.
+You can use either the native HTML `input[type="radio"]` element or custom HTML elements. It doesn't matter which one you choose; both have the same exact API, and Formwerk does the work needed for each case behind the scenes.
 
 ```ts
 import { type RadioProps, useRadio } from '@formwerk/core';
@@ -76,7 +76,7 @@ const props = defineProps<RadioProps>();
 const { labelProps, inputProps } = useRadio(props);
 ```
 
-The most important part is to bind the `inputProps` object to the base element, the element that you consider it to be the radio button. We also provide the `RadioProps` type for you to use as your component props. You are not required to use it but it is recommended to make use of the full feature set of the `useRadio` composable and by extension, your component.
+The most important part is to bind the `inputProps` object to the base element, the element that you consider to be the radio button. We also provide the `RadioProps` type for you to use as your component props. You are not required to use it, but it is recommended to make use of the full feature set of the `useRadio` composable and, by extension, your component.
 
 With the basics out of the way, let's build a radio component with two common variations.
 
@@ -115,13 +115,13 @@ import RadioGroup from './RadioGroup.vue';
 
 </MdxRepl>
 
-The style-ability last example is limited to the styling capabilities of the native `input` element. To work around that check the [styling section](#styling).
+The style-ability of the last example is limited to the styling capabilities of the native `input` element. To work around that, check the [styling section](#styling).
 
 ### With custom HTML element as a base
 
-For unlimited styling freedom, you don't have to use the `input` element. With the same API you can use custom HTML elements as a binding target for `inputProps` object.
+For unlimited styling freedom, you don't have to use the `input` element. With the same API, you can use custom HTML elements as a binding target for the `inputProps` object.
 
-In the following example we are using a `span` element as a base element for the radio. Try keyboard navigation, clicking, focusing and other interactions to see how it behaves.
+In the following example, we are using a `span` element as a base element for the radio. Try keyboard navigation, clicking, focusing, and other interactions to see how it behaves.
 
 <MdxRepl client:load>
 
@@ -203,11 +203,11 @@ import RadioGroup from './RadioGroup.vue';
 
 <Aside>
 
-Depending on the schema validation provider you are using, the API might slightly differ. Check the supported validation providers for more information. In this example we are using the `zod` schema validation provider.
+Depending on the schema validation provider you are using, the API might slightly differ. Check the supported validation providers for more information. In this example, we are using the `zod` schema validation provider.
 
 </Aside>
 
-Here is an example of using zod as a Standard Schema to validate the radio group, we will be using the radio item component from the previous examples.
+Here is an example of using zod as a Standard Schema to validate the radio group. We will be using the radio item component from the previous examples.
 
 <MdxRepl client:load>
 
@@ -277,7 +277,7 @@ import RadioGroup from './RadioGroup.vue';
     <RadioItem label="Radio 1" value="1" />
     <RadioItem label="Radio 2" value="2" />
     <RadioItem label="Radio 3" value="3" disabled />
-    <RadioItem label="Radio 3" value="4" />
+    <RadioItem label="Radio 4" value="4" />
   </RadioGroup>
 
   <RadioGroup label="Disabled Group" disabled>
@@ -339,9 +339,9 @@ const value = ref('☕️');
 
 ### Orientation
 
-Radio group accept an `orientation` prop that can be set to `horizontal` or `vertical`. The orientation does not affect the focus order, but you can use it to layout the radio items in a row or column with CSS.
+Radio groups accept an `orientation` prop that can be set to `horizontal` or `vertical`. The orientation does not affect the focus order, but you can use it to layout the radio items in a row or column with CSS.
 
-There is not default value assumed for the orientation, but if it is provided the group element will have a `aria-orientation` attribute set to the value of the prop. So you can use that to style it.
+There is no default value assumed for the orientation, but if it is provided, the group element will have an `aria-orientation` attribute set to the value of the prop. So you can use that to style it.
 
 <MdxRepl client:load>
 
@@ -411,7 +411,7 @@ import RadioGroup from './RadioGroup.vue';
 
 <Aside>
 
-There is a lot more to directionality and localization, for more info check out the [i18n guide](/guides/extras/i18n/).
+There is a lot more to directionality and localization. For more info, check out the [i18n guide](/guides/extras/i18n/).
 
 </Aside>
 
