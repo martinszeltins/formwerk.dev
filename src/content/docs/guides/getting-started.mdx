@@ -87,48 +87,8 @@ This library aims to offer an uncompromising new baseline of accessability, inte
 
   </Steps>
 
-## Styling
+## Where to next?
 
-Formwerk does not come with any markup or styling, which is often the parts that make a design system unique.
+You can either start using [the composables](/guides/composables/) to build your various form components, or you can start using the [starter kits](/guides/starter-kits/) to get a head start on your next project.
 
-This means you can use any styling approach you want, whether it's [Tailwind](https://tailwindcss.com/), [UnoCSS](https://unocss.dev/), [OpenProps](https://open-props.style/), or even plain CSS.
-
-Here is the previous example, styled:
-
-<Tabs>
-
-<TabItem label="CSS">// TODO</TabItem>
-
-<TabItem label="Tailwind">
-  ```vue title="TextField.vue"
-  <script setup lang="ts">
-    import { TextFieldProps, useTextField } from '@formwerk/core';
-
-    const props = defineProps<TextFieldProps>();
-
-    const {
-    inputProps,
-    labelProps,
-    errorMessage,
-    errorMessageProps,
-    } = useTextField(props);
-    </script>
-
-    <template>
-      <div class="flex flex-col gap-1">
-        <label v-bind="labelProps" class="text-sm font-medium">{{ label }}</label>
-        <input v-bind="inputProps" class="border border-gray-300 focus:border-blue-500 focus:ring-blue-500 rounded-md p-2" />
-
-        <div v-if="errorMessage" v-bind="errorMessageProps" class="text-sm text-red-500 font-medium">
-          {{ errorMessage }}
-        </div>
-      </div>
-    </template>
-
-    ```
-
-</TabItem>
-
-</Tabs>
-
-Formwerk leans heavily on aria attributes and native HTML states to provide a robust form experience but at the same time it means you can use these attributes to the style your elements, check out the [styling guide](/guides/extras/styling/) for more.
+Or follow the next guide to read our elevator pitch to Formwerk and why you might want to use it in your project. We'll also cover some of the core concepts and ideas that Formwerk is built on.
