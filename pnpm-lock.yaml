@@ -78,8 +78,8 @@ importers:
         specifier: ^3.5.13
         version: 3.5.13(typescript@5.7.2)
       zod:
-        specifier: npm:@awaddev/zod@3.23.8-standard-schema
-        version: '@awaddev/zod@3.23.8-standard-schema'
+        specifier: ^3.24.0
+        version: 3.24.0
     devDependencies:
       '@babel/types':
         specifier: ^7.26.0
@@ -262,9 +262,6 @@ packages:
 
   '@astrojs/yaml2ts@0.2.2':
     resolution: {integrity: sha512-GOfvSr5Nqy2z5XiwqTouBBpy5FyI6DEe+/g/Mk5am9SjILN1S5fOEvYK0GuWHg98yS/dobP4m8qyqw/URW35fQ==}
-
-  '@awaddev/zod@3.23.8-standard-schema':
-    resolution: {integrity: sha512-EGOP6OT7x/zrxocEYqQPpPGVjUEaC4lHU8gJiTfWdf0t3McD8NLIxlUwKVT0xsJ1cV18gyZoUf7uG1Sxa9nEkA==}
 
   '@babel/code-frame@7.26.2':
     resolution: {integrity: sha512-RJlIHRueQgwWitWgF8OdFYGZX328Ax5BCemNGlqHfplnRT9ESi8JkFlvaVYbS+UubVY6dpv87Fs2u5M29iNFVQ==}
@@ -3957,8 +3954,8 @@ packages:
       typescript: ^4.9.4 || ^5.0.2
       zod: ^3
 
-  zod@3.23.8:
-    resolution: {integrity: sha512-XBx9AXhXktjUqnepgTiE5flcKIYWi/rme0Eaj+5Y0lftuGBq+jyRu/md4WnuxqgP1ubdpNCsYEYPxrzVHD8d6g==}
+  zod@3.24.0:
+    resolution: {integrity: sha512-Hz+wiY8yD0VLA2k/+nsg2Abez674dDGTai33SwNvMPuf9uIrBC9eFgIMQxBBbHFxVXi8W+5nX9DcAh9YNSQm/w==}
 
   zwitch@2.0.4:
     resolution: {integrity: sha512-bXE4cR/kVZhKZX/RjPEflHaKVhUVl85noU3v6b8apfQEc1x4A+zBxjZ4lN8LqGd6WZ3dl98pY4o717VFmoPp+A==}
@@ -4087,7 +4084,7 @@ snapshots:
     dependencies:
       sitemap: 8.0.0
       stream-replace-string: 2.0.0
-      zod: 3.23.8
+      zod: 3.24.0
 
   '@astrojs/starlight-tailwind@2.0.3(@astrojs/starlight@0.29.2(astro@4.16.16(@types/node@22.10.1)(rollup@4.27.4)(typescript@5.7.2)))(@astrojs/tailwind@5.1.2(astro@4.16.16(@types/node@22.10.1)(rollup@4.27.4)(typescript@5.7.2))(tailwindcss@3.4.15))(tailwindcss@3.4.15)':
     dependencies:
@@ -4185,8 +4182,6 @@ snapshots:
   '@astrojs/yaml2ts@0.2.2':
     dependencies:
       yaml: 2.5.1
-
-  '@awaddev/zod@3.23.8-standard-schema': {}
 
   '@babel/code-frame@7.26.2':
     dependencies:
@@ -5618,9 +5613,9 @@ snapshots:
       which-pm: 3.0.0
       xxhash-wasm: 1.1.0
       yargs-parser: 21.1.1
-      zod: 3.23.8
-      zod-to-json-schema: 3.23.5(zod@3.23.8)
-      zod-to-ts: 1.2.0(typescript@5.7.2)(zod@3.23.8)
+      zod: 3.24.0
+      zod-to-json-schema: 3.23.5(zod@3.24.0)
+      zod-to-ts: 1.2.0(typescript@5.7.2)(zod@3.24.0)
     optionalDependencies:
       sharp: 0.33.5
     transitivePeerDependencies:
@@ -8581,15 +8576,15 @@ snapshots:
 
   yocto-queue@1.1.1: {}
 
-  zod-to-json-schema@3.23.5(zod@3.23.8):
+  zod-to-json-schema@3.23.5(zod@3.24.0):
     dependencies:
-      zod: 3.23.8
+      zod: 3.24.0
 
-  zod-to-ts@1.2.0(typescript@5.7.2)(zod@3.23.8):
+  zod-to-ts@1.2.0(typescript@5.7.2)(zod@3.24.0):
     dependencies:
       typescript: 5.7.2
-      zod: 3.23.8
+      zod: 3.24.0
 
-  zod@3.23.8: {}
+  zod@3.24.0: {}
 
   zwitch@2.0.4: {}
