@@ -97,7 +97,7 @@ export default defineConfig({
         },
         {
           label: 'Extras',
-          autogenerate: { directory: 'guides/extras' },
+          autogenerate: { directory: 'extras' },
         },
       ],
       editLink: {
