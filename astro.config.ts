@@ -92,12 +92,12 @@ export default defineConfig({
           autogenerate: { directory: 'guides/forms' },
         },
         {
-          label: 'Extras',
-          autogenerate: { directory: 'guides/extras' },
+          label: 'Starter Kits',
+          items: ['starter-kits/minimal'],
         },
         {
-          label: 'Built with Formwerk',
-          items: ['libraries', 'resources'],
+          label: 'Extras',
+          autogenerate: { directory: 'extras' },
         },
       ],
       editLink: {

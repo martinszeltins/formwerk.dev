@@ -1,13 +1,11 @@
 ---
-// import PhArrowRight from '~icons/ph/arrow-right';
+import PhArrowRight from '~icons/ph/arrow-right';
 import PhFeather from '~icons/ph/feather-bold';
 import LogoWhite from '@assets/logo-w.svg';
 ---
 
 <section>
-  <span class="soon">Soon</span>
-
-  <h2 class="heading-grad">
+  <h2 id="starter-kits" class="heading-grad">
     Start with
     <span class="highlight">Starter Kits</span>!
   </h2>
@@ -19,7 +17,12 @@ import LogoWhite from '@assets/logo-w.svg';
   </p>
 
   <div class="mt-10 grid grid-cols-1 gap-4 md:grid-cols-2">
-    <a href="" class="card">
+    <a
+      href="https://github.com/formwerkjs/formwerk/tree/main/packages/starter-kits/minimal/src/components"
+      target="_blank"
+      rel="noopener"
+      class="card"
+    >
       <h3 class="heading-grad flex items-center gap-2">
         <PhFeather class="size-8 text-rose-500" />
         Minimal
@@ -32,13 +35,12 @@ import LogoWhite from '@assets/logo-w.svg';
       </p>
 
       <p class="cta">
-        Coming Soon
-        <!-- Start with Unstyled -->
-        <!-- <PhArrowRight /> -->
+        Check it out on GitHub
+        <PhArrowRight />
       </p>
     </a>
 
-    <a href="" class="card">
+    <a href="#starter-kits" class="card in-progress">
       <h3 class="heading-grad">
         <img src={LogoWhite.src} class="logo" />
         Atma
@@ -83,7 +85,11 @@ import LogoWhite from '@assets/logo-w.svg';
   }
 
   .card {
-    @apply flex cursor-progress flex-col items-center rounded-lg border border-transparent bg-zinc-800/60 p-6 opacity-50 transition-colors duration-500 hover:border-rose-500/20 lg:items-start;
+    @apply flex flex-col items-center rounded-lg border border-transparent bg-zinc-800/60 p-6 transition-colors duration-500 hover:border-rose-500/20 lg:items-start;
+
+    &.in-progress {
+      @apply cursor-progress opacity-50;
+    }
 
     h3 {
       @apply relative !text-2xl font-semibold;

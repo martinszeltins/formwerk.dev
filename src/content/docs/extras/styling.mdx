@@ -7,7 +7,7 @@ sidebar:
 
 import { Aside } from '@astrojs/starlight/components';
 
-import TextFieldPartial from '../fields/_partials/_textField.mdx';
+import TextFieldPartial from './_partials/_textField.mdx';
 
 import MdxRepl from '@components/MdxRepl.vue';
 
@@ -17,7 +17,7 @@ Each composable field guide showed you a styled example, so we won't repeat them
 
 ## Pseudo Classes
 
-A crucial part of Formwerk's validation system is it uses the native HTML5 constraint validation API and ensures a consistent validity state even if you are using a Standard Schema. This means you can make use of pseudo classes like `:invalid` and `:valid` in CSS to style your fields regardless of the validation system you use.
+A crucial part of Formwerk's validation system is it uses the native HTML5 constraint validation API and ensures a consistent validity state even if you are using a Standard Schema. This means you can make use of pseudo classes like `:invalid` and `:valid` in CSS to style your fields regardless of the validation provider you use.
 
 For many cases, this can allow you to control when to show or hide error messages without any JavaScript or conditional rendering.
 
@@ -25,11 +25,11 @@ For many cases, this can allow you to control when to show or hide error message
 
 The [`:invalid`](https://developer.mozilla.org/en-US/docs/Web/CSS/:invalid) and [`:valid`](https://developer.mozilla.org/en-US/docs/Web/CSS/:valid) pseudo classes are applied to the input element when the field is in an invalid or valid state.
 
-Usually you do not want to use these pseudo classes as they are too "aggressive". The `:user-invalid` and `:user-valid` pseudo classes are more subtle and only apply when the user has interacted with the field.
+Usually you **do not** want to use these pseudo classes for showing errors or applying error styles as they are too "aggressive".
 
 Here is an example, notice how the style are already applied to the fields even before you have interacted with them.
 
-<MdxRepl client:load>
+<MdxRepl client:load preview-size="lg">
 
 <div slot="!TextField.vue">
   <TextFieldPartial />
@@ -48,12 +48,20 @@ import TextField from './TextField.vue';
 </template>
 
 <style>
-*:invalid {
-  border-color: red;
+.field:has(:invalid) {
+  input {
+    border-color: red;
+  }
+
+  .error {
+    display: block;
+  }
 }
 
-*:valid {
-  border-color: green;
+.field:has(:valid) {
+  input {
+    border-color: green;
+  }
 }
 </style>
 ```
@@ -71,7 +79,7 @@ The [`:user-invalid`](https://developer.mozilla.org/en-US/docs/Web/CSS/:user-inv
 
 Here is an example making use of these pseudo classes, notice that the styles are only applied after you have interacted with the field.
 
-<MdxRepl client:load>
+<MdxRepl client:load preview-size="lg">
 
 <div slot="!TextField.vue">
   <TextFieldPartial />
@@ -90,12 +98,20 @@ import TextField from './TextField.vue';
 </template>
 
 <style>
-*:user-invalid {
-  border-color: red;
+.field:has(:user-invalid) {
+  input {
+    border-color: red;
+  }
+
+  .error {
+    display: block;
+  }
 }
 
-*:user-valid {
-  border-color: green;
+.field:has(:user-valid) {
+  input {
+    border-color: green;
+  }
 }
 </style>
 ```
@@ -110,7 +126,7 @@ The [`:disabled`](https://developer.mozilla.org/en-US/docs/Web/CSS/:disabled) ps
 
 For non-input base elements you can use the `aria-disabled` attribute to target the field.
 
-<MdxRepl client:load>
+<MdxRepl client:load preview-size="lg">
 
 <div slot="!TextField.vue">
   <TextFieldPartial />
@@ -172,7 +188,7 @@ The `:has()` CSS pseudo class allows you to style an element based on whether it
 
 Here is an example that makes use of the `:has()` pseudo class to style the label of a field based on whether the field is required. The asterisk (`*`) is added to the label when the field is required.
 
-<MdxRepl client:load>
+<MdxRepl client:load preview-size="lg">
 
 <div slot="!TextField.vue">
   <TextFieldPartial />
