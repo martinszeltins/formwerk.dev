@@ -99,10 +99,6 @@ export default defineConfig({
           label: 'Extras',
           autogenerate: { directory: 'guides/extras' },
         },
-        {
-          label: 'Built with Formwerk',
-          items: ['libraries', 'resources'],
-        },
       ],
       editLink: {
         baseUrl: 'https://github.com/formwerkjs/formwerk.dev/edit/main/',
