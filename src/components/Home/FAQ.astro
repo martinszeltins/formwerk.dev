@@ -1,0 +1,109 @@
+---
+import { gzipSizeFromFile } from 'gzip-size';
+import path from 'node:path';
+import PhCaretRightFill from '~icons/ph/caret-right-fill';
+import byteSize from 'byte-size';
+
+const bundleSize = await gzipSizeFromFile(
+  path.resolve('node_modules/@formwerk/core/dist/core.mjs'),
+);
+
+const questions: {
+  title: string;
+  answer: string;
+}[] = [
+  {
+    title: 'Who is Formwerk for?',
+    answer:
+      'Formwerk is for developers who want to build high-quality, scalable forms. It is ideal for those building internal UI design systems or UI libraries intended for other developers.',
+  },
+  {
+    title: 'How large is the bundle size?',
+    answer: `Formwerk is tree-shakable, meaning only the composables you use will be included in your bundle. The total bundle size is around ${byteSize(bundleSize)} gzipped.`,
+  },
+  {
+    title: 'What validation options does Formwerk provide?',
+    answer:
+      'Out of the box, you can use HTML validation attributes without any additional dependencies. Formwerk also supports Schema Standards, allowing you to use Zod, Valibot, Arktype, and other validation libraries with your forms.',
+  },
+  {
+    title: 'What kind of composables are within the scope of Formwerk?',
+    answer:
+      "Any functionality related to forms or form management falls within Formwerk's scope. Beyond typical form components, we welcome suggestions for useful composables that could enhance form development.",
+  },
+];
+---
+
+<section>
+  <h2 class="heading-grad">Frequently Asked Questions</h2>
+
+  {
+    questions.map((question) => (
+      <details>
+        <summary>
+          <div class="flex items-center">
+            <PhCaretRightFill />
+            <span class="heading-grad !text-2xl">{question.title}</span>
+          </div>
+        </summary>
+
+        <p>{question.answer}</p>
+      </details>
+    ))
+  }
+</section>
+
+<style>
+  details {
+    @apply mt-8 rounded-lg p-4;
+  }
+
+  summary {
+    @apply cursor-pointer text-xl font-bold text-zinc-100;
+    list-style: none;
+  }
+
+  svg {
+    @apply mr-2 inline-block transition-transform;
+  }
+
+  details[open] summary svg {
+    @apply rotate-90;
+  }
+
+  details p {
+    @apply pt-4 text-lg text-zinc-200;
+  }
+
+  details {
+    transition: height 0.5s ease;
+    height: auto;
+    overflow: clip; /* Clip off contents while animating */
+
+    &::details-content {
+      height: 0;
+      overflow: clip; /* Clip off contents while animating */
+      transition:
+        height 0.5s ease,
+        content-visibility 0.5s ease allow-discrete;
+    }
+
+    &[open] {
+      height: auto;
+
+      &::details-content {
+        height: auto;
+      }
+    }
+  }
+
+  section {
+    interpolate-size: allow-keywords;
+
+    background: radial-gradient(
+      closest-corner,
+      rgba(147, 51, 234, 0.15) 0%,
+      rgba(24, 24, 27, 0.1) 70%
+    );
+  }
+</style>
