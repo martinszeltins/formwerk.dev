@@ -9,6 +9,7 @@ import A11yFirst from '@components/Home/A11yFirst.astro';
 import StarterKits from '@components/Home/StarterKits.astro';
 import Logo from '../assets/logo-grad.svg';
 import SocialLinks from '@components/Home/SocialLinks.astro';
+import TheFooter from '@components/TheFooter.vue';
 import GoogleAnalytics from '@components/GoogleAnalytics.astro';
 
 const title = 'Formwerk - Build High-Quality Vue.js Form Components';
@@ -117,11 +118,7 @@ const description =
 
     <GoogleAnalytics />
 
-    <footer class="flex items-center justify-center py-5 lg:px-10">
-      <p class="text-center text-sm font-medium text-zinc-400">
-        &copy; {new Date().getFullYear()} Abdelrahman Awad.
-      </p>
-    </footer>
+    <TheFooter />
   </body>
 </html>
 
