@@ -81,7 +81,7 @@ FormKit is a great library that tackles everything about forms really well, incl
 
 This "reward early" approach will definitely help you build forms 10x faster. But if you have to dismantle it, you'll be punished. Formwerk, on the other hand, is as easy to dismantle as it is to build with.
 
-Formwerk doesn't offer any UI. You own your markup, you own your styles. For everything else, Formwerk has you covered. You can build your UI with either plain CSS, Tailwind, or that cool new thing you found on Twitter last week. There is nothing to override, nothing to configure.
+Formwerk doesn't offer any UI. You own your markup, you own your styles. For everything else, Formwerk has you covered. You can build your UI with either plain CSS, Tailwind, or that cool new thing you found on BlueSky last week. There is nothing to override, nothing to configure.
 
 ### Vuelidate
 
