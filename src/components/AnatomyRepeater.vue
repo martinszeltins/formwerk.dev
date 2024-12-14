@@ -6,7 +6,7 @@
       >
         <div class="flex items-center gap-2">
           <div
-            class="flex w-max items-center whitespace-nowrap rounded-md border border-zinc-600 bg-zinc-900 px-4 py-1.5 pr-40 font-medium text-zinc-400"
+            class="flex w-max items-center whitespace-nowrap rounded-md border border-zinc-300 bg-zinc-400 px-4 py-1.5 pr-40 font-medium text-zinc-700 dark:border-zinc-600 dark:bg-zinc-900 dark:text-zinc-400"
           >
             Field 1
           </div>
@@ -16,17 +16,17 @@
             position="top"
             class="flex items-center"
           >
-            <PhCaretDown class="text-zinc-400" />
+            <PhCaretDown class="text-zinc-700 dark:text-zinc-400" />
           </AnatomyPart>
 
-          <PhCaretUp class="text-zinc-400 opacity-60" />
+          <PhCaretUp class="text-zinc-700 opacity-60 dark:text-zinc-400" />
 
           <AnatomyPart
             text="Remove item button"
             position="right"
             class="flex items-center"
           >
-            <PhTrash class="text-zinc-400" />
+            <PhTrash class="text-zinc-700 dark:text-zinc-400" />
           </AnatomyPart>
         </div>
       </div>
@@ -38,22 +38,22 @@
       >
         <div class="flex items-center gap-2">
           <div
-            class="flex w-max items-center whitespace-nowrap rounded-md border border-zinc-600 bg-zinc-900 px-4 py-1.5 pr-40 font-medium text-zinc-400"
+            class="flex w-max items-center whitespace-nowrap rounded-md border border-zinc-300 bg-zinc-400 px-4 py-1.5 pr-40 font-medium text-zinc-700 dark:border-zinc-600 dark:bg-zinc-900 dark:text-zinc-400"
           >
             Field 2
           </div>
 
-          <PhCaretDown class="text-zinc-400 opacity-60" />
+          <PhCaretDown class="text-zinc-700 opacity-60 dark:text-zinc-400" />
 
           <AnatomyPart
             text="Move previous button"
             position="bottom"
             class="flex items-center"
           >
-            <PhCaretUp class="text-zinc-400" />
+            <PhCaretUp class="text-zinc-700 dark:text-zinc-400" />
           </AnatomyPart>
 
-          <PhTrash class="text-zinc-400" />
+          <PhTrash class="text-zinc-700 dark:text-zinc-400" />
         </div>
       </div>
     </AnatomyPart>
@@ -61,9 +61,9 @@
     <AnatomyPart text="Add item button" position="left">
       <button
         type="button"
-        class="flex w-32 items-center gap-1 rounded-md bg-zinc-900 px-4 py-2 text-left text-sm font-medium text-zinc-400"
+        class="flex w-32 items-center gap-1 rounded-md bg-zinc-400 px-4 py-2 text-left text-sm font-medium text-zinc-700 dark:bg-zinc-900 dark:text-zinc-400"
       >
-        <PhPlus class="text-zinc-400" />
+        <PhPlus class="text-zinc-700 dark:text-zinc-400" />
         Add item
       </button>
     </AnatomyPart>

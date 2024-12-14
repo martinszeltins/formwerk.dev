@@ -27,7 +27,7 @@
           class="absolute right-1/4 flex translate-y-1 items-center justify-center"
         >
           <AnatomyPart text="Thumb" position="center" mirrored>
-            <PhCircleFill class="h-6 w-6 text-zinc-400" />
+            <PhCircleFill class="h-6 w-6 text-zinc-700 dark:text-zinc-400" />
           </AnatomyPart>
         </div>
       </div>

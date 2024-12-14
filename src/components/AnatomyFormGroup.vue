@@ -14,7 +14,7 @@
           >
             <div class="flex items-center gap-2">
               <div
-                class="flex w-max items-center whitespace-nowrap rounded-md border border-zinc-600 bg-zinc-900 px-4 py-1.5 pr-40 font-medium text-zinc-400"
+                class="flex w-max items-center whitespace-nowrap rounded-md border border-zinc-300 bg-zinc-400 px-4 py-1.5 pr-40 font-medium text-zinc-700 dark:border-zinc-600 dark:bg-zinc-900 dark:text-zinc-400"
               >
                 Street
               </div>
@@ -22,7 +22,7 @@
 
             <div class="flex items-center gap-2">
               <div
-                class="flex w-max items-center whitespace-nowrap rounded-md border border-zinc-600 bg-zinc-900 px-4 py-1.5 pr-40 font-medium text-zinc-400"
+                class="flex w-max items-center whitespace-nowrap rounded-md border border-zinc-300 bg-zinc-400 px-4 py-1.5 pr-40 font-medium text-zinc-700 dark:border-zinc-600 dark:bg-zinc-900 dark:text-zinc-400"
               >
                 City
               </div>

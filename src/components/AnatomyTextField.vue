@@ -6,7 +6,7 @@
 
     <AnatomyPart text="Input" position="center" class="w-full">
       <div
-        class="w-full rounded-md border border-zinc-600 bg-zinc-900 px-4 py-1.5 font-medium text-zinc-400"
+        class="w-full rounded-md border border-zinc-300 bg-zinc-400 px-4 py-1.5 font-medium text-zinc-700 dark:border-zinc-600 dark:bg-zinc-900 dark:text-zinc-400"
       >
         Value
       </div>

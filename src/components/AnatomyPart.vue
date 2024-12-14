@@ -4,7 +4,7 @@
   </div>
 
   <div
-    class="AnatomyPopover__popover text-sm font-medium italic text-zinc-400"
+    class="AnatomyPopover__popover text-sm font-medium italic text-zinc-500 dark:dark:text-zinc-400"
     :class="[`is-${direction}`, mirrored ? 'is-mirrored' : '']"
   >
     {{ text }}
@@ -61,14 +61,14 @@ defineOptions({
 
   &::after {
     content: '';
-    @apply ml-1 block h-px bg-zinc-500;
+    @apply ml-1 block h-px bg-zinc-400 dark:bg-zinc-400;
     order: 1;
     width: v-bind(length);
   }
 
   &::before {
     content: '';
-    @apply block size-1 rounded-full bg-zinc-500;
+    @apply block size-1 rounded-full bg-zinc-400 dark:bg-zinc-400;
     order: 2;
   }
 
