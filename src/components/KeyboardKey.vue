@@ -77,7 +77,7 @@ const key = computed(() => {
 
 <style lang="postcss" scoped>
 .kbd {
-  @apply relative box-border inline-flex h-7 select-none items-center gap-1 overflow-hidden rounded-md border border-gray-500 bg-gray-800 px-2 pb-0.5 text-center align-baseline capitalize leading-none transition-colors duration-100;
+  @apply relative box-border inline-flex h-7 select-none items-center gap-1 overflow-hidden rounded-md border border-gray-200 bg-gray-300 px-2 pb-0.5 text-center align-baseline capitalize leading-none transition-colors duration-100 dark:border-gray-500 dark:bg-gray-800;
 
   .key-part {
     @apply leading-none transition-transform duration-100;
@@ -92,11 +92,11 @@ const key = computed(() => {
   }
 
   .notch {
-    @apply absolute inset-x-0 bottom-0 h-0.5 bg-gray-500 transition-transform duration-100;
+    @apply absolute inset-x-0 bottom-0 h-0.5 bg-gray-400 transition-transform duration-100 dark:bg-gray-500;
   }
 
   &:active {
-    @apply border-gray-600;
+    @apply border-gray-400 dark:border-gray-600;
 
     .key-part {
       @apply translate-y-px;

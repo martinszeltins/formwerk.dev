@@ -45,7 +45,7 @@ defineProps<{
 
 <style scoped>
 .wheel {
-  @apply fill-current text-zinc-400;
+  @apply fill-current text-zinc-700 dark:text-zinc-400;
   animation: scrollUp 1s infinite;
 
   &.reverse {
@@ -54,7 +54,7 @@ defineProps<{
 }
 
 .mouse {
-  @apply fill-current text-zinc-700;
+  @apply fill-current text-zinc-400 dark:text-zinc-700;
 }
 
 @keyframes scrollUp {
