@@ -198,7 +198,10 @@ onMounted(() => {
         Try the following interactions:
       </h3>
 
-      <ul class="flex flex-col gap-3 whitespace-nowrap text-white">
+      <ul
+        class="flex flex-col gap-3 whitespace-nowrap text-white"
+        data-theme="dark"
+      >
         <li :class="{ 'is-done': steps.focusNOpen.done }">
           Focus the field, then press
           <KeyboardKey code="Space" label="Space" />.
@@ -208,8 +211,8 @@ onMounted(() => {
           <KeyboardKey code="ArrowDown" /> and <KeyboardKey code="ArrowUp" />.
         </li>
         <li :class="{ 'is-done': steps.selectFocused.done }">
-          Select the focused option with <KeyboardKey code="Enter" /> or
-          <KeyboardKey code="Space" />.
+          Select the focused option with
+          <KeyboardKey code="Enter" /> or <KeyboardKey code="Space" />.
         </li>
         <li :class="{ 'is-done': steps.search.done }">
           Find "Egypt" in the list by typing "E...".
