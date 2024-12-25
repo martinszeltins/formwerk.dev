@@ -83,8 +83,8 @@ This "reward early" approach will definitely help you build forms 10x faster. Bu
 
 Formwerk doesn't offer any UI. You own your markup, you own your styles. For everything else, Formwerk has you covered. You can build your UI with either plain CSS, Tailwind, or that cool new thing you found on BlueSky last week. There is nothing to override, nothing to configure.
 
-### Vuelidate
+### Vuelidate & Regle
 
-A great option for validation. But out of all the options available, it is one with the lowest level of abstraction.
+Great options for validation. But out of all the options available, these are the ones with the lowest level of abstraction.
 
 This means you have control over every other aspect. Albeit by omission rather than design, this means you have to implement everything except the validation.
